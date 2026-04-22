@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Business/Business.csproj" Id="c271b4a9-0ca3-4e57-95ac-869e8ed82bf7" />
+  <Project Path="Common/Common.csproj" />
+  <Project Path="Main/Main.csproj" Id="40be0382-591b-43d8-aa08-1804869eb744">
+    <Deploy Solution="Debug|*" />
+  </Project>
+  <Project Path="Repository/Repository.csproj" />
+</Solution>

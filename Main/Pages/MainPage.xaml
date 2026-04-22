@@ -1,0 +1,76 @@
+﻿<ContentPage
+    x:Class="Main.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Main.ViewModels"
+    Title="Soldes mensuels">
+
+    <ContentPage.BindingContext>
+        <local:BalancesViewModel />
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+        <!-- Titre -->
+        <Label Text="Soldes par mois et par compte"
+               FontSize="20"
+               FontAttributes="Bold"
+               HorizontalOptions="Center" />
+
+        <!-- En-têtes de colonnes -->
+        <Grid ColumnDefinitions="2*,*,*,*"
+              RowDefinitions="Auto">
+
+            <Label Text="Mois"
+                   FontAttributes="Bold"
+                   Grid.Column="0" />
+
+            <Label Text="Compte 1"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="End"
+                   Grid.Column="1" />
+
+            <Label Text="Compte 2"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="End"
+                   Grid.Column="2" />
+
+            <Label Text="Compte 3"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="End"
+                   Grid.Column="3" />
+        </Grid>
+
+        <!-- Lignes mensuelles -->
+        <CollectionView ItemsSource="{Binding MonthlyBalances}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="2*,*,*,*"
+                          RowDefinitions="Auto"
+                          Padding="0,4">
+
+                        <!-- Mois -->
+                        <Label Text="{Binding Month}"
+                               Grid.Column="0" />
+
+                        <!-- Compte 1 -->
+                        <Label Text="{Binding Account1, StringFormat='{}{0:N2} €'}"
+                               HorizontalTextAlignment="End"
+                               Grid.Column="1" />
+
+                        <!-- Compte 2 -->
+                        <Label Text="{Binding Account2, StringFormat='{}{0:N2} €'}"
+                               HorizontalTextAlignment="End"
+                               Grid.Column="2" />
+
+                        <!-- Compte 3 -->
+                        <Label Text="{Binding Account3, StringFormat='{}{0:N2} €'}"
+                               HorizontalTextAlignment="End"
+                               Grid.Column="3" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>
