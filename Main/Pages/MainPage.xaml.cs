@@ -7,7 +7,7 @@ namespace Main.Pages
     /// </summary>
     public partial class MainPage : ContentPage
     {
-        public MainPage(MainViewModel viewModel)
+        public MainPage(MainViewModel viewModel) 
         {
             InitializeComponent();
             BindingContext = viewModel;
