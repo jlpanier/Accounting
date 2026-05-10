@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System.ComponentModel;
 
-namespace Repository.Entities
+namespace Repository.Entities 
 {
     [Table("ACCOUNT")]
     public partial class AccountEntity : BaseEntity, INotifyPropertyChanged
