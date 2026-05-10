@@ -51,7 +51,7 @@ namespace Repository.Dbo
             if (!File.Exists(DbPath)) throw new FileNotFoundException("File does not exists", DbPath);
             Db.BusyTimeout = TimeSpan.FromSeconds(busyTimeout);
             //DropTable<SolutionEntity>();
-            CreateTable<SolutionEntity>();
+            CreateTable<AccountEntity>();
         }
 
         /// <summary>

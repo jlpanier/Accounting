@@ -11,6 +11,9 @@ namespace Main
             InitializeComponent();
             var currentTheme = Application.Current!.RequestedTheme;
             ThemeSegmentedControl.SelectedIndex = currentTheme == AppTheme.Light ? 0 : 1;
+
+            Routing.RegisterRoute(nameof(NewBankAccountPage), typeof(NewBankAccountPage));
+
         }
 
         public static async Task DisplaySnackbarAsync(string message)

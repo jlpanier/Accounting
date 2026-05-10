@@ -19,9 +19,10 @@ namespace Main.Pages
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
+            if (BindingContext is MainViewModel vm)
+            {
+                vm.Load();
+            }
         }
-
-
     }
 }
