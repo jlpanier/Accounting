@@ -1,0 +1,110 @@
+<ContentPage
+    x:Class="Main.Pages.NewBankAccountPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Main.ViewModels"
+    Title="Nouvelle entrée"
+    Visual="Material">
+
+
+    <Grid Padding="20">
+
+        <Border
+            x:Name="Card"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 16"
+            Padding="20"
+            Shadow="10,10,20,0,Black"
+            Opacity="0"
+            TranslationY="40">
+
+            <VerticalStackLayout Spacing="22">
+
+                <Label 
+                    Text="Compte bancaire"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center" />
+
+                <!-- Label -->
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="12">
+
+                    <!-- ID -->
+                    <Image 
+                       Grid.Column="0"
+                       Source="ic_label.png"
+                       WidthRequest="24"
+                       HeightRequest="24"
+                       VerticalOptions="Center" />
+
+                    <Entry 
+                       Grid.Column="1"
+                       Placeholder="Label"
+                       Text="{Binding Label}"
+                       VerticalOptions="Center" />
+
+                    <!-- Date début -->
+                    <Image 
+                        Grid.Column="2"
+                        Source="ic_date.png"
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        VerticalOptions="Center" />
+
+                    <VerticalStackLayout Grid.Column="3">
+                        <Label Text="Date de début" FontAttributes="Bold" />
+                        <DatePicker Date="{Binding StartDate}" />
+                    </VerticalStackLayout>
+                </Grid>
+                
+
+                <!-- ID -->
+                <Grid ColumnDefinitions="Auto,*, Auto, Auto" ColumnSpacing="12">
+
+                    <Image 
+                        Grid.Column="0"
+                        Source="ic_id.png"
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        VerticalOptions="Center" />
+
+                    <Entry 
+                        Grid.Column="1"
+                        Placeholder="Identifiant"
+                        Keyboard="Numeric"
+                        Text="{Binding AccountNo}"
+                        />
+
+                    <!-- Date fin -->
+                    <Image 
+                        Grid.Column="2"
+                        Source="ic_date.png"
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        VerticalOptions="Center" />
+
+                    <VerticalStackLayout Grid.Column="3">
+                        <Label Text="Date de fin" FontAttributes="Bold" />
+                        <DatePicker Date="{Binding EndDate}" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <HorizontalStackLayout Spacing="12">
+                </HorizontalStackLayout>
+
+                <!-- Bouton Valider -->
+                <Button Text="Valider"
+                        BackgroundColor="#007AFF"
+                        TextColor="White"
+                        CornerRadius="8"
+                        HeightRequest="48"
+                        Command="{Binding SaveCommand}">
+                    <!--Clicked="OnValidateClicked"-->
+
+                </Button>
+
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>

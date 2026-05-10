@@ -25,19 +25,19 @@ namespace Repository.Dbo
         {
         }
 
-        public int PurgeSolutions(int columns)
+        public AccountEntity? GetBankAccount(int bankNo)
         {
             lock (dbLock)
             {
-                return Db.Execute("DELETE FROM SOLUTIONS WHERE Columns = ?", columns);
+                return Db.Query<AccountEntity>("Select * from ACCOUNT WHERE AccountNumero = ? ", bankNo).FirstOrDefault();
             }
         }
 
-        public IEnumerable<SolutionEntity> Get(int columns)
+        public IEnumerable<AccountEntity> GetBankAccounts()
         {
             lock (dbLock)
             {
-                return Db.Query<SolutionEntity>("Select * from SOLUTIONS WHERE Columns = ? ", columns);
+                return Db.Query<AccountEntity>("Select * from ACCOUNT ");
             }
         }
     }

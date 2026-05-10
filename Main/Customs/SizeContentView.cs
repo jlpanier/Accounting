@@ -4,7 +4,7 @@ namespace Main.Customs
     /// <summary>
     /// Imposser une taille carrée pour le contrôle, avec une taille minimale de 250x250 pixels - tableau
     /// </summary>
-    public class SquareContentView : ContentView
+    public class SizeContentView : ContentView
     {
         protected override void OnSizeAllocated(double width, double height)
         {

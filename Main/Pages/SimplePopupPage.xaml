@@ -1,0 +1,29 @@
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Main.Pages.SimplePopupPage"
+    BackgroundColor="#80000000">
+
+    <Grid>
+        <!-- Fond semi-transparent -->
+        <BoxView Color="#66000000" />
+
+        <!-- Contenu du popup -->
+        <VerticalStackLayout
+            x:Name="PopupContainer"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Padding="20"
+            BackgroundColor="White"
+            WidthRequest="280"
+            Spacing="15"
+            Opacity="0"
+            Scale="0.8">
+
+            <Label x:Name="MessageLabel" Text="Hello popup !" FontSize="20" HorizontalOptions="Center" />
+
+            <Button Text="Fermer" Clicked="CloseClicked" />
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>
