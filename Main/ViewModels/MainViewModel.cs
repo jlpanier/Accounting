@@ -1,11 +1,11 @@
 ﻿using Business;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
 
 namespace Main.ViewModels
 {
-
     /// <summary>
     /// Gestion de la page principale
     /// </summary>
@@ -25,7 +25,15 @@ namespace Main.ViewModels
 
         #endregion
 
-        public List<BankAccount> Accounts
+        /// <summary>
+        /// Evenement de sélection d'un compte
+        /// </summary>
+        public ICommand SelectAccountCommand { get; }
+
+        /// <summary>
+        /// Liste des comptes
+        /// </summary>
+        public ObservableCollection<BankAccountViewModel> Accounts
         {
             get => _accounts;
             set
@@ -37,7 +45,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public List<BankAccount>? _accounts;
+        public ObservableCollection<BankAccountViewModel> _accounts = new ObservableCollection<BankAccountViewModel>();
 
         /// <summary>
         /// Ajout d'un compte
@@ -46,19 +54,44 @@ namespace Main.ViewModels
 
         public MainViewModel()
         {
-            Accounts = new List<BankAccount>();
+            Accounts = new ObservableCollection<BankAccountViewModel>();
             AddCommand = new Command(OnClickAdd);
+            SelectAccountCommand = new Command<BankAccountViewModel>(OnAccountSelected);
         }
 
+        /// <summary>
+        /// Ajout d'un nouveau compte
+        /// </summary>
         public async void OnClickAdd()
         {
             await Shell.Current.GoToAsync(nameof(NewBankAccountPage));
             Load();
         }
 
+        /// <summary>
+        /// Chargement des comptes
+        /// </summary>
         public async void Load()
         {
-            Accounts = BankAccount.GetAll();
+            var results = new List<BankAccountViewModel>();
+            var accounts = BankAccount.GetAll();
+            foreach (var account in accounts)
+            {
+                results.Add(new BankAccountViewModel(account));
+            }
+            Accounts = new ObservableCollection<BankAccountViewModel>(results);
+        }
+
+        /// <summary>
+        /// Sélectiopn du compte
+        /// </summary>
+        private async void OnAccountSelected(BankAccountViewModel account)
+        {
+            // Exemple : navigation, popup, édition, etc.
+            await Shell.Current.GoToAsync(nameof(MonthlyBalancesPage), new Dictionary<string, object>
+            {
+                { "accountId", account.AccountNo }
+            });
         }
     }
 }

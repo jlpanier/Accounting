@@ -1,0 +1,58 @@
+<ContentPage
+    x:Class="Main.Pages.MonthlyBalancesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Main.ViewModels"
+    Title="Balance mensuelle">
+
+    <ContentPage.BindingContext>
+        <local:MonthlyBalancesViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Grid.Column="0" Text="{Binding Label}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+            <Label Grid.Column="0" Text="{Binding AccountNo}" FontSize="16" HorizontalOptions="Center"/>
+
+            <Border Margin="10" Padding="10" BackgroundColor="#F5F5F5" StrokeShape="RoundRectangle 12" StrokeThickness="0" >
+                <Border.Shadow>
+                    <Shadow 
+                        Brush="#40000000"
+                        Offset="0,2"
+                        Radius="6"
+                        Opacity="0.25" />
+                </Border.Shadow>
+                <CollectionView ItemsSource="{Binding MonthlyBalances}"  SelectionMode="Single"
+                    SelectionChangedCommand="{Binding SelectAccountCommand}"
+                    SelectionChangedCommandParameter="{Binding SelectedItem}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,6" Padding="3" BackgroundColor="AliceBlue" StrokeShape="RoundRectangle 24">
+                                <Grid Padding="12"  BackgroundColor="AliceBlue" ColumnDefinitions="*, Auto">
+
+                                    <Label Grid.Column="0" Text="{Binding Month}" FontSize="18" FontAttributes="Bold" />
+                                    <Label Grid.Column="1" 
+                                           Text="{Binding Balance, StringFormat='{0:N2} €'}" FontSize="14" TextColor="DarkGreen"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="Center" />
+                                </Grid>
+
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+
+            <!-- Bouton flottant -->
+            <ImageButton
+                HorizontalOptions="End"
+                Margin="20"
+                Source="plus.png"
+                HeightRequest="56"
+                WidthRequest="56"
+                Visual="Material"
+                BackgroundColor="Transparent"
+                Command="{Binding AddCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -4,19 +4,33 @@ using SQLite;
 
 namespace Repository.Dbo
 {
+    /// <summary>
+    /// Gestion de la base de données SQLite
+    /// </summary>
     public abstract class BaseDbo:IDisposable
     {
+        /// <summary>
+        /// Nom de la base de données SQLite
+        /// </summary>
         public const string DatabaseName = "SQUARE.sqlite";
 
+        /// <summary>
+        /// Lock pour les accès à la base de données
+        /// </summary>
         protected static readonly object dbLock = new object();
 
- 
+        /// <summary>
+        /// Instance de la connexion à la base de données SQLite
+        /// </summary>
         private SQLiteConnection? _db = null;
 
         public BaseDbo()
         {
         }
 
+        /// <summary>
+        /// Instance de la connexion à la base de données SQLite
+        /// </summary>
         public SQLiteConnection Db
         {
             get
@@ -52,6 +66,7 @@ namespace Repository.Dbo
             Db.BusyTimeout = TimeSpan.FromSeconds(busyTimeout);
             //DropTable<SolutionEntity>();
             CreateTable<AccountEntity>();
+            CreateTable<AccountBalanceEntity>();
         }
 
         /// <summary>
@@ -76,6 +91,9 @@ namespace Repository.Dbo
             Disposed = true;
         }
 
+        /// <summary>
+        /// Fermeture de la connexion à la base de données SQLite
+        /// </summary>
         public void Close()
         {
             if (_db != null)
@@ -85,16 +103,25 @@ namespace Repository.Dbo
             }
         }
 
+        /// <summary>
+        /// Mise à jour d'une entité dans la base de données SQLite
+        /// </summary>
         public void Update(BaseEntity entity)
         {
             Db.InsertOrReplace(entity);
         }
 
+        /// <summary>
+        /// Ajout d'une entité dans la base de données SQLite
+        /// </summary>
         public void Add(BaseEntity entity)
         {
             Db.Insert(entity);
         }
 
+        /// <summary>
+        /// Mise à jour d'une entité dans la base de données SQLite
+        /// </summary>
         public void Save(IEnumerable<BaseEntity> entities)
         {
             lock (dbLock)
@@ -109,11 +136,17 @@ namespace Repository.Dbo
             }
         }
 
+        /// <summary>
+        /// Suppression d'une entité dans la base de données SQLite
+        /// </summary>
         public void Remove(params BaseEntity[] entities)
         {
             Remove((IEnumerable<BaseEntity>)entities);
         }
 
+        /// <summary>
+        /// Suppression de plusierus entités dans la base de données SQLite
+        /// </summary>
         public void Remove(IEnumerable<BaseEntity> entities)
         {
             lock (dbLock)
@@ -128,6 +161,9 @@ namespace Repository.Dbo
             }
         }
 
+        /// <summary>
+        /// Ajout d'une colonne dans une table de la base de données SQLite
+        /// </summary>
         public int AddColumn(string tableName, string columnName, string type, string lenght)
         {
             lock (dbLock)
@@ -144,6 +180,9 @@ namespace Repository.Dbo
             }
         }
 
+        /// <summary>
+        /// Ajout d'une colonne dans une table de la base de données SQLite
+        /// </summary>
         public int AddColumn(string tableName, string columnName, string type)
         {
             lock (dbLock)
@@ -160,6 +199,9 @@ namespace Repository.Dbo
             }
         }
 
+        /// <summary>
+        /// Execution dans une table de la base de données SQLite
+        /// </summary>
         public T ExecuteScalar<T>(string query, params object[] args)
         {
             lock (Db)

@@ -40,7 +40,7 @@ namespace Business
         public static BankAccount? GetByAccountNo(int accountNo)
         {
             var item = DatabaseAccess.Instance.GetBankAccount(accountNo);
-             return item == null ? null : new BankAccount(item);
+            return item == null ? null : new BankAccount(item);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Business
             {
                 throw new ArgumentException("Label is required", nameof(label));
             }
-            if (accountNo<2)
+            if (accountNo < 2)
             {
                 throw new ArgumentException("AccountNo is required", nameof(accountNo));
             }
@@ -72,7 +72,6 @@ namespace Business
             }
             return bankAccount;
         }
-
 
         /// <summary>
         /// Référence vers l'entité de la base de données
@@ -94,6 +93,23 @@ namespace Business
         /// </summary>
         public double Balance => 999.99;
 
+        /// <summary>
+        /// Chargement des balances du compte bancaire
+        /// </summary>
+        private List<BankAccountBalance> Balances
+        {
+            get 
+            {
+                if (_balances == null)
+                {
+                    _balances = GetBalances().ToList();
+                }
+                return _balances;
+
+            }
+        }
+        private List<BankAccountBalance>? _balances;
+
         public BankAccount(AccountEntity item)
         {
             Item = item;
@@ -109,6 +125,31 @@ namespace Business
             Item.StartOn = dtStart;
             Item.EndOn = dtEnd;
             DatabaseAccess.Instance.Update(Item);
+        }
+
+        /// <summary>
+        /// Chargement des balances du compte bancaire
+        /// </summary>
+        public IEnumerable<BankAccountBalance> GetBalances()
+        {
+            return DatabaseAccess.Instance.GetMonthlyBalances(AccountNo).Select(i => new BankAccountBalance(i)).ToList();
+        }
+
+        /// <summary>
+        /// Ajout d'une balance du compte bancaire
+        /// </summary>
+        public BankAccountBalance AddBalance(DateTime effectiveOn, double balance)
+        {
+            var item = Balances.FirstOrDefault(_=>_.EffectiveOn == effectiveOn);
+            if (item == null)
+            {
+                item = BankAccountBalance.Create(AccountNo, effectiveOn, balance);
+            }
+            else
+            {
+                item.Save(effectiveOn,  balance);
+            }
+            return item;
         }
     }
 }

@@ -5,9 +5,9 @@ using System.Windows.Input;
 namespace Main.ViewModels
 {
     /// <summary>
-    /// Gestion des comptes bancaires
+    /// Gestion des balances des comptes bancaires
     /// </summary>
-    public class NewBankAcccountViewModel : BaseViewModel, INotifyPropertyChanged
+    public class NewMonthlyBalanceBankAccountViewModel : BaseViewModel, INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
 
@@ -24,12 +24,17 @@ namespace Main.ViewModels
         #endregion
 
         /// <summary>
-        /// Libellé du compte
+        /// Compte bancaire concernée
+        /// </summary>
+        public BankAccount? BankAccount { get; set; }
+
+        /// <summary>
+        /// Affichage du libellé du compte
         /// </summary>
         public string Label
         {
             get => _label;
-            set 
+            set
             {
                 if (_label != value)
                 {
@@ -41,7 +46,7 @@ namespace Main.ViewModels
         private string _label = "";
 
         /// <summary>
-        /// Référence bancaire
+        /// Afffichage du numéro de compte 
         /// </summary>
         public int AccountNo
         {
@@ -58,38 +63,39 @@ namespace Main.ViewModels
         private int _accountNo;
 
         /// <summary>
-        /// Date de début validation du compte
+        /// Date de la lastbalance mensuelle
         /// </summary>
-        public DateTime StartDate
+        public DateTime EffectiveOn
         {
-            get => _startDate;
+            get => _effectiveOn;
             set
             {
-                if (_startDate != value)
+                if (_effectiveOn != value)
                 {
-                    NotifyPropertyChanged(nameof(StartDate));
-                    _startDate = value;
+                    _effectiveOn = value;
+                    NotifyPropertyChanged(nameof(EffectiveOn));
                 }
             }
         }
-        private DateTime _startDate = DateTime.Today;
+        private DateTime _effectiveOn = DateTime.Today;
 
         /// <summary>
-        /// Date de fin validation du compte
+        /// Balance mensuelle du compte
         /// </summary>
-        public DateTime EndDate
+        public double Balance
         {
-            get => _endDate;
+            get => _balance;
             set
             {
-                if (_endDate != value)
+                if (_balance != value)
                 {
-                    NotifyPropertyChanged(nameof(EndDate));
-                    _endDate = value;
+                    _balance = value;
+                    NotifyPropertyChanged(nameof(Balance));
                 }
             }
         }
-        private DateTime _endDate = DateTime.Today;
+        private double _balance;
+
 
         /// <summary>
         /// Sauvegarde des données
@@ -98,10 +104,10 @@ namespace Main.ViewModels
         {
             try
             {
-                BankAccount.Update(Label.Trim(), AccountNo, StartDate, EndDate);
+                if (BankAccount!=null) BankAccount.AddBalance(EffectiveOn, Balance);
                 await Shell.Current.GoToAsync(".."); // Retour à la page précédente
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // Préférer l'utilisation de la fenêtre courante (Windows[0].Page) plutôt que Application.Current.MainPage (obsolète).
                 var app = Application.Current;
@@ -126,9 +132,29 @@ namespace Main.ViewModels
             }
         });
 
+        /// <summary>
+        /// Sauvegarde des données
+        /// </summary>
         private async void OnValidateClicked(object sender, EventArgs e)
         {
         }
 
+        /// <summary>
+        /// Information du compte bancaire à afficher
+        /// </summary>
+        public void Set(int accountId)
+        {
+            BankAccount = BankAccount.GetByAccountNo(accountId);
+            if (BankAccount != null)
+            {
+                var lastbalance = BankAccount.GetBalances().OrderBy(_ => _.EffectiveOn).Last();
+                var dt = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                Label = BankAccount.Label;
+                AccountNo = BankAccount.AccountNo;
+                EffectiveOn = DateTime.Today.Day > 15 ? dt.AddMonths(1) : dt;
+                Balance = lastbalance == null ? 0 : lastbalance.Balance;
+            }
+
+        }
     }
 }
