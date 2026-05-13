@@ -3,8 +3,8 @@ using System.ComponentModel;
 
 namespace Repository.Entities 
 {
-    [Table("ACCOUNT")]
-    public partial class AccountEntity : BaseEntity, INotifyPropertyChanged
+    [Table("ACCOUNT_BALANCE")]
+    public partial class AccountBalanceEntity : BaseEntity, INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
 
@@ -41,21 +41,6 @@ namespace Repository.Entities
         private int _Id;
 
         [Indexed]
-        [Column("Label")]
-        public string Label
-        {
-            get { return _label; }
-            set
-            {
-                if (_label != value)
-                {
-                    _label = value;
-                    NotifyPropertyChanged(nameof(Label));
-                }
-            }
-        }
-        private string _label = "";
-
         [Column("AccountNo")]
         public int AccountNo
         {
@@ -71,36 +56,36 @@ namespace Repository.Entities
         }
         private int _accountNo;
 
-        [Column("StartOn")]
-        public DateTime StartOn
+
+        [Column("EffectiveOn")]
+        public DateTime EffectiveOn
         {
-            get { return _startOn; }
+            get { return _effectiveOn; }
             set
             {
-                if (_startOn != value)
+                if (_effectiveOn != value)
                 {
-                    _startOn = value;
-                    NotifyPropertyChanged(nameof(StartOn));
+                    _effectiveOn = value;
+                    NotifyPropertyChanged(nameof(EffectiveOn));
                 }
             }
         }
-        private DateTime _startOn;
+        private DateTime _effectiveOn;
 
-        [Column("EndOn")]
-        public DateTime EndOn
+        [Column("Balance")]
+        public double Balance
         {
-            get { return _endOn; }
+            get { return _balance; }
             set
             {
-                if (_endOn != value)
+                if (_balance != value)
                 {
-                    _endOn = value;
-                    NotifyPropertyChanged(nameof(EndOn));
+                    _balance = value;
+                    NotifyPropertyChanged(nameof(Balance));
                 }
             }
         }
-        private DateTime _endOn;
-
+        private double _balance;
 
         [Column("DateMaj")]
         public DateTime DateMaj

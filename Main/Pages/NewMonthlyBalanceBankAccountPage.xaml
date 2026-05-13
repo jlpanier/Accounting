@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Main.Pages.NewMonthlyBalanceBankAccountPage"
+             xmlns:converter="clr-namespace:Main.Converter"
+             Title="Balance mensuelle">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:DoubleConverter x:Key="DoubleConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid Padding="20">
+
+        <Border
+            x:Name="Card"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 16"
+            Padding="20"
+            Shadow="10,10,20,0,Black"
+            Opacity="0"
+            TranslationY="40">
+
+            <VerticalStackLayout Spacing="22">
+
+                <Label Grid.Column="0" Text="{Binding Label}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <Label Grid.Column="0" Text="{Binding AccountNo}" FontSize="16" HorizontalOptions="Center"/>
+
+
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*" ColumnSpacing="12">
+
+                    <Image 
+                        Grid.Column="0"
+                        Source="ic_date.png"
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        VerticalOptions="Center" />
+
+                    <DatePicker Grid.Column="1" Date="{Binding EffectiveOn}" />
+
+                    <Image 
+                       Grid.Column="2"
+                       Source="euro.jpg"
+                       WidthRequest="24"
+                       HeightRequest="24"
+                       VerticalOptions="Center" />
+
+                    <Entry 
+                       Grid.Column="3"
+                       Placeholder="Balance"
+                       Text="{Binding Balance, Converter={StaticResource DoubleConverter}}"
+                       Keyboard="Numeric"
+                       VerticalOptions="Center" />
+
+                </Grid>
+
+                
+                <!-- Bouton Valider -->
+                <Button Text="Valider"
+                        BackgroundColor="#007AFF"
+                        TextColor="White"
+                        CornerRadius="8"
+                        HeightRequest="48"
+                        Command="{Binding SaveCommand}">
+                    <!--Clicked="OnValidateClicked"-->
+
+                </Button>
+
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>
