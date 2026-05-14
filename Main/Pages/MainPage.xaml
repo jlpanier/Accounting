@@ -18,8 +18,9 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="local:BankAccountViewModel">
+                        <SwipeView>
 
-                        <Grid Padding="0,5">
+                            <Grid Padding="0,5">
                             <Border Margin="0,6" Padding="3" BackgroundColor="#E8F2FF" StrokeShape="RoundRectangle 24" >
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer 
@@ -48,6 +49,29 @@
                                 </Grid>
                             </Border>
                         </Grid>
+                            <!-- Actions quand on swipe à gauche -->
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem 
+                                       Text="Suppression"
+                                       BackgroundColor="Red"
+                                       IconImageSource="poubelle.png"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainViewModel}}, Path=DeleteCommand}"
+                                       CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <!-- Actions quand on swipe à droite -->
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Modifier"
+                                       BackgroundColor="Blue"
+                                       IconImageSource="crayon.png"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainViewModel}}, Path=EditCommand}"
+                                       CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 

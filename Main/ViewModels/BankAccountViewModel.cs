@@ -1,5 +1,7 @@
-﻿using Business;
+﻿using Android.Accounts;
+using Business;
 using System.ComponentModel;
+using System.Security.Principal;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -80,23 +82,38 @@ namespace Main.ViewModels
         public double _balance;
 
         /// <summary>
+        /// Balance du compte
+        /// </summary>
+        public BankAccount BankAccount
+        {
+            get => _bankAccount;
+            set
+            {
+                if (_bankAccount != value)
+                {
+                    _bankAccount = value;
+                    Label = _bankAccount.Label;
+                    AccountNo = _bankAccount.AccountNo;
+                    Balance = _bankAccount.Balance;
+                    NotifyPropertyChanged(nameof(BankAccount));
+                }
+            }
+        }
+        public BankAccount _bankAccount = BankAccount.Empty();
+
+        /// <summary>
         /// Couleur du texte de la balance : vert si positif, rouge si négatif
         /// </summary>
         public Color BalanceColor => Balance >= 0 ? Colors.DarkGreen : Colors.DarkRed;
 
         public BankAccountViewModel()
         {
-            Label = string.Empty;
-            AccountNo = 0;
-            Balance = 0;
             SelectAccountCommand = new Command<BankAccountViewModel>(OnAccountSelected);
         }
 
         public BankAccountViewModel(BankAccount account)
         {
-            Label = account.Label;
-            AccountNo = account.AccountNo;
-            Balance = account.Balance;
+            BankAccount = account;
             SelectAccountCommand = new Command<BankAccountViewModel>(OnAccountSelected);
         }
 
@@ -110,6 +127,18 @@ namespace Main.ViewModels
             {
                 { "accountId", account.AccountNo }
             });
+        }
+
+        /// <summary>
+        /// Suppression du compte bancaire
+        /// </summary>
+        public void Delete()
+        {
+            var item = BankAccount.GetByAccountNo(AccountNo);
+            if (item != null)
+            {
+                item.Delete();
+            }
         }
     }
 }
