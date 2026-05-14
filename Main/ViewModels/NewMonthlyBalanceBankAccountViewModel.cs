@@ -24,11 +24,6 @@ namespace Main.ViewModels
         #endregion
 
         /// <summary>
-        /// Compte bancaire concernée
-        /// </summary>
-        public BankAccount? BankAccount { get; set; }
-
-        /// <summary>
         /// Affichage du libellé du compte
         /// </summary>
         public string Label
@@ -104,7 +99,8 @@ namespace Main.ViewModels
         {
             try
             {
-                if (BankAccount!=null) BankAccount.AddBalance(EffectiveOn, Balance);
+                var bankAccount = BankAccount.GetByAccountNo(AccountNo);
+                if (bankAccount!=null) bankAccount.AddBalance(EffectiveOn, Balance);
                 await Shell.Current.GoToAsync(".."); // Retour à la page précédente
             }
             catch (Exception ex)
@@ -144,17 +140,27 @@ namespace Main.ViewModels
         /// </summary>
         public void Set(int accountId)
         {
-            BankAccount = BankAccount.GetByAccountNo(accountId);
-            if (BankAccount != null)
+            var bankAccount = BankAccount.GetByAccountNo(accountId);
+            if (bankAccount != null)
             {
-                var lastbalance = BankAccount.GetBalances().OrderBy(_ => _.EffectiveOn).Last();
+                var lastbalance = bankAccount.GetBalances().OrderBy(_ => _.EffectiveOn).LastOrDefault();
                 var dt = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                Label = BankAccount.Label;
-                AccountNo = BankAccount.AccountNo;
+                Label = bankAccount.Label;
+                AccountNo = bankAccount.AccountNo;
                 EffectiveOn = DateTime.Today.Day > 15 ? dt.AddMonths(1) : dt;
                 Balance = lastbalance == null ? 0 : lastbalance.Balance;
             }
 
+        }
+
+        /// <summary>
+        /// Initialisation des données
+        /// </summary>
+        public void Init(BankAccountBalance item)
+        {   
+            Set(item.AccountNo);
+            EffectiveOn = item.EffectiveOn;
+            Balance = item.Balance;
         }
     }
 }

@@ -2,9 +2,36 @@ using Main.ViewModels;
 
 namespace Main.Pages;
 
-[QueryProperty(nameof(AccountId), "accountId")]
-public partial class NewMonthlyBalanceBankAccountPage : ContentPage
+/// <summary>
+/// Gestion des balances mensuelles d'un compte bancaire en paramètre pour pré-remplir les champs de la page
+/// </summary>
+public partial class NewMonthlyBalanceBankAccountPage : ContentPage, IQueryAttributable
 {
+    /// <summary>
+    /// Appel avec un compte bancaire en paramètre pour pré-remplir les champs de la page
+    /// </summary>
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (BindingContext is NewMonthlyBalanceBankAccountViewModel vm)
+        {
+            if (query.TryGetValue("item", out var obj) && obj is Business.BankAccountBalance item)
+            {
+                vm.Init(item);
+            }
+            else if (query.TryGetValue("accountId", out var accountobj))
+            {
+                if (accountobj is string accountno)
+                {
+                    if (int.TryParse(accountno, out var accountn))
+                    {
+                        vm.Set(accountn);
+                    }
+                }
+            }
+        }
+
+    }
+
     /// <summary>
     /// Numero du compte
     /// </summary>

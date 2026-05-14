@@ -27,6 +27,16 @@ namespace Main.ViewModels
         #region Bindings
 
         /// <summary>
+        /// Evenement de suppression d'un compte bancaire
+        /// </summary>
+        public ICommand DeleteCommand { get; }
+
+        /// <summary>
+        /// Evenement d'édition d'un compte bancaire
+        /// </summary>
+        public ICommand EditCommand { get; }
+
+        /// <summary>
         /// Ajout d'un compte
         /// </summary>
         public ICommand AddCommand { get; }
@@ -103,6 +113,8 @@ namespace Main.ViewModels
         public MonthlyBalancesViewModel()
         {
             AddCommand = new Command(OnClickAdd);
+            DeleteCommand = new Command<MonthlyBalanceViewModel>(OnBalanceDeleted);
+            EditCommand = new Command<MonthlyBalanceViewModel>(OnBalanceEdited);
             MonthlyBalances = new ObservableCollection<MonthlyBalanceViewModel>();
         }
 
@@ -114,6 +126,27 @@ namespace Main.ViewModels
             await Shell.Current.GoToAsync(nameof(NewMonthlyBalanceBankAccountPage), new Dictionary<string, object>
             {
                 { "accountId", AccountNo }
+            });
+            Load();
+        }
+
+        /// <summary>
+        /// Suppression du compte bancaire
+        /// </summary>
+        public void OnBalanceDeleted(MonthlyBalanceViewModel vm)
+        {
+            vm.Delete();
+            Load();
+        }
+
+        /// <summary>
+        /// Modification du compte bancaire
+        /// </summary>
+        public async void OnBalanceEdited(MonthlyBalanceViewModel vm)
+        {
+            await Shell.Current.GoToAsync($"{nameof(NewMonthlyBalanceBankAccountPage)}", new Dictionary<string, object>
+            {
+                ["item"] = vm.Item
             });
             Load();
         }

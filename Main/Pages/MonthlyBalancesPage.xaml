@@ -22,22 +22,43 @@
                         Radius="6"
                         Opacity="0.25" />
                 </Border.Shadow>
-                <CollectionView ItemsSource="{Binding MonthlyBalances}"  SelectionMode="Single"
-                    SelectionChangedCommand="{Binding SelectAccountCommand}"
-                    SelectionChangedCommandParameter="{Binding SelectedItem}">
+                <CollectionView ItemsSource="{Binding MonthlyBalances}"  SelectionMode="Single">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="0,6" Padding="3" BackgroundColor="AliceBlue" StrokeShape="RoundRectangle 24">
-                                <Grid Padding="12"  BackgroundColor="AliceBlue" ColumnDefinitions="*, Auto">
+                            <SwipeView>
+                                <Border Margin="0,6" Padding="3" BackgroundColor="AliceBlue" StrokeShape="RoundRectangle 24">
+                                    <Grid Padding="12"  BackgroundColor="AliceBlue" ColumnDefinitions="*, Auto">
 
-                                    <Label Grid.Column="0" Text="{Binding Month}" FontSize="18" FontAttributes="Bold" />
-                                    <Label Grid.Column="1" 
-                                           Text="{Binding Balance, StringFormat='{0:N2} €'}" FontSize="14" TextColor="DarkGreen"
-                                           HorizontalTextAlignment="End"
-                                           VerticalTextAlignment="Center" />
-                                </Grid>
+                                        <Label Grid.Column="0" Text="{Binding Month}" FontSize="18" FontAttributes="Bold" />
+                                        <Label Grid.Column="1" 
+                                               Text="{Binding Balance, StringFormat='{0:N2} €'}" FontSize="14" TextColor="DarkGreen"
+                                               HorizontalTextAlignment="End"
+                                               VerticalTextAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                                <!-- Actions quand on swipe à gauche -->
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItem 
+                                       Text="Suppression"
+                                       BackgroundColor="Red"
+                                       IconImageSource="poubelle.png"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type local:MonthlyBalancesViewModel}}, Path=DeleteCommand}"
+                                       CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
 
-                            </Border>
+                                <!-- Actions quand on swipe à droite -->
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Modifier"
+                                       BackgroundColor="Blue"
+                                       IconImageSource="crayon.png"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type local:MonthlyBalancesViewModel}}, Path=EditCommand}"
+                                       CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                            </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

@@ -60,5 +60,13 @@ namespace Business
             Item.DateMaj = DateTime.Now;
             DatabaseAccess.Instance.Update(Item);
         }
+
+        /// <summary>
+        /// Suppression de la balance mensuelle du compte
+        /// </summary>
+        public void Delete()
+        {
+            DatabaseAccess.Instance.Remove(Item);
+        }
     }
 }

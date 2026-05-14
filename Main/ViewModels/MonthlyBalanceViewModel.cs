@@ -31,5 +31,13 @@ namespace Main.ViewModels
         {
             Item = item;
         }
+
+        /// <summary>
+        /// Suppression de la balance mensuelle du compte
+        /// </summary>
+        public void Delete()
+        {
+            Item.Delete();
+        }
     }
 }
