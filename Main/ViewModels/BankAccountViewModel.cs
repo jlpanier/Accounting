@@ -1,7 +1,5 @@
-﻿using Android.Accounts;
-using Business;
+﻿using Business;
 using System.ComponentModel;
-using System.Security.Principal;
 using System.Windows.Input;
 
 namespace Main.ViewModels

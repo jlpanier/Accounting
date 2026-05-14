@@ -26,12 +26,12 @@ namespace Main.ViewModels
         #endregion
 
         /// <summary>
-        /// Evenement de sélection d'un compte
+        /// Evenement de suppression d'un compte bancaire
         /// </summary>
         public ICommand DeleteCommand { get; }
 
         /// <summary>
-        /// Evenement de sélection d'un compte
+        /// Evenement d'édition d'un compte bancaire
         /// </summary>
         public ICommand EditCommand { get; }
 

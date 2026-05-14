@@ -9,8 +9,25 @@ namespace Main.Converter
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (double.TryParse(value?.ToString(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var result))
-                return result;
+            if (value == null)
+            {
+                return 0m;
+            }
+            else
+            {
+                var numerostr = value.ToString();
+                if (string.IsNullOrWhiteSpace(numerostr))
+                {
+                    return 0m;
+                }
+                else
+                {
+                    if (double.TryParse(numerostr.Replace(",", "."), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var result))
+                        return result;
+                }
+
+            }
+
 
             return 0m;
         }
