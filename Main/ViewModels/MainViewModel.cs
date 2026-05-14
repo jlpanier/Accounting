@@ -28,7 +28,12 @@ namespace Main.ViewModels
         /// <summary>
         /// Evenement de sélection d'un compte
         /// </summary>
-        public ICommand SelectAccountCommand { get; }
+        public ICommand DeleteCommand { get; }
+
+        /// <summary>
+        /// Evenement de sélection d'un compte
+        /// </summary>
+        public ICommand EditCommand { get; }
 
         /// <summary>
         /// Liste des comptes
@@ -56,7 +61,8 @@ namespace Main.ViewModels
         {
             Accounts = new ObservableCollection<BankAccountViewModel>();
             AddCommand = new Command(OnClickAdd);
-            SelectAccountCommand = new Command<BankAccountViewModel>(OnAccountSelected);
+            DeleteCommand = new Command<BankAccountViewModel>(OnAccountDeleted);
+            EditCommand = new Command<BankAccountViewModel>(OnAccountEdited);
         }
 
         /// <summary>
@@ -65,6 +71,27 @@ namespace Main.ViewModels
         public async void OnClickAdd()
         {
             await Shell.Current.GoToAsync(nameof(NewBankAccountPage));
+            Load();
+        }
+
+        /// <summary>
+        /// Suppression du compte bancaire
+        /// </summary>
+        public void OnAccountDeleted(BankAccountViewModel vm)
+        {
+            vm.Delete();
+            Load();
+        }
+
+        /// <summary>
+        /// Modification du compte bancaire
+        /// </summary>
+        public async void OnAccountEdited(BankAccountViewModel vm)
+        {
+            await Shell.Current.GoToAsync($"{nameof(NewBankAccountPage)}", new Dictionary<string, object>
+            {
+                ["item"] = vm.BankAccount
+            }); 
             Load();
         }
 

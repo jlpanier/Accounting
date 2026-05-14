@@ -1,3 +1,4 @@
+using ExCSS;
 using Main.ViewModels;
 
 namespace Main.Pages;
@@ -5,8 +6,19 @@ namespace Main.Pages;
 /// <summary>
 /// Gestion de la page d'ajout d'un compte bancaire
 /// </summary>
-public partial class NewBankAccountPage : ContentPage
+public partial class NewBankAccountPage : ContentPage, IQueryAttributable
 {
+    /// <summary>
+    /// Appel avec un compte bancaire en paramètre pour pré-remplir les champs de la page
+    /// </summary>
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query.TryGetValue("item", out var obj) && obj is Business.BankAccount item && BindingContext is NewBankAcccountViewModel vm)
+        {
+            vm.Init(item);
+        }
+    }
+
     /// <summary>
     /// Gestion de la page d'ajout d'un compte bancaire
     /// </summary>

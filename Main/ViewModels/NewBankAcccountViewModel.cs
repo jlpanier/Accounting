@@ -92,6 +92,17 @@ namespace Main.ViewModels
         private DateTime _endDate = DateTime.Today;
 
         /// <summary>
+        /// Initialisation des données
+        /// </summary>
+        public void Init(BankAccount item)
+        {
+            Label = item.Label;
+            AccountNo = item.AccountNo;
+            StartDate = item.StartOn;
+            EndDate = item.EndOn;
+        }
+
+        /// <summary>
         /// Sauvegarde des données
         /// </summary>
         public ICommand SaveCommand => new Command(async () =>
@@ -125,10 +136,5 @@ namespace Main.ViewModels
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         });
-
-        private async void OnValidateClicked(object sender, EventArgs e)
-        {
-        }
-
     }
 }

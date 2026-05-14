@@ -35,6 +35,11 @@ namespace Business
         }
 
         /// <summary>
+        /// Création d'un compte bancaire vide
+        /// </summary>
+        public static BankAccount Empty() => new BankAccount();
+
+        /// <summary>
         /// Obtenir un compte bancaire par son numéro de compte
         /// </summary>
         public static BankAccount? GetByAccountNo(int accountNo)
@@ -89,6 +94,16 @@ namespace Business
         public int AccountNo => Item.AccountNo;
 
         /// <summary>
+        /// Date d'ouverture du compte bancaire
+        /// </summary>
+        public DateTime StartOn => Item.StartOn;
+
+        /// <summary>
+        /// Date de fermeture du compte bancaire
+        /// </summary>
+        public DateTime EndOn => Item.EndOn;
+
+        /// <summary>
         /// Balance du compte
         /// </summary>
         public double Balance => 999.99;
@@ -110,9 +125,21 @@ namespace Business
         }
         private List<BankAccountBalance>? _balances;
 
-        public BankAccount(AccountEntity item)
+        private BankAccount(AccountEntity item)
         {
             Item = item;
+        }
+
+        private BankAccount()
+        {
+            Item = new AccountEntity()
+            {
+                AccountNo=0,
+                DateMaj=DateTime.Now,
+                EndOn=DateTime.Now.AddYears(100),
+                Label="None",
+                StartOn=DateTime.Now,
+            };
         }
 
         /// <summary>
@@ -150,6 +177,14 @@ namespace Business
                 item.Save(effectiveOn,  balance);
             }
             return item;
+        }
+
+        /// <summary>
+        /// Suppression du compte bancaire
+        /// </summary>
+        public void Delete()
+        {
+            DatabaseAccess.Instance.Remove(Item);
         }
     }
 }
