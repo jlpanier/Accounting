@@ -1,5 +1,5 @@
-using ExCSS;
 using Main.ViewModels;
+using static Business.BankAccount;
 
 namespace Main.Pages;
 
@@ -13,9 +13,16 @@ public partial class NewBankAccountPage : ContentPage, IQueryAttributable
     /// </summary>
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue("item", out var obj) && obj is Business.BankAccount item && BindingContext is NewBankAcccountViewModel vm)
+        if (BindingContext is NewBankAcccountViewModel vm)
         {
-            vm.Init(item);
+            if (query.TryGetValue("item", out var objBankAccount) && objBankAccount is Business.BankAccount bankAccount)
+            {
+                vm.Init(bankAccount);
+            }
+            else if (query.TryGetValue("accounttype", out var objAccountType) && objAccountType is AccountType accountType)
+            {
+                vm.Init(accountType);
+            }
         }
     }
 
@@ -27,7 +34,7 @@ public partial class NewBankAccountPage : ContentPage, IQueryAttributable
 		InitializeComponent();
         BindingContext = new NewBankAcccountViewModel()
         {
-             AccountNo=0,
+             AccountNo="",
              EndDate=new DateTime(2099,12,31),
              Label="",
              StartDate=DateTime.Now.Date,

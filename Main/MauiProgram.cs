@@ -49,8 +49,9 @@ namespace Main
             builder.Services.AddSingleton<DatabaseAccess>();
             builder.Services.AddSingleton<BoolToOpacityConverter>();
             builder.Services.AddSingleton<BoolToFontAttributesConverter>();
-
-
+            builder.Services.AddSingleton<AccountTypeToTextConverter>();
+            builder.Services.AddSingleton<EqualsConverter>();
+            builder.Services.AddSingleton<AccountTypeToTextConverter>();
 
             return builder.Build();
         }

@@ -42,7 +42,7 @@ namespace Repository.Entities
 
         [Indexed]
         [Column("AccountNo")]
-        public int AccountNo
+        public string AccountNo
         {
             get { return _accountNo; }
             set
@@ -54,7 +54,7 @@ namespace Repository.Entities
                 }
             }
         }
-        private int _accountNo;
+        private string _accountNo="";
 
 
         [Column("EffectiveOn")]

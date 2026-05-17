@@ -12,7 +12,7 @@ namespace Repository.Dbo
         /// <summary>
         /// Nom de la base de données SQLite
         /// </summary>
-        public const string DatabaseName = "SQUARE.sqlite";
+        public const string DatabaseName = "ACCOUNTING.sqlite";
 
         /// <summary>
         /// Lock pour les accès à la base de données

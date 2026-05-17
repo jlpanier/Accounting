@@ -154,7 +154,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Chargement des balances du compte 
         /// </summary>
-        public async void Load(int accountno)
+        public async void Load(string accountno)
         {
             BankAccount = BankAccount.GetByAccountNo(accountno);
             Load();

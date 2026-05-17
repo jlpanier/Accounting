@@ -43,7 +43,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Afffichage du numéro de compte 
         /// </summary>
-        public int AccountNo
+        public string AccountNo
         {
             get => _accountNo;
             set
@@ -55,7 +55,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        private int _accountNo;
+        private string _accountNo = "";
 
         /// <summary>
         /// Date de la lastbalance mensuelle
@@ -138,7 +138,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Information du compte bancaire à afficher
         /// </summary>
-        public void Set(int accountId)
+        public void Set(string accountId)
         {
             var bankAccount = BankAccount.GetByAccountNo(accountId);
             if (bankAccount != null)
