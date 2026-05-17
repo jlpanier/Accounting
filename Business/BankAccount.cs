@@ -1,4 +1,5 @@
-﻿using Repository.Dbo;
+﻿using Common;
+using Repository.Dbo;
 using Repository.Entities;
 
 namespace Business
@@ -8,6 +9,21 @@ namespace Business
     /// </summary>
     public class BankAccount
     {
+        /// <summary>
+        /// Type de compte
+        /// </summary>
+        public enum AccountType 
+        {
+            [StringValue("Compte chèque")]
+            Cheque,
+            [StringValue("Compte épargne")]
+            Epargne,
+            [StringValue("Plan Epargne Action")]
+            PEA,
+            [StringValue("Assurance Vie")]
+            AssuranceVie
+        }
+
         /// <summary>
         /// Liste de tous les comptes bancaires
         /// </summary>
@@ -20,7 +36,7 @@ namespace Business
         /// <summary>
         /// Création d'un compte bancaire
         /// </summary>
-        public static BankAccount Create(string label, int accountNo, DateTime dtStart, DateTime dtEnd)
+        public static BankAccount Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd, AccountType accountType)
         {
             var item = new AccountEntity
             {
@@ -28,7 +44,8 @@ namespace Business
                 Label = label,
                 StartOn = dtStart,
                 EndOn = dtEnd,
-                DateMaj = DateTime.Now
+                DateMaj = DateTime.Now,
+                Type = (int)accountType
             };
             DatabaseAccess.Instance.Add(item);
             return new BankAccount(item);
@@ -42,7 +59,7 @@ namespace Business
         /// <summary>
         /// Obtenir un compte bancaire par son numéro de compte
         /// </summary>
-        public static BankAccount? GetByAccountNo(int accountNo)
+        public static BankAccount? GetByAccountNo(string accountNo)
         {
             var item = DatabaseAccess.Instance.GetBankAccount(accountNo);
             return item == null ? null : new BankAccount(item);
@@ -51,13 +68,13 @@ namespace Business
         /// <summary>
         /// Mise à jour d'un compte bancaire, si le compte n'existe pas, il est créé
         /// </summary>
-        public static BankAccount Update(string label, int accountNo, DateTime dtStart, DateTime dtEnd)
+        public static BankAccount Update(string label, string accountNo, DateTime dtStart, DateTime dtEnd, AccountType accountType)
         {
             if (string.IsNullOrEmpty(label))
             {
                 throw new ArgumentException("Label is required", nameof(label));
             }
-            if (accountNo < 2)
+            if (string.IsNullOrWhiteSpace(accountNo))
             {
                 throw new ArgumentException("AccountNo is required", nameof(accountNo));
             }
@@ -69,11 +86,11 @@ namespace Business
             var bankAccount = GetByAccountNo(accountNo);
             if (bankAccount != null)
             {
-                bankAccount.Save(label, dtStart, dtEnd);
+                bankAccount.Save(label, dtStart, dtEnd, accountType);
             }
             else
             {
-                bankAccount = BankAccount.Create(label, accountNo, dtStart, dtEnd);
+                bankAccount = BankAccount.Create(label, accountNo, dtStart, dtEnd, accountType);
             }
             return bankAccount;
         }
@@ -91,7 +108,7 @@ namespace Business
         /// <summary>
         /// No du compte bancaire
         /// </summary>
-        public int AccountNo => Item.AccountNo;
+        public string AccountNo => Item.AccountNo;
 
         /// <summary>
         /// Date d'ouverture du compte bancaire
@@ -107,6 +124,11 @@ namespace Business
         /// Balance du compte
         /// </summary>
         public double Balance => 999.99;
+
+        /// <summary>
+        /// Type de compte du compte
+        /// </summary>
+        public AccountType Type => (AccountType)Item.Type;
 
         /// <summary>
         /// Chargement des balances du compte bancaire
@@ -134,7 +156,7 @@ namespace Business
         {
             Item = new AccountEntity()
             {
-                AccountNo=0,
+                AccountNo="",
                 DateMaj=DateTime.Now,
                 EndOn=DateTime.Now.AddYears(100),
                 Label="None",
@@ -145,12 +167,13 @@ namespace Business
         /// <summary>
         /// Sauvegarde du compte bancaire
         /// </summary>
-        private void Save(string label, DateTime dtStart, DateTime dtEnd)
+        private void Save(string label, DateTime dtStart, DateTime dtEnd, AccountType accountType)
         {
             Item.DateMaj = DateTime.Now;
             Item.Label = label;
             Item.StartOn = dtStart;
             Item.EndOn = dtEnd;
+            Item.Type = (int)accountType;
             DatabaseAccess.Instance.Update(Item);
         }
 

@@ -15,6 +15,7 @@ namespace Main
             Routing.RegisterRoute(nameof(NewBankAccountPage), typeof(NewBankAccountPage));
             Routing.RegisterRoute(nameof(MonthlyBalancesPage), typeof(MonthlyBalancesPage));
             Routing.RegisterRoute(nameof(NewMonthlyBalanceBankAccountPage), typeof(NewMonthlyBalanceBankAccountPage));
+            Routing.RegisterRoute(nameof(SelectTypeAccountPage), typeof(SelectTypeAccountPage));
         }
 
         public static async Task DisplaySnackbarAsync(string message)

@@ -48,7 +48,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Numéro du compte
         /// </summary>
-        public int AccountNo
+        public string AccountNo
         {
             get => _accountno;
             set
@@ -60,7 +60,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public int _accountno;
+        public string _accountno = "";
 
         /// <summary>
         /// Balance du compte
@@ -78,6 +78,24 @@ namespace Main.ViewModels
             }
         }
         public double _balance;
+
+        /// <summary>
+        /// Vrai si compte bancaire
+        /// </summary>
+        public bool IsAccount
+        {
+            get => _isAccount;
+            set
+            {
+                if (_isAccount != value)
+                {
+                    _isAccount = value;
+                    NotifyPropertyChanged(nameof(IsAccount));
+                }
+            }
+        }
+        public bool _isAccount = true;
+
 
         /// <summary>
         /// Balance du compte

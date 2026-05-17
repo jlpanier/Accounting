@@ -57,7 +57,7 @@ namespace Repository.Entities
         private string _label = "";
 
         [Column("AccountNo")]
-        public int AccountNo
+        public string AccountNo
         {
             get { return _accountNo; }
             set
@@ -69,7 +69,22 @@ namespace Repository.Entities
                 }
             }
         }
-        private int _accountNo;
+        private string _accountNo = "";
+
+        [Column("Type")]
+        public int Type
+        {
+            get { return _type; }
+            set
+            {
+                if (_type != value)
+                {
+                    _type = value;
+                    NotifyPropertyChanged(nameof(Type));
+                }
+            }
+        }
+        private int _type;
 
         [Column("StartOn")]
         public DateTime StartOn

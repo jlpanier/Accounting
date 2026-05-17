@@ -38,7 +38,7 @@ namespace Repository.Dbo
         /// <summary>
         /// Compte bancaire lié 
         /// </summary>
-        public AccountEntity? GetBankAccount(int bankNo)
+        public AccountEntity? GetBankAccount(string bankNo)
         {
             lock (dbLock)
             {
@@ -60,7 +60,7 @@ namespace Repository.Dbo
         /// <summary>
         /// Balances mensuelles d'un compte bancaire
         /// </summary>
-        public IEnumerable<AccountBalanceEntity> GetMonthlyBalances(int accountNo)
+        public IEnumerable<AccountBalanceEntity> GetMonthlyBalances(string accountNo)
         {
             lock (dbLock)
             {

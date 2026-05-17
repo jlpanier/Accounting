@@ -9,7 +9,7 @@ public partial class MonthlyBalancesPage : ContentPage
     /// <summary>
     /// Numero du compte
     /// </summary>
-    public int AccountId { get; set; }
+    public string AccountId { get; set; } = "";
 
     public MonthlyBalancesPage()
 	{

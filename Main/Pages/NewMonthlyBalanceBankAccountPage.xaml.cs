@@ -22,10 +22,7 @@ public partial class NewMonthlyBalanceBankAccountPage : ContentPage, IQueryAttri
             {
                 if (accountobj is string accountno)
                 {
-                    if (int.TryParse(accountno, out var accountn))
-                    {
-                        vm.Set(accountn);
-                    }
+                    vm.Set(accountno);
                 }
             }
         }
@@ -35,7 +32,7 @@ public partial class NewMonthlyBalanceBankAccountPage : ContentPage, IQueryAttri
     /// <summary>
     /// Numero du compte
     /// </summary>
-    public int AccountId { get; set; }
+    public string AccountId { get; set; } = "";
     
     public NewMonthlyBalanceBankAccountPage()
 	{
