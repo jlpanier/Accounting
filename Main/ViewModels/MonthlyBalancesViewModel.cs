@@ -168,8 +168,7 @@ namespace Main.ViewModels
             System.Diagnostics.Debug.Assert(BankAccount != null);
 
             var results = new List<MonthlyBalanceViewModel>();
-            var balances = BankAccount.GetBalances();
-            foreach (var balance in balances)
+            foreach (var balance in BankAccount.Balances)
             {
                 results.Add(new MonthlyBalanceViewModel(balance));
             }

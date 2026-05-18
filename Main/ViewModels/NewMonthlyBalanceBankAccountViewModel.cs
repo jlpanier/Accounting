@@ -143,7 +143,7 @@ namespace Main.ViewModels
             var bankAccount = BankAccount.GetByAccountNo(accountId);
             if (bankAccount != null)
             {
-                var lastbalance = bankAccount.GetBalances().OrderBy(_ => _.EffectiveOn).LastOrDefault();
+                var lastbalance = bankAccount.Balances.OrderBy(_ => _.EffectiveOn).LastOrDefault();
                 var dt = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
                 Label = bankAccount.Label;
                 AccountNo = bankAccount.AccountNo;

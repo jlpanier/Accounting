@@ -27,11 +27,8 @@ namespace Business
         /// <summary>
         /// Liste de tous les comptes bancaires
         /// </summary>
-        public static List<BankAccount> GetAll()
-        {
-            var items = DatabaseAccess.Instance.GetBankAccounts();
-            return items.Select(i => new BankAccount(i)).ToList();
-        }
+        public static List<BankAccount> GetAll() => DatabaseAccess.Instance.GetBankAccounts().Select(i => new BankAccount(i)).ToList();
+
 
         /// <summary>
         /// Création d'un compte bancaire
@@ -82,7 +79,6 @@ namespace Business
             {
                 throw new ArgumentException("Date is required", nameof(dtStart));
             }
-
             var bankAccount = GetByAccountNo(accountNo);
             if (bankAccount != null)
             {
@@ -123,7 +119,21 @@ namespace Business
         /// <summary>
         /// Balance du compte
         /// </summary>
-        public double Balance => 999.99;
+        public double Balance
+        {
+            get
+            {
+                var result = 0.0;
+                if (Balances.Any()) 
+                {
+                    var balance = Balances.OrderBy(i=>i.EffectiveOn).LastOrDefault();
+                    if (balance != null) {
+                        result = balance.Balance;
+                    }
+                }
+                return result;
+            }
+        }
 
         /// <summary>
         /// Type de compte du compte
@@ -133,19 +143,23 @@ namespace Business
         /// <summary>
         /// Chargement des balances du compte bancaire
         /// </summary>
-        private List<BankAccountBalance> Balances
+        public IEnumerable<BankAccountBalance> Balances
         {
             get 
             {
                 if (_balances == null)
                 {
-                    _balances = GetBalances().ToList();
+                    _balances = DatabaseAccess.Instance.GetMonthlyBalances(AccountNo).Select(i => new BankAccountBalance(i));
                 }
                 return _balances;
 
             }
+            private set
+            {
+                _balances = value;
+            }
         }
-        private List<BankAccountBalance>? _balances;
+        private IEnumerable<BankAccountBalance>? _balances;
 
         private BankAccount(AccountEntity item)
         {
@@ -178,14 +192,6 @@ namespace Business
         }
 
         /// <summary>
-        /// Chargement des balances du compte bancaire
-        /// </summary>
-        public IEnumerable<BankAccountBalance> GetBalances()
-        {
-            return DatabaseAccess.Instance.GetMonthlyBalances(AccountNo).Select(i => new BankAccountBalance(i)).ToList();
-        }
-
-        /// <summary>
         /// Ajout d'une balance du compte bancaire
         /// </summary>
         public BankAccountBalance AddBalance(DateTime effectiveOn, double balance)
@@ -199,6 +205,7 @@ namespace Business
             {
                 item.Save(effectiveOn,  balance);
             }
+            Balances = DatabaseAccess.Instance.GetMonthlyBalances(AccountNo).Select(i => new BankAccountBalance(i));
             return item;
         }
 
