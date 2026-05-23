@@ -15,7 +15,7 @@
                 StrokeShape="RoundRectangle 16"
                 Padding="20"
                 Opacity="0"
-                TranslationY="00"
+                TranslationY="40"
                 >
 
                 <VerticalStackLayout Spacing="12" >
@@ -109,7 +109,33 @@
                                 Opacity="0.25" />   
                         </Button.Shadow>
                     </Button>
-                    
+
+                    <Grid Margin="0" ColumnDefinitions="Auto, Auto, Auto">
+
+                        <RadioButton
+                            Content="🟢 Disponible"
+                            Grid.Column="0"
+                            GroupName="AccountType"
+                            IsChecked="true"
+                            HorizontalOptions="Center"
+                            />
+                        <RadioButton
+                            Content="🟡 Retraite"
+                            Grid.Column="1"
+                            GroupName="AccountType"
+                            IsChecked="true"
+                            HorizontalOptions="Center"
+                            />
+                        <RadioButton
+                            Content="🔴 Bloquée"
+                            Grid.Column="2"
+                            GroupName="AccountType"
+                            IsChecked="true"
+                            HorizontalOptions="Center"
+                            />
+
+                    </Grid>
+
                     <Button 
                         Text="Valider"
                         BackgroundColor="#007AFF"

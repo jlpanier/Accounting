@@ -7,7 +7,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class BankAccountViewModel : INotifyPropertyChanged
+    public class BankAccountViewModel : INotifyPropertyChanged, IBaseAccountViewModel
     {
         #region INotifyPropertyChanged
 
@@ -98,7 +98,7 @@ namespace Main.ViewModels
 
 
         /// <summary>
-        /// Balance du compte
+        /// Compte
         /// </summary>
         public BankAccount BankAccount
         {

@@ -38,7 +38,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Liste des comptes
         /// </summary>
-        public ObservableCollection<BankAccountViewModel> Accounts
+        public ObservableCollection<IBaseAccountViewModel> Accounts
         {
             get => _accounts;
             set
@@ -50,7 +50,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public ObservableCollection<BankAccountViewModel> _accounts = new ObservableCollection<BankAccountViewModel>();
+        public ObservableCollection<IBaseAccountViewModel> _accounts = new ObservableCollection<IBaseAccountViewModel>();
 
         /// <summary>
         /// Ajout d'un compte
@@ -59,10 +59,10 @@ namespace Main.ViewModels
 
         public MainViewModel()
         {
-            Accounts = new ObservableCollection<BankAccountViewModel>();
+            Accounts = new ObservableCollection<IBaseAccountViewModel>();
             AddCommand = new Command(OnClickAdd);
-            DeleteCommand = new Command<BankAccountViewModel>(OnAccountDeleted);
-            EditCommand = new Command<BankAccountViewModel>(OnAccountEdited);
+            DeleteCommand = new Command<IBaseAccountViewModel>(OnAccountDeleted);
+            EditCommand = new Command<IBaseAccountViewModel>(OnAccountEdited);
         }
 
         /// <summary>
@@ -77,21 +77,24 @@ namespace Main.ViewModels
         /// <summary>
         /// Suppression du compte bancaire
         /// </summary>
-        public void OnAccountDeleted(BankAccountViewModel vm)
+        public void OnAccountDeleted(IBaseAccountViewModel viewmodel)
         {
-            vm.Delete();
+            if (viewmodel is BankAccountViewModel vm)  vm.Delete();
             Load();
         }
 
         /// <summary>
         /// Modification du compte bancaire
         /// </summary>
-        public async void OnAccountEdited(BankAccountViewModel vm)
+        public async void OnAccountEdited(IBaseAccountViewModel viewmodel)
         {
-            await Shell.Current.GoToAsync($"{nameof(NewBankAccountPage)}", new Dictionary<string, object>
+            if (viewmodel is BankAccountViewModel vm)
             {
-                ["item"] = vm.BankAccount
-            }); 
+                await Shell.Current.GoToAsync($"{nameof(NewBankAccountPage)}", new Dictionary<string, object>
+                {
+                    ["item"] = vm.BankAccount
+                });
+            }
             Load();
         }
 
@@ -100,13 +103,14 @@ namespace Main.ViewModels
         /// </summary>
         public async void Load()
         {
-            var results = new List<BankAccountViewModel>();
-            var accounts = BankAccount.GetAll();
-            foreach (var account in accounts)
+            var results = new List<IBaseAccountViewModel>();
+            var items = BankAccount.GetAll();
+            foreach (var item in items)
             {
-                results.Add(new BankAccountViewModel(account));
+                if (item is BankAccount account) results.Add(new BankAccountViewModel(account));
+                if (item is OverviewAccounts overview) results.Add(new OverviewViewModel(overview));
             }
-            Accounts = new ObservableCollection<BankAccountViewModel>(results);
+            Accounts = new ObservableCollection<IBaseAccountViewModel>(results);
         }
 
         /// <summary>

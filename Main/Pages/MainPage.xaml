@@ -3,87 +3,86 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewmodel="clr-namespace:Main.ViewModels"
+    xmlns:templates="clr-namespace:Main.Templates"
+    xmlns:selectors="clr-namespace:Main.Templates"
+    xmlns:customs="clr-namespace:Main.Customs"
     Title="Soldes mensuels">
 
-    <Grid>
-        <Border Margin="10" Padding="10" BackgroundColor="#F5F5F5" StrokeShape="RoundRectangle 12" StrokeThickness="0" >
-            <Border.Shadow>
-                <Shadow 
-                    Brush="#40000000"
-                    Offset="0,2"
-                    Radius="6"
-                    Opacity="0.25" />
-            </Border.Shadow>
-            <CollectionView ItemsSource="{Binding Accounts}" SelectionMode="Single">
+        <ContentPage.Resources>
 
-                <CollectionView.ItemTemplate>
+            <!-- ===================== -->
+            <!--   TEMPLATES PAR TYPE  -->
+            <!-- ===================== -->
+
+            <DataTemplate x:Key="BankTemplate">
+                <templates:BankAccountTemplate />
+            </DataTemplate>
+
+            <DataTemplate x:Key="SavingTemplate">
+                <templates:SavingAccountTemplate />
+            </DataTemplate>
+
+            <DataTemplate x:Key="OverviewTemplate">
+                <templates:OverviewTemplate />
+            </DataTemplate>
+
+
+            <!-- ===================== -->
+            <!--   TEMPLATE SELECTOR   -->
+            <!-- ===================== -->
+
+            <selectors:AccountTemplateSelector x:Key="AccountSelector"
+                                           BankTemplate="{StaticResource BankTemplate}"
+                                           OverviewTemplate="{StaticResource OverviewTemplate}"
+                                           SavingTemplate="{StaticResource SavingTemplate}"/>
+
+        </ContentPage.Resources>
+
+        <ContentPage.BindingContext>
+            <viewmodel:MainViewModel />
+        </ContentPage.BindingContext>
+
+        <!-- ===================== -->
+        <!--     CONTENU PAGE      -->
+        <!-- ===================== -->
+
+        <Grid>
+
+            <!-- Carte contenant la liste -->
+            <Border Margin="10"
+                Padding="10"
+                BackgroundColor="#F5F5F5"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="0">
+
+                <Border.Shadow>
+                    <Shadow Brush="#40000000"
+                        Offset="0,2"
+                        Radius="6"
+                        Opacity="0.25" />
+                </Border.Shadow>
+
+                <CollectionView 
                     ItemsSource="{Binding Accounts}"
-                        <SwipeView>
-                            <Grid Padding="0,5">
-                                <Border Margin="0,6" Padding="3" BackgroundColor="#E8F2FF" StrokeShape="RoundRectangle 24" >
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:BankAccountViewModel}}, Path=SelectAccountCommand}"
-                                            CommandParameter="{Binding}" />     
-                                    </Border.GestureRecognizers>
-                                    <Border.Shadow>
-                                        <Shadow Brush="#20000000"
-                                            Offset="0,3"
-                                            Radius="8"
-                                            Opacity="0.25" />
-                                    </Border.Shadow>
+                    ItemTemplate="{StaticResource AccountSelector}"
+                    SelectionMode="None" />
+            </Border>
 
 
-                                    <Grid Padding="12" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto" IsVisible="{Binding IsAccount}">
-                                        <Label Grid.Column="0" Text="{Binding Label}" FontSize="18" FontAttributes="Bold" />
-                                        <Label Grid.Column="0" Grid.Row="1" Text="{Binding AccountNo}" FontSize="14" />
-                                        <Label Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                                               Text="{Binding Balance, StringFormat='{0:N2} €'}"
-                                               FontSize="14" 
-                                               TextColor="{Binding BalanceColor}"
-                                               HorizontalTextAlignment="End"
-                                               VerticalTextAlignment="Center" />
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                            <!-- Actions quand on swipe à gauche -->
-                            <SwipeView.LeftItems>
-                                <SwipeItems>
-                                    <SwipeItem 
-                                       Text="Suppression"
-                                       BackgroundColor="Red"
-                                       IconImageSource="poubelle.png"
-                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteCommand}"
-                                       CommandParameter="{Binding .}" />
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
+            <!-- ===================== -->
+            <!--   BOUTON FLOTTANT     -->
+            <!-- ===================== -->
 
-                            <!-- Actions quand on swipe à droite -->
-                            <SwipeView.RightItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="Modifier"
-                                       BackgroundColor="Blue"
-                                       IconImageSource="crayon.png"
-                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=EditCommand}"
-                                       CommandParameter="{Binding .}" />
-                                </SwipeItems>
-                            </SwipeView.RightItems>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Border>
+            <ImageButton
+                VerticalOptions="End"
+                HorizontalOptions="End"
+                Margin="20"
+                Source="plus.png"
+                HeightRequest="56"
+                WidthRequest="56"
+                BackgroundColor="Transparent"
+                Command="{Binding AddCommand}" />
 
-        <!-- Bouton flottant -->
-        <ImageButton
-            VerticalOptions="End"
-            HorizontalOptions="End"
-            Margin="20"
-            Source="plus.png"
-            HeightRequest="56"
-            WidthRequest="56"
-            Visual="Material"
-            BackgroundColor="Transparent"
-            Command="{Binding AddCommand}" />
-    </Grid>
-</ContentPage>
+        </Grid>
+
+    </ContentPage>

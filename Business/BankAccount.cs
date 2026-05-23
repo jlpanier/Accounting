@@ -7,7 +7,7 @@ namespace Business
     /// <summary>
     /// Gestion des comptes bancaires
     /// </summary>
-    public class BankAccount
+    public class BankAccount: IBaseAccounts
     {
         /// <summary>
         /// Type de compte
@@ -17,7 +17,7 @@ namespace Business
             [StringValue("Compte chèque")]
             Cheque,
             [StringValue("Compte épargne")]
-            Epargne,
+            Saving,
             [StringValue("Plan Epargne Action")]
             PEA,
             [StringValue("Assurance Vie")]
@@ -25,9 +25,37 @@ namespace Business
         }
 
         /// <summary>
-        /// Liste de tous les comptes bancaires
+        /// Liste de tous les comptes bancaires et ajout d'un bilan
         /// </summary>
-        public static List<BankAccount> GetAll() => DatabaseAccess.Instance.GetBankAccounts().Select(i => new BankAccount(i)).ToList();
+        public static List<IBaseAccounts> GetAll() 
+        {
+            double disponible = 0.0;
+            double block = 0.0;
+            double retirement = 0.0;
+            var result = new List<IBaseAccounts>();
+            var items = DatabaseAccess.Instance.GetBankAccounts().Select(i => new BankAccount(i));
+            foreach (var item in items)
+            {
+                switch (item.Type)
+                {
+                    case AccountType.Cheque:
+                        disponible += item.Balance;
+                        break;
+                    case AccountType.Saving:
+                        disponible += item.Balance;
+                        break;
+                    case AccountType.PEA:
+                        block += item.Balance;
+                        break;
+                    case AccountType.AssuranceVie:
+                        retirement += item.Balance;
+                        break;
+                }
+                result.Add(item);
+            }
+            result.Add(new OverviewAccounts(disponible, block, retirement));
+            return result;        
+        } 
 
 
         /// <summary>
