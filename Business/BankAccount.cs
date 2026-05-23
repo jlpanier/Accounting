@@ -7,7 +7,7 @@ namespace Business
     /// <summary>
     /// Gestion des comptes bancaires
     /// </summary>
-    public class BankAccount
+    public class BankAccount: IBaseAccounts
     {
         /// <summary>
         /// Type de compte
@@ -17,7 +17,7 @@ namespace Business
             [StringValue("Compte chèque")]
             Cheque,
             [StringValue("Compte épargne")]
-            Epargne,
+            Saving,
             [StringValue("Plan Epargne Action")]
             PEA,
             [StringValue("Assurance Vie")]
@@ -25,13 +25,38 @@ namespace Business
         }
 
         /// <summary>
-        /// Liste de tous les comptes bancaires
+        /// Liste de tous les comptes bancaires et ajout d'un bilan
         /// </summary>
-        public static List<BankAccount> GetAll()
+        public static List<IBaseAccounts> GetAll() 
         {
-            var items = DatabaseAccess.Instance.GetBankAccounts();
-            return items.Select(i => new BankAccount(i)).ToList();
-        }
+            double disponible = 0.0;
+            double block = 0.0;
+            double retirement = 0.0;
+            var result = new List<IBaseAccounts>();
+            var items = DatabaseAccess.Instance.GetBankAccounts().Select(i => new BankAccount(i));
+            foreach (var item in items)
+            {
+                switch (item.Type)
+                {
+                    case AccountType.Cheque:
+                        disponible += item.Balance;
+                        break;
+                    case AccountType.Saving:
+                        disponible += item.Balance;
+                        break;
+                    case AccountType.PEA:
+                        block += item.Balance;
+                        break;
+                    case AccountType.AssuranceVie:
+                        retirement += item.Balance;
+                        break;
+                }
+                result.Add(item);
+            }
+            result.Add(new OverviewAccounts(disponible, block, retirement));
+            return result;        
+        } 
+
 
         /// <summary>
         /// Création d'un compte bancaire
@@ -82,7 +107,6 @@ namespace Business
             {
                 throw new ArgumentException("Date is required", nameof(dtStart));
             }
-
             var bankAccount = GetByAccountNo(accountNo);
             if (bankAccount != null)
             {
@@ -123,7 +147,21 @@ namespace Business
         /// <summary>
         /// Balance du compte
         /// </summary>
-        public double Balance => 999.99;
+        public double Balance
+        {
+            get
+            {
+                var result = 0.0;
+                if (Balances.Any()) 
+                {
+                    var balance = Balances.OrderBy(i=>i.EffectiveOn).LastOrDefault();
+                    if (balance != null) {
+                        result = balance.Balance;
+                    }
+                }
+                return result;
+            }
+        }
 
         /// <summary>
         /// Type de compte du compte
@@ -133,19 +171,23 @@ namespace Business
         /// <summary>
         /// Chargement des balances du compte bancaire
         /// </summary>
-        private List<BankAccountBalance> Balances
+        public IEnumerable<BankAccountBalance> Balances
         {
             get 
             {
                 if (_balances == null)
                 {
-                    _balances = GetBalances().ToList();
+                    _balances = DatabaseAccess.Instance.GetMonthlyBalances(AccountNo).Select(i => new BankAccountBalance(i));
                 }
                 return _balances;
 
             }
+            private set
+            {
+                _balances = value;
+            }
         }
-        private List<BankAccountBalance>? _balances;
+        private IEnumerable<BankAccountBalance>? _balances;
 
         private BankAccount(AccountEntity item)
         {
@@ -178,14 +220,6 @@ namespace Business
         }
 
         /// <summary>
-        /// Chargement des balances du compte bancaire
-        /// </summary>
-        public IEnumerable<BankAccountBalance> GetBalances()
-        {
-            return DatabaseAccess.Instance.GetMonthlyBalances(AccountNo).Select(i => new BankAccountBalance(i)).ToList();
-        }
-
-        /// <summary>
         /// Ajout d'une balance du compte bancaire
         /// </summary>
         public BankAccountBalance AddBalance(DateTime effectiveOn, double balance)
@@ -199,6 +233,7 @@ namespace Business
             {
                 item.Save(effectiveOn,  balance);
             }
+            Balances = DatabaseAccess.Instance.GetMonthlyBalances(AccountNo).Select(i => new BankAccountBalance(i));
             return item;
         }
 

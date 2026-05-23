@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView x:Class="Main.Templates.SavingAccountTemplate"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Border Margin="0,6" Padding="12" BackgroundColor="#FFF8E1" StrokeShape="RoundRectangle 24">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer 
+                Command="{Binding OpenSavingDetailsCommand}"
+                CommandParameter="{Binding}" />
+        </Border.GestureRecognizers>
+
+        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+            <Label Grid.Column="0" Text="{Binding Label}" FontSize="18" FontAttributes="Bold" />
+            <Label Grid.Column="0" Grid.Row="1" Text="{Binding InterestRate, StringFormat='Taux : {0:P2}'}" FontSize="14" />
+
+            <Label Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                   Text="{Binding Balance, StringFormat='{0:N2} €'}"
+                   FontSize="14"
+                   TextColor="{Binding BalanceColor}"
+                   HorizontalTextAlignment="End"
+                   VerticalTextAlignment="Center" />
+        </Grid>
+    </Border>
+
+</ContentView>
+
