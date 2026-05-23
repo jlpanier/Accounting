@@ -17,7 +17,7 @@
             <CollectionView ItemsSource="{Binding Accounts}" SelectionMode="Single">
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="viewmodel:BankAccountViewModel">
+                    ItemsSource="{Binding Accounts}"
                         <SwipeView>
                             <Grid Padding="0,5">
                                 <Border Margin="0,6" Padding="3" BackgroundColor="#E8F2FF" StrokeShape="RoundRectangle 24" >
