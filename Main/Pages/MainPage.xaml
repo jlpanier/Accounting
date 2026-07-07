@@ -2,87 +2,84 @@
     x:Class="Main.Pages.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewmodel="clr-namespace:Main.ViewModels"
+    xmlns:vm="clr-namespace:Main.ViewModels"
     xmlns:templates="clr-namespace:Main.Templates"
     xmlns:selectors="clr-namespace:Main.Templates"
     xmlns:customs="clr-namespace:Main.Customs"
-    Title="Soldes mensuels">
+    Title="Sélection du mois">
 
-        <ContentPage.Resources>
-
-            <!-- ===================== -->
-            <!--   TEMPLATES PAR TYPE  -->
-            <!-- ===================== -->
-
-            <DataTemplate x:Key="BankTemplate">
-                <templates:BankAccountTemplate />
-            </DataTemplate>
-
-            <DataTemplate x:Key="SavingTemplate">
-                <templates:SavingAccountTemplate />
-            </DataTemplate>
-
-            <DataTemplate x:Key="OverviewTemplate">
-                <templates:OverviewTemplate />
-            </DataTemplate>
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
 
 
-            <!-- ===================== -->
-            <!--   TEMPLATE SELECTOR   -->
-            <!-- ===================== -->
+    <ContentPage.Resources>
 
-            <selectors:AccountTemplateSelector x:Key="AccountSelector"
+
+        <!-- ===================== -->
+        <!--   TEMPLATES PAR TYPE  -->
+        <!-- ===================== -->
+
+        <DataTemplate x:Key="BankTemplate">
+            <templates:BankAccountTemplate />
+        </DataTemplate>
+
+        <DataTemplate x:Key="SavingTemplate">
+            <templates:SavingAccountTemplate />
+        </DataTemplate>
+
+        <DataTemplate x:Key="OverviewTemplate">
+            <templates:OverviewTemplate />
+        </DataTemplate>
+
+
+        <!-- ===================== -->
+        <!--   TEMPLATE SELECTOR   -->
+        <!-- ===================== -->
+
+        <selectors:AccountTemplateSelector x:Key="AccountSelector"
                                            BankTemplate="{StaticResource BankTemplate}"
                                            OverviewTemplate="{StaticResource OverviewTemplate}"
                                            SavingTemplate="{StaticResource SavingTemplate}"/>
 
-        </ContentPage.Resources>
+    </ContentPage.Resources>
+    
+    <Grid BackgroundColor="White">
 
-        <ContentPage.BindingContext>
-            <viewmodel:MainViewModel />
-        </ContentPage.BindingContext>
+        <!-- Zone de swipe -->
+        <Grid.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}" />
+            <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}" />
+        </Grid.GestureRecognizers>
 
-        <!-- ===================== -->
-        <!--     CONTENU PAGE      -->
-        <!-- ===================== -->
+        <!-- Carte contenant la liste -->
+        <Border Margin="10"
+                        Padding="10"
+                        BackgroundColor="#F5F5F5"
+                        StrokeShape="RoundRectangle 12"
+                        StrokeThickness="0">
 
-        <Grid>
+            <Border.Shadow>
+                <Shadow Brush="#40000000"
+                                Offset="0,2"
+                                Radius="6"
+                                Opacity="0.25" />
+            </Border.Shadow>
 
-            <!-- Carte contenant la liste -->
-            <Border Margin="10"
-                Padding="10"
-                BackgroundColor="#F5F5F5"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="0">
-
-                <Border.Shadow>
-                    <Shadow Brush="#40000000"
-                        Offset="0,2"
-                        Radius="6"
-                        Opacity="0.25" />
-                </Border.Shadow>
-
+            <VerticalStackLayout Padding="20" Spacing="20" HorizontalOptions="Center">
+                <Label x:Name="MonthLabel"
+                   Text="{Binding MonthLabel}"
+                   FontSize="32"
+                   HorizontalOptions="Center"
+                   Opacity="1" />
+            
                 <CollectionView 
                     ItemsSource="{Binding Accounts}"
                     ItemTemplate="{StaticResource AccountSelector}"
                     SelectionMode="None" />
-            </Border>
 
-
-            <!-- ===================== -->
-            <!--   BOUTON FLOTTANT     -->
-            <!-- ===================== -->
-
-            <ImageButton
-                VerticalOptions="End"
-                HorizontalOptions="End"
-                Margin="20"
-                Source="plus.png"
-                HeightRequest="56"
-                WidthRequest="56"
-                BackgroundColor="Transparent"
-                Command="{Binding AddCommand}" />
-
-        </Grid>
-
-    </ContentPage>
+            </VerticalStackLayout>
+        </Border>
+        
+    </Grid>
+</ContentPage>

@@ -6,15 +6,34 @@
     x:Class="Main.App">
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="M3Primary">#6750A4</Color>
-            <Color x:Key="M3OnPrimary">#FFFFFF</Color>
-            <Color x:Key="M3Surface">#FFFFFF</Color>
-            <Color x:Key="M3SurfaceVariant">#E7E0EC</Color>
+
+            <Color x:Key="PrimaryColor">#6750A4</Color>
+            <Color x:Key="OnPrimaryColor">White</Color>
+            <Color x:Key="SurfaceColor">#F7F2FA</Color>
+
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="#222" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="TextColor" Value="{StaticResource OnPrimaryColor}" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="14,10" />
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="#FFFFFF" />
+                <Setter Property="TextColor" Value="#222" />
+                <Setter Property="PlaceholderColor" Value="#888" />
+                <Setter Property="HeightRequest" Value="48" />
+            </Style>
 
             <!-- Style Material 3 avec animation -->
             <Style x:Key="SelectableCardStyle" TargetType="Grid">
                 <Setter Property="Scale" Value="1" />
-                <Setter Property="BackgroundColor" Value="{StaticResource M3Surface}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource SurfaceColor}" />
                 <Setter Property="Padding" Value="14" />
                 <Setter Property="Margin" Value="6" />
             </Style>

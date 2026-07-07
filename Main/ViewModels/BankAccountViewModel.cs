@@ -122,27 +122,42 @@ namespace Main.ViewModels
         /// </summary>
         public Color BalanceColor => Balance >= 0 ? Colors.DarkGreen : Colors.DarkRed;
 
+        public DateTime CurrentDate;
+
         public BankAccountViewModel()
         {
-            SelectAccountCommand = new Command<BankAccountViewModel>(OnAccountSelected);
+            SelectAccountCommand = new Command(OnAccountSelected);
+            CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public BankAccountViewModel(BankAccount account)
+        public BankAccountViewModel(BankAccount account, DateTime dt)
         {
             BankAccount = account;
-            SelectAccountCommand = new Command<BankAccountViewModel>(OnAccountSelected);
+            CurrentDate = dt;
+            SelectAccountCommand = new Command(OnAccountSelected);
         }
 
         /// <summary>
         /// Evenement de sélection d'un compte
         /// </summary>
-        private async void OnAccountSelected(BankAccountViewModel account)
+        private async void OnAccountSelected()
         {
-            // Exemple : navigation, popup, édition, etc.
-            await Shell.Current.GoToAsync(nameof(MonthlyBalancesPage), new Dictionary<string, object>
+            var item = GetBalance();
+
+            await Shell.Current.GoToAsync($"{nameof(NewMonthlyBalanceBankAccountPage)}", new Dictionary<string, object>
             {
-                { "accountId", account.AccountNo }
+                ["item"] = item
             });
+       }
+
+        private BankAccountBalance GetBalance()
+        {
+            var item = BankAccount.Balances.FirstOrDefault(_=>_.EffectiveOn== CurrentDate);
+            if (item == null)
+            {
+                item = BankAccountBalance.Create(BankAccount.AccountNo, CurrentDate, 0);
+            }
+            return item;
         }
 
         /// <summary>

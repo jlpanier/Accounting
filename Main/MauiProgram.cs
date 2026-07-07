@@ -36,6 +36,7 @@ namespace Main
                     fonts.AddFont("SegoeUI-Semibold.ttf", "SegoeSemibold");
                     fonts.AddFont("FluentSystemIcons-Regular.ttf", FluentUI.FontFamily);
                     fonts.AddFont("fa-solid-900.ttf", "FontAwesome");
+                    fonts.AddFont("MaterialSymbolsRounded.ttf", "MaterialSymbolsRounded");
                 });
 
 #if DEBUG

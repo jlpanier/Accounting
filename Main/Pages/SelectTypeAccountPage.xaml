@@ -44,7 +44,7 @@
                                FontSize="18"
                                TextColor="{Binding IsSelected, 
                                            Converter={StaticResource BoolToColorConverter},
-                                           ConverterParameter='M3OnPrimary,M3Primary'}" 
+                                           ConverterParameter='OnPrimaryColor,PrimaryColor'}" 
                         />
                     </Grid>
                 </DataTemplate>
@@ -54,8 +54,8 @@
 
         <Button Text="Valider"
                 Command="{Binding SaveCommand}"
-                BackgroundColor="{StaticResource M3Primary}"
-                TextColor="{StaticResource M3OnPrimary}"
+                BackgroundColor="{StaticResource PrimaryColor}"
+                TextColor="{StaticResource OnPrimaryColor}"
                 CornerRadius="12"
                 HeightRequest="48" />
 

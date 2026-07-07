@@ -3,12 +3,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
-
 namespace Main.ViewModels
 {
-    /// <summary>
-    /// Gestion de la page principale
-    /// </summary>
     public partial class MainViewModel : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
@@ -26,14 +22,43 @@ namespace Main.ViewModels
         #endregion
 
         /// <summary>
-        /// Evenement de suppression d'un compte bancaire
+        /// Ajout d'un compte
         /// </summary>
-        public ICommand DeleteCommand { get; }
+        public ICommand PreviousMonthCommand { get; }
 
         /// <summary>
-        /// Evenement d'édition d'un compte bancaire
+        /// Ajout d'un compte
         /// </summary>
-        public ICommand EditCommand { get; }
+        public ICommand NextMonthCommand { get; }
+
+        public DateTime CurrentDate
+        {
+            get => _currentDate;
+            set
+            {
+                if (_currentDate != value)
+                {
+                    _currentDate = value;
+                    MonthLabel = _currentDate.ToString("MMMM yyyy", new System.Globalization.CultureInfo("fr-FR"));
+                    NotifyPropertyChanged(nameof(CurrentDate));
+                }
+            }
+        }
+        private DateTime _currentDate;
+
+        public string MonthLabel
+        {
+            get => _monthLabel;
+            set
+            {
+                if (_monthLabel != value)
+                {
+                    _monthLabel = value;
+                    NotifyPropertyChanged(nameof(MonthLabel));
+                }
+            }
+        }
+        private string _monthLabel = "";
 
         /// <summary>
         /// Liste des comptes
@@ -52,50 +77,28 @@ namespace Main.ViewModels
         }
         public ObservableCollection<IBaseAccountViewModel> _accounts = new ObservableCollection<IBaseAccountViewModel>();
 
-        /// <summary>
-        /// Ajout d'un compte
-        /// </summary>
-        public ICommand AddCommand { get; }
-
         public MainViewModel()
         {
             Accounts = new ObservableCollection<IBaseAccountViewModel>();
-            AddCommand = new Command(OnClickAdd);
-            DeleteCommand = new Command<IBaseAccountViewModel>(OnAccountDeleted);
-            EditCommand = new Command<IBaseAccountViewModel>(OnAccountEdited);
-        }
-
-        /// <summary>
-        /// Ajout d'un nouveau compte
-        /// </summary>
-        public async void OnClickAdd()
-        {
-            await Shell.Current.GoToAsync(nameof(NewBankAccountPage));
-            Load();
+            CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            PreviousMonthCommand = new Command(OnPreviousMonth);
+            NextMonthCommand = new Command(OnNextMonth);
         }
 
         /// <summary>
         /// Suppression du compte bancaire
         /// </summary>
-        public void OnAccountDeleted(IBaseAccountViewModel viewmodel)
+        public void OnPreviousMonth()
         {
-            if (viewmodel is BankAccountViewModel vm)  vm.Delete();
-            Load();
+            CurrentDate = CurrentDate.AddMonths(-1);
         }
 
         /// <summary>
-        /// Modification du compte bancaire
+        /// Suppression du compte bancaire
         /// </summary>
-        public async void OnAccountEdited(IBaseAccountViewModel viewmodel)
+        public void OnNextMonth()
         {
-            if (viewmodel is BankAccountViewModel vm)
-            {
-                await Shell.Current.GoToAsync($"{nameof(NewBankAccountPage)}", new Dictionary<string, object>
-                {
-                    ["item"] = vm.BankAccount
-                });
-            }
-            Load();
+            CurrentDate = CurrentDate.AddMonths(1);
         }
 
         /// <summary>
@@ -107,22 +110,10 @@ namespace Main.ViewModels
             var items = BankAccount.GetAll();
             foreach (var item in items)
             {
-                if (item is BankAccount account) results.Add(new BankAccountViewModel(account));
+                if (item is BankAccount account) results.Add(new BankAccountViewModel(account, CurrentDate));
                 if (item is OverviewAccounts overview) results.Add(new OverviewViewModel(overview));
             }
             Accounts = new ObservableCollection<IBaseAccountViewModel>(results);
-        }
-
-        /// <summary>
-        /// Sélectiopn du compte
-        /// </summary>
-        private async void OnAccountSelected(BankAccountViewModel account)
-        {
-            // Exemple : navigation, popup, édition, etc.
-            await Shell.Current.GoToAsync(nameof(MonthlyBalancesPage), new Dictionary<string, object>
-            {
-                { "accountId", account.AccountNo }
-            });
         }
     }
 }
