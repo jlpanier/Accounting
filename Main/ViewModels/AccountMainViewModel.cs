@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
-
+#if JLP
 namespace Main.ViewModels
 {
     /// <summary>
@@ -101,7 +101,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Chargement des comptes
         /// </summary>
-        public async void Load()
+        private async void Load()
         {
             var results = new List<IBaseAccountViewModel>();
             var items = BankAccount.GetAll();
@@ -126,3 +126,4 @@ namespace Main.ViewModels
         }
     }
 }
+#endif

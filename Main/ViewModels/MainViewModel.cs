@@ -22,15 +22,23 @@ namespace Main.ViewModels
         #endregion
 
         /// <summary>
-        /// Ajout d'un compte
+        /// Ajout d'un compte 
+        /// </summary>
+        public ICommand AddCommand { get; }
+
+        /// <summary>
+        /// Affichage de la période précédente
         /// </summary>
         public ICommand PreviousMonthCommand { get; }
 
         /// <summary>
-        /// Ajout d'un compte
+        /// Affichage de la période suivante
         /// </summary>
         public ICommand NextMonthCommand { get; }
 
+        /// <summary>
+        /// Date d'affichage de la période 
+        /// </summary>
         public DateTime CurrentDate
         {
             get => _currentDate;
@@ -46,6 +54,9 @@ namespace Main.ViewModels
         }
         private DateTime _currentDate;
 
+        /// <summary>
+        /// Label de la période 
+        /// </summary>
         public string MonthLabel
         {
             get => _monthLabel;
@@ -83,22 +94,37 @@ namespace Main.ViewModels
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             PreviousMonthCommand = new Command(OnPreviousMonth);
             NextMonthCommand = new Command(OnNextMonth);
+            AddCommand = new Command(OnAddAccount);
         }
 
         /// <summary>
-        /// Suppression du compte bancaire
+        /// Affichage de la période précédente
         /// </summary>
         public void OnPreviousMonth()
         {
             CurrentDate = CurrentDate.AddMonths(-1);
+            Load();
         }
 
         /// <summary>
-        /// Suppression du compte bancaire
+        /// Affichage de la période suivante    
         /// </summary>
         public void OnNextMonth()
         {
-            CurrentDate = CurrentDate.AddMonths(1);
+            if (CurrentDate < DateTime.Now)
+            {
+                CurrentDate = CurrentDate.AddMonths(1);
+                Load();
+            }
+        }
+
+        /// <summary>
+        /// Ajout d'un compte    
+        /// </summary>
+        public async void OnAddAccount()
+        {
+            await Shell.Current.GoToAsync(nameof(NewBankAccountPage));
+            Load();
         }
 
         /// <summary>
@@ -107,7 +133,7 @@ namespace Main.ViewModels
         public async void Load()
         {
             var results = new List<IBaseAccountViewModel>();
-            var items = BankAccount.GetAll();
+            var items = BankAccount.GetAll(CurrentDate);
             foreach (var item in items)
             {
                 if (item is BankAccount account) results.Add(new BankAccountViewModel(account, CurrentDate));

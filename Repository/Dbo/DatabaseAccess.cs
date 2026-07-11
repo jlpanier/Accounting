@@ -38,11 +38,22 @@ namespace Repository.Dbo
         /// <summary>
         /// Compte bancaire lié 
         /// </summary>
-        public AccountEntity? GetBankAccount(string bankNo)
+        public AccountEntity? GetBankAccountNo(string bankNo)
         {
             lock (dbLock)
             {
                 return Db.Query<AccountEntity>("Select * from ACCOUNT WHERE AccountNo = ? ", bankNo).FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Compte bancaire lié 
+        /// </summary>
+        public AccountEntity? GetBankAccountId(int bankId)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<AccountEntity>("Select * from ACCOUNT WHERE Id = ? ", bankId).FirstOrDefault();
             }
         }
 
@@ -60,11 +71,11 @@ namespace Repository.Dbo
         /// <summary>
         /// Balances mensuelles d'un compte bancaire
         /// </summary>
-        public IEnumerable<AccountBalanceEntity> GetMonthlyBalances(string accountNo)
+        public IEnumerable<AccountBalanceEntity> GetMonthlyBalances(int id)
         {
             lock (dbLock)
             {
-                return Db.Query<AccountBalanceEntity>("Select * from ACCOUNT_BALANCE WHERE AccountNo = ?", accountNo);
+                return Db.Query<AccountBalanceEntity>("Select * from ACCOUNT_BALANCE WHERE BankAccountId = ?", id);
             }
         }
     }
