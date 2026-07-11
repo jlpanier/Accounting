@@ -100,7 +100,7 @@ namespace Main.ViewModels
             try
             {
                 var bankAccount = BankAccount.GetByAccountNo(AccountNo);
-                if (bankAccount!=null) bankAccount.AddBalance(EffectiveOn, Balance);
+                if (bankAccount!=null) bankAccount.AddMonthlyBalance(EffectiveOn, Balance);
                 await Shell.Current.GoToAsync(".."); // Retour à la page précédente
             }
             catch (Exception ex)
@@ -138,9 +138,9 @@ namespace Main.ViewModels
         /// <summary>
         /// Information du compte bancaire à afficher
         /// </summary>
-        public void Set(string accountId)
+        public void Set(int accountId)
         {
-            var bankAccount = BankAccount.GetByAccountNo(accountId);
+            var bankAccount = BankAccount.GetByAccountId(accountId);
             if (bankAccount != null)
             {
                 var lastbalance = bankAccount.Balances.OrderBy(_ => _.EffectiveOn).LastOrDefault();
@@ -158,7 +158,7 @@ namespace Main.ViewModels
         /// </summary>
         public void Init(BankAccountBalance item)
         {   
-            Set(item.AccountNo);
+            Set(item.BankAccountId);
             EffectiveOn = item.EffectiveOn;
             Balance = item.Balance;
         }

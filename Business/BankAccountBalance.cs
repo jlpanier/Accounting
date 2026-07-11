@@ -11,12 +11,12 @@ namespace Business
         /// <summary>
         /// Création d'un compte bancaire
         /// </summary>
-        public static BankAccountBalance Create(string accountNo, DateTime effectiveOn, double balance)
+        public static BankAccountBalance Create(int bankAccountId, DateTime effectiveOn, double balance)
         {
             var item = new AccountBalanceEntity
             {
                 EffectiveOn = effectiveOn,
-                AccountNo= accountNo,
+                BankAccountId= bankAccountId,
                 Balance=balance,
                 DateMaj = DateTime.Now
             };
@@ -37,7 +37,7 @@ namespace Business
         /// <summary>
         /// No du compte bancaire
         /// </summary>
-        public string AccountNo => Item.AccountNo;
+        public int BankAccountId => Item.BankAccountId;
 
         /// <summary>
         /// Balance du compte

@@ -41,20 +41,20 @@ namespace Repository.Entities
         private int _Id;
 
         [Indexed]
-        [Column("AccountNo")]
-        public string AccountNo
+        [Column("BankAccountId")]
+        public int BankAccountId
         {
-            get { return _accountNo; }
+            get { return _bankAccountId; }
             set
             {
-                if (_accountNo != value)
+                if (_bankAccountId != value)
                 {
-                    _accountNo = value;
-                    NotifyPropertyChanged(nameof(AccountNo));
+                    _bankAccountId = value;
+                    NotifyPropertyChanged(nameof(BankAccountId));
                 }
             }
         }
-        private string _accountNo="";
+        private int _bankAccountId;
 
 
         [Column("EffectiveOn")]

@@ -110,7 +110,7 @@ namespace Main.ViewModels
                     _bankAccount = value;
                     Label = _bankAccount.Label;
                     AccountNo = _bankAccount.AccountNo;
-                    Balance = _bankAccount.Balance;
+                    Balance = _bankAccount.GetBalanceOn(CurrentDate);
                     NotifyPropertyChanged(nameof(BankAccount));
                 }
             }
@@ -134,6 +134,8 @@ namespace Main.ViewModels
         {
             BankAccount = account;
             CurrentDate = dt;
+            var item = GetBalance();
+            Balance = item.Balance;
             SelectAccountCommand = new Command(OnAccountSelected);
         }
 
@@ -152,10 +154,10 @@ namespace Main.ViewModels
 
         private BankAccountBalance GetBalance()
         {
-            var item = BankAccount.Balances.FirstOrDefault(_=>_.EffectiveOn== CurrentDate);
+            var item = BankAccount.Balances.FirstOrDefault(_=>_.EffectiveOn == CurrentDate);
             if (item == null)
             {
-                item = BankAccountBalance.Create(BankAccount.AccountNo, CurrentDate, 0);
+                item = BankAccountBalance.Create(BankAccount.BankAccountId, CurrentDate, 0);
             }
             return item;
         }

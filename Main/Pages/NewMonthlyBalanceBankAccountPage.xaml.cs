@@ -20,9 +20,9 @@ public partial class NewMonthlyBalanceBankAccountPage : ContentPage, IQueryAttri
             }
             else if (query.TryGetValue("accountId", out var accountobj))
             {
-                if (accountobj is string accountno)
+                if (accountobj is int accountId)
                 {
-                    vm.Set(accountno);
+                    vm.Set(accountId);
                 }
             }
         }
@@ -32,7 +32,7 @@ public partial class NewMonthlyBalanceBankAccountPage : ContentPage, IQueryAttri
     /// <summary>
     /// Numero du compte
     /// </summary>
-    public string AccountId { get; set; } = "";
+    public string AccountNo { get; set; } = "";
     
     public NewMonthlyBalanceBankAccountPage()
 	{
@@ -60,10 +60,10 @@ public partial class NewMonthlyBalanceBankAccountPage : ContentPage, IQueryAttri
             Card.TranslateToAsync(0, 0, 300, Easing.CubicOut)
         );
 
-        if (BindingContext is NewMonthlyBalanceBankAccountViewModel vm)
-        {
-            vm.Set(AccountId);
-        }
+        //if (BindingContext is NewMonthlyBalanceBankAccountViewModel vm)
+        //{
+        //    vm.Set(AccountNo);
+        //}
 
     }
 

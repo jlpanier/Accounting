@@ -7,6 +7,7 @@ namespace Main.Converter
     {
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
+            if (parameter == null) return false;
             var parts = parameter.ToString().Split(',');
             return (bool)value
                 ? Application.Current.Resources[parts[0]]
