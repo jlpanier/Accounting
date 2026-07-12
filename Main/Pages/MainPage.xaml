@@ -26,6 +26,10 @@
             <templates:SavingAccountTemplate />
         </DataTemplate>
 
+        <DataTemplate x:Key="PeeTemplate">
+            <templates:PeeTemplate />
+        </DataTemplate>
+
         <DataTemplate x:Key="OverviewTemplate">
             <templates:OverviewTemplate />
         </DataTemplate>
@@ -34,10 +38,12 @@
         <!--   TEMPLATE SELECTOR   -->
         <!-- ===================== -->
 
-        <selectors:AccountTemplateSelector x:Key="AccountSelector"
-                                           BankTemplate="{StaticResource BankTemplate}"
-                                           OverviewTemplate="{StaticResource OverviewTemplate}"
-                                           SavingTemplate="{StaticResource SavingTemplate}" />
+        <selectors:AccountTemplateSelector 
+            x:Key="AccountSelector"
+            BankTemplate="{StaticResource BankTemplate}"
+            PeeTemplate="{StaticResource PeeTemplate}"
+            OverviewTemplate="{StaticResource OverviewTemplate}"
+            SavingTemplate="{StaticResource SavingTemplate}" />
 
     </ContentPage.Resources>
 

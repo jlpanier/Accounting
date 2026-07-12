@@ -1,5 +1,5 @@
 using Main.ViewModels;
-using static Business.BankAccount;
+using static Business.BaseAccount;
 
 namespace Main.Pages;
 

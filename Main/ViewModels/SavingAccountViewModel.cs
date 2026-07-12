@@ -7,7 +7,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class BankAccountViewModel : INotifyPropertyChanged, IBaseAccountViewModel
+    public class SavingAccountViewModel : INotifyPropertyChanged, IBaseAccountViewModel
     {
         #region INotifyPropertyChanged
 
@@ -83,7 +83,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Compte
         /// </summary>
-        public BankAccount? BankAccount
+        public SavingAccount? BankAccount
         {
             get => _bankAccount;
             set
@@ -98,7 +98,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public BankAccount? _bankAccount;
+        public SavingAccount? _bankAccount;
 
         /// <summary>
         /// Couleur du texte de la balance : vert si positif, rouge si négatif
@@ -107,13 +107,13 @@ namespace Main.ViewModels
 
         public DateTime CurrentDate;
 
-        public BankAccountViewModel()
+        public SavingAccountViewModel()
         {
             SelectAccountCommand = new Command(OnAccountSelected);
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public BankAccountViewModel(BankAccount account, DateTime dt)
+        public SavingAccountViewModel(SavingAccount account, DateTime dt)
         {
             BankAccount = account;
             CurrentDate = dt;
@@ -145,16 +145,6 @@ namespace Main.ViewModels
             return item;
         }
 
-        /// <summary>
-        /// Suppression du compte bancaire
-        /// </summary>
-        public void Delete()
-        {
-            var item = BankAccount.GetByAccountNo(AccountNo);
-            if (item != null)
-            {
-                item.Delete();
-            }
-        }
+
     }
 }

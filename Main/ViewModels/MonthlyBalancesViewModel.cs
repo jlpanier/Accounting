@@ -44,7 +44,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Reference du compte bancaire
         /// </summary>
-        public BankAccount? BankAccount
+        public BalanceAccount? BankAccount
         {
             get => _bankAccount;
             set
@@ -58,7 +58,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public BankAccount? _bankAccount;
+        public BalanceAccount? _bankAccount;
 
         /// <summary>
         /// Label du compte bancaire
@@ -156,8 +156,24 @@ namespace Main.ViewModels
         /// </summary>
         public async void Load(string accountno)
         {
-            BankAccount = BankAccount.GetByAccountNo(accountno);
-            Load();
+            var account = BaseAccount.GetByAccountNo(accountno);
+            if (account!=null)
+            {
+                switch (account.Type)
+                {
+                    case BaseAccount.AccountType.Cheque:
+                        BankAccount = (BankAccount)account;
+                        break;
+                    case BaseAccount.AccountType.Saving:
+                        BankAccount = (SavingAccount)account;
+                        break;
+                    case BaseAccount.AccountType.AssuranceVie:
+                        BankAccount = (AssuranceVie)account;
+                        break;
+                }
+
+                Load();
+            }
         }
 
         /// <summary>
