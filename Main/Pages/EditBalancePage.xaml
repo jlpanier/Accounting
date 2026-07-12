@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Main.Pages.EditBalancePage"
+             xmlns:converter="clr-namespace:Main.Converter"
+             xmlns:viewmodel="clr-namespace:Main.ViewModels"
+             Title="Solde mensuelle">
+
+    <ContentPage.BindingContext>
+        <viewmodel:EditBalanceViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:DoubleConverter x:Key="DoubleConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="22">
+
+            <Border StrokeShape="RoundRectangle 24"
+                    BackgroundColor="#EEF8E8"
+                    Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Date "
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <DatePicker Date="{Binding EffectiveOn, Mode=TwoWay}"
+                                Format="dd/MM/yyyy" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Carte Balance -->
+            <Border StrokeShape="RoundRectangle 24"
+                    BackgroundColor="#E8F2FF"
+                    Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Solde disponible"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <Entry 
+                       Placeholder="Disponible"
+                       Text="{Binding Balance, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
+                       Keyboard="Numeric"
+                       VerticalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Bouton Enregistrer -->
+            <Button Text="Enregistrer"
+                    HeightRequest="52"
+                    CornerRadius="14"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding SaveCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+</ContentPage>

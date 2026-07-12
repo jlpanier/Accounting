@@ -123,7 +123,7 @@ namespace Main.ViewModels
         /// </summary>
         public async void OnClickAdd()
         {
-            await Shell.Current.GoToAsync(nameof(NewMonthlyBalanceBankAccountPage), new Dictionary<string, object>
+            await Shell.Current.GoToAsync(nameof(EditBalancePage), new Dictionary<string, object>
             {
                 { "accountId", AccountNo }
             });
@@ -144,7 +144,7 @@ namespace Main.ViewModels
         /// </summary>
         public async void OnBalanceEdited(MonthlyBalanceViewModel vm)
         {
-            await Shell.Current.GoToAsync($"{nameof(NewMonthlyBalanceBankAccountPage)}", new Dictionary<string, object>
+            await Shell.Current.GoToAsync($"{nameof(EditBalancePage)}", new Dictionary<string, object>
             {
                 ["item"] = vm.Item
             });

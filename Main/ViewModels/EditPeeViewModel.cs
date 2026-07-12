@@ -128,6 +128,9 @@ namespace Main.ViewModels
         }
         private double _blocked = 0.0;
 
+        /// <summary>
+        /// Enregistrer les soldes
+        /// </summary>
         public ICommand SaveBalancesCommand { get; }
 
         public EditPeeViewModel()

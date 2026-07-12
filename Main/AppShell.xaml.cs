@@ -13,8 +13,7 @@ namespace Main
             ThemeSegmentedControl.SelectedIndex = currentTheme == AppTheme.Light ? 0 : 1;
 
             Routing.RegisterRoute(nameof(NewBankAccountPage), typeof(NewBankAccountPage));
-            Routing.RegisterRoute(nameof(MonthlyBalancesPage), typeof(MonthlyBalancesPage));
-            Routing.RegisterRoute(nameof(NewMonthlyBalanceBankAccountPage), typeof(NewMonthlyBalanceBankAccountPage));
+            Routing.RegisterRoute(nameof(EditBalancePage), typeof(EditBalancePage));
             Routing.RegisterRoute(nameof(SelectTypeAccountPage), typeof(SelectTypeAccountPage));
             Routing.RegisterRoute(nameof(EditPeePage), typeof(EditPeePage));
         }

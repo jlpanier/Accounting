@@ -129,7 +129,7 @@ namespace Main.ViewModels
         {
             var item = GetBalance();
 
-            await Shell.Current.GoToAsync($"{nameof(NewMonthlyBalanceBankAccountPage)}", new Dictionary<string, object>
+            await Shell.Current.GoToAsync($"{nameof(EditBalancePage)}", new Dictionary<string, object>
             {
                 ["item"] = item
             });

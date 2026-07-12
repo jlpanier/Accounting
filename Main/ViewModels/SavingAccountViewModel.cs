@@ -109,7 +109,7 @@ namespace Main.ViewModels
 
         public SavingAccountViewModel()
         {
-            SelectAccountCommand = new Command(OnAccountSelected);
+            SelectAccountCommand = new Command(OnSelected);
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
@@ -119,17 +119,17 @@ namespace Main.ViewModels
             CurrentDate = dt;
             var item = GetBalance();
             Balance = item.Balance;
-            SelectAccountCommand = new Command(OnAccountSelected);
+            SelectAccountCommand = new Command(OnSelected);
         }
 
         /// <summary>
         /// Evenement de sélection d'un compte
         /// </summary>
-        private async void OnAccountSelected()
+        private async void OnSelected()
         {
             var item = GetBalance();
 
-            await Shell.Current.GoToAsync($"{nameof(NewMonthlyBalanceBankAccountPage)}", new Dictionary<string, object>
+            await Shell.Current.GoToAsync($"{nameof(EditBalancePage)}", new Dictionary<string, object>
             {
                 ["item"] = item
             });

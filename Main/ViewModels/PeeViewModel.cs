@@ -99,19 +99,19 @@ namespace Main.ViewModels
         /// <summary>
         /// Somme bloquée sur ce plan épargne entreprise (PEE)
         /// </summary>
-        public double Block
+        public double Blocked
         {
-            get => _block;
+            get => _blocked;
             set
             {
-                if (_block != value)
+                if (_blocked != value)
                 {
-                    _block = value;
-                    NotifyPropertyChanged(nameof(Block));
+                    _blocked = value;
+                    NotifyPropertyChanged(nameof(Blocked));
                 }
             }
         }
-        public double _block = 0.0;
+        public double _blocked = 0.0;
 
         /// <summary>
         /// Compte
@@ -141,7 +141,7 @@ namespace Main.ViewModels
 
         public PeeViewModel()
         {
-            SelectAccountCommand = new Command(OnAccountSelected);
+            SelectAccountCommand = new Command(OnSelected);
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
@@ -149,13 +149,17 @@ namespace Main.ViewModels
         {
             Item = account;
             CurrentDate = dt;
-            SelectAccountCommand = new Command(OnAccountSelected);
+            var balance = Item.GetBalance(CurrentDate);
+            Disponible = balance.Disponible;
+            Blocked = balance.Blocked;
+            Retirement= balance.Retirement;
+            SelectAccountCommand = new Command(OnSelected);
         }
 
         /// <summary>
         /// Evenement de sélection d'un compte : affichage de la page d'édition de la balance
         /// </summary>
-        private async void OnAccountSelected()
+        private async void OnSelected()
         {
             await Shell.Current.GoToAsync($"{nameof(EditPeePage)}", new Dictionary<string, object>
             {

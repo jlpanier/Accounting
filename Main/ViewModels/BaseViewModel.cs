@@ -2,7 +2,7 @@
 
 namespace Main.ViewModels
 {
-    public abstract partial class BaseViewModel: INotifyPropertyChanged
+    public abstract partial class BaseViewModel: INotifyPropertyChanged, IBaseAccountViewModel
     {
         #region INotifyPropertyChanged
 
