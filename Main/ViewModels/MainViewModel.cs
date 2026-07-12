@@ -94,7 +94,7 @@ namespace Main.ViewModels
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             PreviousMonthCommand = new Command(OnPreviousMonth);
             NextMonthCommand = new Command(OnNextMonth);
-            AddCommand = new Command(OnAddAccount);
+            AddCommand = new Command(OnAdd);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Ajout d'un compte    
         /// </summary>
-        public async void OnAddAccount()
+        public async void OnAdd()
         {
             await Shell.Current.GoToAsync(nameof(NewBankAccountPage));
             Load();

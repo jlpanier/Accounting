@@ -46,6 +46,19 @@ namespace Business
         }
         private IEnumerable<BankAccountBalance>? _balances;
 
+        /// <summary>
+        /// Chargement de la balance du compte
+        /// </summary>
+        public BankAccountBalance GetBalance(DateTime effectiveOn)
+        {
+            var item = Balances.FirstOrDefault(i => i.EffectiveOn == effectiveOn);
+            if (item == null)
+            {
+                item = BankAccountBalance.Create(BankAccountId, effectiveOn, 0);
+            }
+            return item;
+        }
+
         protected BalanceAccount(AccountEntity item) : base(item)
         {
         }
@@ -53,7 +66,7 @@ namespace Business
         /// <summary>
         /// Ajout d'une item du compte bancaire
         /// </summary>
-        public BankAccountBalance AddMonthlyBalance(DateTime effectiveOn, double balance)
+        public BankAccountBalance Save(DateTime effectiveOn, double balance)
         {
             var item = Balances.FirstOrDefault(_=>_.EffectiveOn == effectiveOn);
             if (item == null)

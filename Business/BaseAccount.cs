@@ -34,7 +34,7 @@ namespace Business
         public static List<IBaseAccounts> GetAll(DateTime effectiveOn) 
         {
             double disponible = 0.0;
-            double block = 0.0;
+            double blocked = 0.0;
             double retirement = 0.0;
             var result = new List<IBaseAccounts>();
             var items = DatabaseAccess.Instance.GetAccounts();
@@ -45,14 +45,18 @@ namespace Business
                 switch ((AccountType)item.Type)
                 {
                     case AccountType.AssuranceVie:
-                        var assurancevie = AssuranceVie.
-                            New(item);
+                        var assurancevie = AssuranceVie.New(item);
                         retirement += assurancevie.GetBalanceOn(effectiveOn);
                         bankaccount = assurancevie;
                         break;
                     case AccountType.PEA:
                     case AccountType.PEE:
-                        bankaccount = new PEE(item);
+                        var pee = new PEE(item);
+                        var balance= pee.GetBalance(effectiveOn);
+                        disponible += balance.Disponible;
+                        retirement += balance.Retirement;
+                        blocked += balance.Blocked;
+                        bankaccount = pee;
                         break;
                     case AccountType.Saving:
                         var savingaccount = SavingAccount.New(item);
@@ -68,7 +72,7 @@ namespace Business
                 }
                 result.Add(bankaccount);
             }
-            result.Add(new OverviewAccounts(disponible, block, retirement));
+            result.Add(new OverviewAccounts(disponible, blocked, retirement));
             return result;
         }
 

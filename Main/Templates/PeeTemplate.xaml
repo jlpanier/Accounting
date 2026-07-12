@@ -27,12 +27,12 @@
                    Text="{Binding Retirement, StringFormat='{0:N2} €'}"
                    FontSize="14"
                    TextColor="{Binding BalanceColor}"
-                   HorizontalTextAlignment="End"
+                   HorizontalTextAlignment="End"    
                    VerticalTextAlignment="Center" />
 
             <Label Grid.Column="0" Grid.Row="4" Text="Bloqué" FontSize="18" FontAttributes="Bold" />
             <Label Grid.Column="1" Grid.Row="4" 
-                   Text="{Binding Retirement, StringFormat='{0:N2} €'}"
+                   Text="{Binding Blocked, StringFormat='{0:N2} €'}"
                    FontSize="14"
                    TextColor="{Binding BalanceColor}"
                    HorizontalTextAlignment="End"
