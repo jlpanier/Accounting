@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using static Business.BankAccount;
 using System.Windows.Input;
+using static Business.BaseAccount;
 
 namespace Main.ViewModels
 {

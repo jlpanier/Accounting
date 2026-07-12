@@ -67,6 +67,7 @@ namespace Repository.Dbo
             //DropTable<SolutionEntity>();
             CreateTable<AccountEntity>();
             CreateTable<AccountBalanceEntity>();
+            CreateTable<PeeEntity>();
         }
 
         /// <summary>
@@ -106,9 +107,9 @@ namespace Repository.Dbo
         /// <summary>
         /// Mise à jour d'une entité dans la base de données SQLite
         /// </summary>
-        public void Update(BaseEntity entity)
+        public int Update(BaseEntity entity)
         {
-            Db.InsertOrReplace(entity);
+            return Db.InsertOrReplace(entity);
         }
 
         /// <summary>

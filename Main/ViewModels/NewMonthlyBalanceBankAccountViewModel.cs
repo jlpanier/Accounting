@@ -1,5 +1,6 @@
 ﻿using Business;
 using System.ComponentModel;
+using System.Security.Principal;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -100,7 +101,22 @@ namespace Main.ViewModels
             try
             {
                 var bankAccount = BankAccount.GetByAccountNo(AccountNo);
-                if (bankAccount!=null) bankAccount.AddMonthlyBalance(EffectiveOn, Balance);
+                if (bankAccount!=null)
+                {
+                    switch (bankAccount.Type)
+                    {
+                        case BaseAccount.AccountType.Cheque:
+                        case BaseAccount.AccountType.Saving:
+                        case BaseAccount.AccountType.AssuranceVie:
+                            var balanceaccount = (BalanceAccount)bankAccount;
+                            balanceaccount.AddMonthlyBalance(EffectiveOn, Balance);
+                            break;
+                        case BaseAccount.AccountType.PEA:
+                        case BaseAccount.AccountType.PEE:
+                            break;
+                    }
+                }
+         
                 await Shell.Current.GoToAsync(".."); // Retour à la page précédente
             }
             catch (Exception ex)
@@ -143,12 +159,26 @@ namespace Main.ViewModels
             var bankAccount = BankAccount.GetByAccountId(accountId);
             if (bankAccount != null)
             {
-                var lastbalance = bankAccount.Balances.OrderBy(_ => _.EffectiveOn).LastOrDefault();
-                var dt = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                Label = bankAccount.Label;
-                AccountNo = bankAccount.AccountNo;
-                EffectiveOn = DateTime.Today.Day > 15 ? dt.AddMonths(1) : dt;
-                Balance = lastbalance == null ? 0 : lastbalance.Balance;
+                if (bankAccount != null)
+                {
+                    switch (bankAccount.Type)
+                    {
+                        case BaseAccount.AccountType.Cheque:
+                        case BaseAccount.AccountType.Saving:
+                        case BaseAccount.AccountType.AssuranceVie:
+                            var balanceaccount = (BalanceAccount)bankAccount;
+                            var lastbalance = balanceaccount.Balances.OrderBy(_ => _.EffectiveOn).LastOrDefault();
+                            var dt = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                            Label = bankAccount.Label;
+                            AccountNo = bankAccount.AccountNo;
+                            EffectiveOn = DateTime.Today.Day > 15 ? dt.AddMonths(1) : dt;
+                            Balance = lastbalance == null ? 0 : lastbalance.Balance;
+                            break;
+                        case BaseAccount.AccountType.PEA:
+                        case BaseAccount.AccountType.PEE:
+                            break;
+                    }
+                }
             }
 
         }

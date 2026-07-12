@@ -110,31 +110,6 @@
                         </Button.Shadow>
                     </Button>
 
-                    <Grid Margin="0" ColumnDefinitions="Auto, Auto, Auto">
-
-                        <RadioButton
-                            Content="🟢 Disponible"
-                            Grid.Column="0"
-                            GroupName="AccountType"
-                            IsChecked="true"
-                            HorizontalOptions="Center"
-                            />
-                        <RadioButton
-                            Content="🟡 Retraite"
-                            Grid.Column="1"
-                            GroupName="AccountType"
-                            IsChecked="true"
-                            HorizontalOptions="Center"
-                            />
-                        <RadioButton
-                            Content="🔴 Bloquée"
-                            Grid.Column="2"
-                            GroupName="AccountType"
-                            IsChecked="true"
-                            HorizontalOptions="Center"
-                            />
-
-                    </Grid>
 
                     <Button 
                         Text="Valider"

@@ -92,9 +92,15 @@
 	  <Compile Update="Pages\NewBankAccountPage.xaml.cs">
 	    <DependentUpon>NewBankAccountPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Templates\PeeTemplate.xaml.cs">
+	    <DependentUpon>PeeTemplate.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\EditPeePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\MonthlyBalancesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -102,6 +108,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\NewMonthlyBalanceBankAccountPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Templates\PeeTemplate.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Templates\BankAccountTemplate.xaml">

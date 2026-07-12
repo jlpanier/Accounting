@@ -7,7 +7,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class BankAccountViewModel : INotifyPropertyChanged, IBaseAccountViewModel
+    public class PeeViewModel : INotifyPropertyChanged, IBaseAccountViewModel
     {
         #region INotifyPropertyChanged
 
@@ -63,98 +63,106 @@ namespace Main.ViewModels
         public string _accountno = "";
 
         /// <summary>
-        /// Balance du compte
+        /// Somme disponible sur ce plan épargne entreprise (PEE)
         /// </summary>
-        public double Balance
+        public double Disponible
         {
-            get => _balance;
+            get => _disponible;
             set
             {
-                if (_balance != value)
+                if (_disponible != value)
                 {
-                    _balance = value;
-                    NotifyPropertyChanged(nameof(Balance));
+                    _disponible = value;
+                    NotifyPropertyChanged(nameof(Disponible));
                 }
             }
         }
-        public double _balance;
+        public double _disponible = 0.0;
 
+        /// <summary>
+        /// Somme disponible à la retraite sur ce plan épargne entreprise (PEE)
+        /// </summary>
+        public double Retirement
+        {
+            get => _retirement;
+            set
+            {
+                if (_retirement != value)
+                {
+                    _retirement = value;
+                    NotifyPropertyChanged(nameof(Retirement));
+                }
+            }
+        }
+        public double _retirement = 0.0;
+
+        /// <summary>
+        /// Somme bloquée sur ce plan épargne entreprise (PEE)
+        /// </summary>
+        public double Block
+        {
+            get => _block;
+            set
+            {
+                if (_block != value)
+                {
+                    _block = value;
+                    NotifyPropertyChanged(nameof(Block));
+                }
+            }
+        }
+        public double _block = 0.0;
 
         /// <summary>
         /// Compte
         /// </summary>
-        public BankAccount? BankAccount
+        public PEE Item
         {
-            get => _bankAccount;
+            get => _item;
             set
             {
-                if (_bankAccount != value)
+                if (_item != value)
                 {
-                    _bankAccount = value;
-                    Label = _bankAccount.Label;
-                    AccountNo = _bankAccount.AccountNo;
-                    Balance = _bankAccount.GetBalanceOn(CurrentDate);
-                    NotifyPropertyChanged(nameof(BankAccount));
+                    _item = value;
+                    Label = _item.Label;
+                    AccountNo = _item.AccountNo;
+                    NotifyPropertyChanged(nameof(Item));
                 }
             }
         }
-        public BankAccount? _bankAccount;
+        public PEE _item = PEE.Empty();
 
         /// <summary>
         /// Couleur du texte de la balance : vert si positif, rouge si négatif
         /// </summary>
-        public Color BalanceColor => Balance >= 0 ? Colors.DarkGreen : Colors.DarkRed;
+        public Color BalanceColor => Disponible >= 0 ? Colors.DarkGreen : Colors.DarkRed;
 
         public DateTime CurrentDate;
 
-        public BankAccountViewModel()
+        public PeeViewModel()
         {
             SelectAccountCommand = new Command(OnAccountSelected);
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public BankAccountViewModel(BankAccount account, DateTime dt)
+        public PeeViewModel(PEE account, DateTime dt)
         {
-            BankAccount = account;
+            Item = account;
             CurrentDate = dt;
-            var item = GetBalance();
-            Balance = item.Balance;
             SelectAccountCommand = new Command(OnAccountSelected);
         }
 
         /// <summary>
-        /// Evenement de sélection d'un compte
+        /// Evenement de sélection d'un compte : affichage de la page d'édition de la balance
         /// </summary>
         private async void OnAccountSelected()
         {
-            var item = GetBalance();
-
-            await Shell.Current.GoToAsync($"{nameof(NewMonthlyBalanceBankAccountPage)}", new Dictionary<string, object>
+            await Shell.Current.GoToAsync($"{nameof(EditPeePage)}", new Dictionary<string, object>
             {
-                ["item"] = item
+                ["item"] = Item.GetBalance(CurrentDate)
             });
-       }
-
-        private BankAccountBalance GetBalance()
-        {
-            var item = BankAccount.Balances.FirstOrDefault(_=>_.EffectiveOn == CurrentDate);
-            if (item == null)
-            {
-                item = BankAccountBalance.Create(BankAccount.BankAccountId, CurrentDate, 0);
-            }
-            return item;
         }
 
-        /// <summary>
-        /// Suppression du compte bancaire
-        /// </summary>
-        public void Delete()
-        {
-            var item = BankAccount.GetByAccountNo(AccountNo);
-            if (item != null)
-            {
-                item.Delete();
-            }
-        }
+
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using static Business.BaseAccount;
+
 namespace Business
 {
     /// <summary>
@@ -27,5 +29,11 @@ namespace Business
             Block = block;
             Retirement = retirement;
         }
+
+        public string Label => "Overview";
+
+        public string AccountNo => "Overview";
+
+        public AccountType Type => AccountType.Overview;
     }
 }

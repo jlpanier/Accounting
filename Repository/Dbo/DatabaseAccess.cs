@@ -60,7 +60,7 @@ namespace Repository.Dbo
         /// <summary>
         /// Tous les comptes bancaires  
         /// </summary>
-        public IEnumerable<AccountEntity> GetBankAccounts()
+        public IEnumerable<AccountEntity> GetAccounts()
         {
             lock (dbLock)
             {
@@ -76,6 +76,17 @@ namespace Repository.Dbo
             lock (dbLock)
             {
                 return Db.Query<AccountBalanceEntity>("Select * from ACCOUNT_BALANCE WHERE BankAccountId = ?", id);
+            }
+        }
+
+        /// <summary>
+        /// Balances mensuelles d'un plan epargne entreprise
+        /// </summary>
+        public IEnumerable<PeeEntity> GetMonthlyPee(int id)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<PeeEntity>("Select * from PEE WHERE BankAccountId = ?", id);
             }
         }
     }

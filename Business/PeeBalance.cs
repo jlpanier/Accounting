@@ -3,31 +3,30 @@ using Repository.Entities;
 
 namespace Business
 {
-    /// <summary>
-    /// Gestion des comptes bancaires
-    /// </summary>
-    public class BankAccountBalance
+    public class PeeBalance
     {
         /// <summary>
         /// Création d'une nouvelle entrée du solde
         /// </summary>
-        public static BankAccountBalance Create(int bankAccountId, DateTime effectiveOn, double balance)
+        public static PeeBalance Create(int bankAccountId, DateTime effectiveOn, double disponible, double retirement, double blocked)
         {
-            var item = new AccountBalanceEntity
+            var item = new PeeEntity
             {
                 EffectiveOn = effectiveOn,
-                BankAccountId= bankAccountId,
-                Balance=balance,
+                BankAccountId = bankAccountId,
+                Disponible = disponible,
+                Blocked = blocked,
+                Retirement = retirement,
                 DateMaj = DateTime.Now
             };
             DatabaseAccess.Instance.Add(item);
-            return new BankAccountBalance(item);
+            return new PeeBalance(item);
         }
 
         /// <summary>
         /// Référence vers l'entité de la base de données
         /// </summary>
-        public readonly AccountBalanceEntity Item;
+        public readonly PeeEntity Item;
 
         /// <summary>
         /// Date d'effet du solde
@@ -40,11 +39,21 @@ namespace Business
         public int BankAccountId => Item.BankAccountId;
 
         /// <summary>
-        /// Balance du compte
+        /// Solde disponible sur ce plan épargne entreprise (PEE)
         /// </summary>
-        public double Balance => Item.Balance;
+        public double Disponible => Item.Disponible;
 
-        public BankAccountBalance(AccountBalanceEntity item)
+        /// <summary>
+        /// Solde disponible à la retraite sur ce plan épargne entreprise (PEE)
+        /// </summary>
+        public double Retirement => Item.Retirement;
+
+        /// <summary>
+        /// Solde bloqué sur ce plan épargne entreprise (PEE)
+        /// </summary>
+        public double Blocked => Item.Blocked;
+
+        public PeeBalance(PeeEntity item)
         {
             Item = item;
         }
@@ -52,13 +61,16 @@ namespace Business
         /// <summary>
         /// Sauvegarde
         /// </summary>
-        public void Save(DateTime effectiveOn, double balance)
+        public int Save(DateTime effectiveOn, double disponible, double retirement, double blocked)
         {
             Item.DateMaj = DateTime.Now;
             Item.EffectiveOn = effectiveOn;
-            Item.Balance = balance;
+            Item.Disponible = disponible;
+            Item.Retirement = retirement;
+            Item.Blocked = blocked;
             Item.DateMaj = DateTime.Now;
-            DatabaseAccess.Instance.Update(Item);
+            int rows = DatabaseAccess.Instance.Update(Item);
+            return rows;
         }
 
         /// <summary>
