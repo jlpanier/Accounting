@@ -68,6 +68,7 @@ namespace Repository.Dbo
             CreateTable<AccountEntity>();
             CreateTable<AccountBalanceEntity>();
             CreateTable<PeeEntity>();
+            CreateTable<ScpiEntity>();
         }
 
         /// <summary>

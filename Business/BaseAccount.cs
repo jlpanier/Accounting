@@ -24,6 +24,8 @@ namespace Business
             PEE,
             [StringValue("Assurance Vie")]
             AssuranceVie,
+            [StringValue("Bien immobilier (SCPI)")]
+            SCPI,
             [StringValue("Overview")]
             Overview
         }
@@ -62,6 +64,9 @@ namespace Business
                         var savingaccount = SavingAccount.New(item);
                         disponible += savingaccount.GetBalanceOn(effectiveOn);
                         bankaccount = savingaccount;
+                        break;
+                    case AccountType.SCPI:
+                        bankaccount = SCPI.New(item);
                         break;
                     case AccountType.Cheque:
                     default:
@@ -117,12 +122,6 @@ namespace Business
                         return BankAccount.New(item);
                     case AccountType.Saving:
                         break;
-                    case AccountType.PEA:
-                        break;
-                    case AccountType.PEE:
-                        break;
-                    case AccountType.AssuranceVie:
-                        break;
                     default:
                         break;
                 }
@@ -152,6 +151,8 @@ namespace Business
                         break;
                     case AccountType.PEE:
                         return PEE.New(item);
+                    case AccountType.SCPI:
+                        return SCPI.New(item);
                     case AccountType.AssuranceVie:
                         return AssuranceVie.New(item);
                 }

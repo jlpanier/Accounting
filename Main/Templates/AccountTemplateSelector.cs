@@ -23,6 +23,11 @@ namespace Main.Templates
         public required DataTemplate PeeTemplate { get; set; }
 
         /// <summary>
+        /// Template compte d'épargne
+        /// </summary>
+        public required DataTemplate ScpiTemplate { get; set; }
+
+        /// <summary>
         /// Template bilan global
         /// </summary>
         public required DataTemplate OverviewTemplate { get; set; }
@@ -34,6 +39,7 @@ namespace Main.Templates
                 BankAccountViewModel => BankTemplate,
                 MonthlyBalancesViewModel => SavingTemplate,
                 PeeViewModel => PeeTemplate,
+                ScpiViewModel => ScpiTemplate,
                 OverviewViewModel => OverviewTemplate,
                 _ => BankTemplate
             };

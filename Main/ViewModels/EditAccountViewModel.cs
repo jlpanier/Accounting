@@ -1,7 +1,6 @@
 ﻿using Business;
 using System.ComponentModel;
 using System.Windows.Input;
-using static Business.BankAccount;
 using static Business.BaseAccount;
 
 namespace Main.ViewModels
@@ -9,7 +8,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion des comptes bancaires
     /// </summary>
-    public class NewBankAcccountViewModel : BaseViewModel, INotifyPropertyChanged
+    public class EditAccountViewModel : BaseViewModel, INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
 
@@ -121,7 +120,7 @@ namespace Main.ViewModels
         private DateTime _endDate = DateTime.Today;
 
 
-        public NewBankAcccountViewModel()
+        public EditAccountViewModel()
         {
             SaveCommand = new Command(OnSave);
             TypeAccountCommand = new Command(OnTypeAccount);

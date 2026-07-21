@@ -30,6 +30,10 @@
             <templates:PeeTemplate />
         </DataTemplate>
 
+        <DataTemplate x:Key="ScpiTemplate">
+            <templates:ScpiTemplate />
+        </DataTemplate>
+
         <DataTemplate x:Key="OverviewTemplate">
             <templates:OverviewTemplate />
         </DataTemplate>
@@ -42,37 +46,39 @@
             x:Key="AccountSelector"
             BankTemplate="{StaticResource BankTemplate}"
             PeeTemplate="{StaticResource PeeTemplate}"
+            ScpiTemplate="{StaticResource ScpiTemplate}"
             OverviewTemplate="{StaticResource OverviewTemplate}"
             SavingTemplate="{StaticResource SavingTemplate}" />
 
     </ContentPage.Resources>
 
-    <Grid BackgroundColor="White">
+    <ScrollView>
+        <Grid BackgroundColor="White">
 
-        <!-- Zone de swipe -->
-        <Grid.GestureRecognizers>
-            <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}" />
-            <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}" />
-        </Grid.GestureRecognizers>
+            <!-- Zone de swipe -->
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}" />
+                <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}" />
+            </Grid.GestureRecognizers>
 
-        <!-- Carte contenant la liste -->
-        <Border Margin="20"
+            <!-- Carte contenant la liste -->
+            <Border Margin="20"
                 Padding="20"
                 BackgroundColor="#FAFAFA"
                 StrokeShape="RoundRectangle 16"
                 StrokeThickness="0">
 
-            <Border.Shadow>
-                <Shadow Brush="#40000000"
+                <Border.Shadow>
+                    <Shadow Brush="#40000000"
                         Offset="0,4"
                         Radius="10"
                         Opacity="0.25" />
-            </Border.Shadow>
+                </Border.Shadow>
 
-            <VerticalStackLayout Spacing="24">
+                <VerticalStackLayout Spacing="24">
 
-                <!-- Mois affiché -->
-                <Label x:Name="MonthLabel"
+                    <!-- Mois affiché -->
+                    <Label x:Name="MonthLabel"
                        Text="{Binding MonthLabel}"
                        FontSize="34"
                        FontAttributes="Bold"
@@ -80,19 +86,19 @@
                        TextColor="#333"
                        Opacity="1" />
 
-                <!-- Liste des comptes -->
-                <CollectionView ItemsSource="{Binding Accounts}"
+                    <!-- Liste des comptes -->
+                    <CollectionView ItemsSource="{Binding Accounts}"
                                 ItemTemplate="{StaticResource AccountSelector}"
                                 SelectionMode="None"
                                 Margin="0,10,0,0"
                                 VerticalOptions="Fill"
                                 />
 
-            </VerticalStackLayout>
+                </VerticalStackLayout>
 
-        </Border>
-        <!-- FAB pour ajouter un compte -->
-        <ImageButton
+            </Border>
+            <!-- FAB pour ajouter un compte -->
+            <ImageButton
                 HorizontalOptions="End"
                 Margin="20"
                 Source="plus.png"
@@ -101,5 +107,7 @@
                 Visual="Material"
                 BackgroundColor="Transparent"
                 Command="{Binding AddCommand}" />
-    </Grid>
+        </Grid>
+
+    </ScrollView>
 </ContentPage>

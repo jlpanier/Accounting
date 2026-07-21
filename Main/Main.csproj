@@ -89,8 +89,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\NewBankAccountPage.xaml.cs">
-	    <DependentUpon>NewBankAccountPage.xaml</DependentUpon>
+	  <Compile Update="Pages\EditAccountPage.xaml.cs">
+	    <DependentUpon>EditAccountPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Pages\EditBalancePage.xaml.cs">
 	    <DependentUpon>EditBalancePage.xaml</DependentUpon>
@@ -104,10 +104,13 @@
 	  <MauiXaml Update="Pages\EditPeePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\NewBankAccountPage.xaml">
+	  <MauiXaml Update="Pages\EditAccountPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\EditBalancePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\EditScpiPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Templates\PeeTemplate.xaml">
@@ -126,6 +129,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\SimplePopupPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Templates\ScpiTemplate.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

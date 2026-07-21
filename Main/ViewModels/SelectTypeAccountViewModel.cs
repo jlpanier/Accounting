@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using static Business.BankAccount;
 using System.Windows.Input;
 using static Business.BaseAccount;
 
@@ -9,23 +7,8 @@ namespace Main.ViewModels
     /// <summary>
     /// Affichage et sélection d'un type de compte bancaire
     /// </summary>
-    public class SelectTypeAccountViewModel: BaseViewModel, INotifyPropertyChanged
+    public class SelectTypeAccountViewModel: BaseViewModel
     {
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler? handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         /// <summary>
         /// Sauvegarde des données
         /// </summary>

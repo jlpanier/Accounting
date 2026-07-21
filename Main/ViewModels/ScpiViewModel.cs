@@ -7,7 +7,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class PeeViewModel : INotifyPropertyChanged, IBaseAccountViewModel
+    public class ScpiViewModel : INotifyPropertyChanged, IBaseAccountViewModel
     {
         #region INotifyPropertyChanged
 
@@ -63,60 +63,112 @@ namespace Main.ViewModels
         public string _accountno = "";
 
         /// <summary>
-        /// Somme disponible sur ce plan épargne entreprise (PEE)
+        /// Nombre de parts détenues
         /// </summary>
-        public double Disponible
+        public int NumberOfShares
         {
-            get => _disponible;
+            get => _numberOfShares;
             set
             {
-                if (_disponible != value)
+                if (_numberOfShares != value)
                 {
-                    _disponible = value;
-                    NotifyPropertyChanged(nameof(Disponible));
+                    _numberOfShares = value;
+                    NotifyPropertyChanged(nameof(NumberOfShares));
                 }
             }
         }
-        public double _disponible = 0.0;
+        public int _numberOfShares = 0;
 
         /// <summary>
         /// Somme disponible à la retraite sur ce plan épargne entreprise (PEE)
         /// </summary>
-        public double Retirement
+        public double UnitPrice
         {
-            get => _retirement;
+            get => _unitPrice;
             set
             {
-                if (_retirement != value)
+                if (_unitPrice != value)
                 {
-                    _retirement = value;
-                    NotifyPropertyChanged(nameof(Retirement));
+                    _unitPrice = value;
+                    NotifyPropertyChanged(nameof(UnitPrice));
                 }
             }
         }
-        public double _retirement = 0.0;
+        public double _unitPrice = 0.0;
 
         /// <summary>
         /// Somme bloquée sur ce plan épargne entreprise (PEE)
         /// </summary>
-        public double Blocked
+        public double TotalPrice
         {
-            get => _blocked;
+            get => _totalPrice;
             set
             {
-                if (_blocked != value)
+                if (_totalPrice != value)
                 {
-                    _blocked = value;
-                    NotifyPropertyChanged(nameof(Blocked));
+                    _totalPrice = value;
+                    NotifyPropertyChanged(nameof(TotalPrice));
                 }
             }
         }
-        public double _blocked = 0.0;
+        public double _totalPrice = 0.0;
+
+        /// <summary>
+        /// Somme bloquée sur ce plan épargne entreprise (PEE)
+        /// </summary>
+        public double Rent
+        {
+            get => _rent;
+            set
+            {
+                if (_rent != value)
+                {
+                    _rent = value;
+                    NotifyPropertyChanged(nameof(Rent));
+                }
+            }
+        }
+        public double _rent = 0.0;
+
+        /// <summary>
+        /// Somme bloquée sur ce plan épargne entreprise (PEE)
+        /// </summary>
+        public double AnnuelRent
+        {
+            get => _annuelRent;
+            set
+            {
+                if (_annuelRent != value)
+                {
+                    _annuelRent = value;
+                    NotifyPropertyChanged(nameof(AnnuelRent));
+                }
+            }
+        }
+        public double _annuelRent = 0.0;
+
+        /// <summary>
+        /// Rendement sur 1 an
+        /// </summary>
+        public double Rendement
+        {
+            get => _rendement;
+            set
+            {
+                if (_rendement != value)
+                {
+                    _rendement = value;
+                    NotifyPropertyChanged(nameof(Rendement));
+                }
+            }
+        }
+        public double _rendement = 0.0;
+
 
         /// <summary>
         /// Compte
         /// </summary>
-        public PEE Item
+        public SCPI Item
         {
             get => _item;
             set
@@ -130,29 +182,42 @@ namespace Main.ViewModels
                 }
             }
         }
-        public PEE _item = PEE.Empty();
+        public SCPI _item = SCPI.Empty();
 
         /// <summary>
         /// Couleur du texte de la balance : vert si positif, rouge si négatif
         /// </summary>
-        public Color BalanceColor => Disponible >= 0 ? Colors.DarkGreen : Colors.DarkRed;
+        public Color BalanceColor => NumberOfShares >= 0 ? Colors.DarkGreen : Colors.DarkRed;
 
         public DateTime CurrentDate;
 
-        public PeeViewModel()
+        public ScpiViewModel()
         {
             SelectCommand = new Command(OnSelected);
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public PeeViewModel(PEE account, DateTime dt)
+        public ScpiViewModel(SCPI account, DateTime dt)
         {
             Item = account;
             CurrentDate = dt;
             var balance = Item.GetBalance(CurrentDate);
-            Disponible = balance.Disponible;
-            Blocked = balance.Blocked;
-            Retirement= balance.Retirement;
+            if (balance==null)
+            {
+                NumberOfShares = 0;
+                TotalPrice = 0;
+                UnitPrice = 0;
+                Rent = 0;
+            }
+            else
+            {
+                NumberOfShares = balance.NumberOfShares;
+                TotalPrice = balance.TotalPrice;
+                UnitPrice = balance.UnitPrice;
+                Rent = balance.Rent;
+            }
+            AnnuelRent = account.GetYearlyRent(CurrentDate);
+            Rendement = TotalPrice>0 ? 100 * AnnuelRent / TotalPrice : 0.0;
             SelectCommand = new Command(OnSelected);
         }
 
@@ -161,12 +226,15 @@ namespace Main.ViewModels
         /// </summary>
         private async void OnSelected()
         {
-            await Shell.Current.GoToAsync($"{nameof(EditPeePage)}", new Dictionary<string, object>
+            await Shell.Current.GoToAsync($"{nameof(EditScpiPage)}", new Dictionary<string, object>
             {
-                ["item"] = Item.GetBalance(CurrentDate)
+                ["item"] = Item,
+                ["effectiveOn"] = CurrentDate
+
             });
         }
 
 
     }
+
 }
