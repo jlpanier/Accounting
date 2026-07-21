@@ -89,5 +89,16 @@ namespace Repository.Dbo
                 return Db.Query<PeeEntity>("Select * from PEE WHERE BankAccountId = ?", id);
             }
         }
+
+        /// <summary>
+        /// Balances mensuelles d'un bien SCPI
+        /// </summary>
+        public IEnumerable<ScpiEntity> GetMonthlyScpi(int id)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<ScpiEntity>("Select * from SCPI WHERE BankAccountId = ?", id);
+            }
+        }
     }
 }

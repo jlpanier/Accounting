@@ -26,7 +26,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Evenement de sélection d'un compte
         /// </summary>
-        public ICommand SelectAccountCommand { get; }
+        public ICommand SelectCommand { get; }
 
         /// <summary>
         /// Label du compte
@@ -109,7 +109,7 @@ namespace Main.ViewModels
 
         public BankAccountViewModel()
         {
-            SelectAccountCommand = new Command(OnAccountSelected);
+            SelectCommand = new Command(OnAccountSelected);
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
@@ -119,7 +119,7 @@ namespace Main.ViewModels
             CurrentDate = dt;
             var item = GetBalance();
             Balance = item.Balance;
-            SelectAccountCommand = new Command(OnAccountSelected);
+            SelectCommand = new Command(OnAccountSelected);
         }
 
         /// <summary>

@@ -1,13 +1,10 @@
 ﻿using Business;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Main.ViewModels
 {
     public class EditPeeViewModel : BaseViewModel
     {
-
-
         /// <summary>
         /// Label du compte
         /// </summary>
@@ -129,13 +126,13 @@ namespace Main.ViewModels
         private double _blocked = 0.0;
 
         /// <summary>
-        /// Enregistrer les soldes
+        /// Enregistrer 
         /// </summary>
-        public ICommand SaveBalancesCommand { get; }
+        public ICommand SaveCommand { get; }
 
         public EditPeeViewModel()
         {
-            SaveBalancesCommand = new Command(OnSave);
+            SaveCommand = new Command(OnSave);
         }
 
         /// <summary>

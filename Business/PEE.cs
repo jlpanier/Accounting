@@ -13,7 +13,7 @@ namespace Business
         public new static PEE Empty() => new PEE();
 
         /// <summary>
-        /// Chargement des item du compte bancaire
+        /// Valeur de la balance du PEE pour chaque mois
         /// </summary>
         public IEnumerable<PeeBalance> Balances
         {
@@ -30,7 +30,7 @@ namespace Business
         private IEnumerable<PeeBalance>? _balances;
 
         /// <summary>
-        /// Chargement des item du compte bancaire
+        /// Obtenir la balance du PEE à cette date
         /// </summary>
         public PeeBalance GetBalance(DateTime effectiveOn)
         {
@@ -41,7 +41,6 @@ namespace Business
             }
             return item;
         }
-
 
         public PEE()
         {

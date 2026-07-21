@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage 
-    x:Class="Main.Pages.EditPeePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewmodel="clr-namespace:Main.ViewModels"
     xmlns:converter="clr-namespace:Main.Converter"
-    Title="Saisir les soldes">
+    x:Class="Main.Pages.EditScpiPage"
+    Title="SCPI">
 
     <ContentPage.BindingContext>
-        <viewmodel:EditPeeViewModel />
+        <viewmodel:EditScpiViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -17,6 +17,14 @@
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="22">
+
+            <Label Text="{Binding Label}"
+                          FontSize="18"
+                          FontAttributes="Bold" />
+            <Label Text="{Binding AccountNo}"
+                          FontSize="18"
+                          FontAttributes="Bold" />
+
 
             <Border StrokeShape="RoundRectangle 24"
                     BackgroundColor="#EEF8E8"
@@ -30,55 +38,67 @@
                                 Format="dd/MM/yyyy" />
                 </VerticalStackLayout>
             </Border>
-            
+
             <!-- Carte Disponible -->
             <Border StrokeShape="RoundRectangle 24"
                     BackgroundColor="#E8F2FF"
                     Padding="16">
                 <VerticalStackLayout Spacing="6">
-                    <Label Text="Solde disponible"
+                    <Label Text="Nombre de parts"
                            FontSize="18"
                            FontAttributes="Bold" />
 
                     <Entry 
                        Placeholder="Disponible"
-                       Text="{Binding Disponible, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
+                       Text="{Binding NumberOfShares, Mode=TwoWay}"
                        Keyboard="Numeric"
                        VerticalOptions="Center" />
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Carte Retraite -->
             <Border StrokeShape="RoundRectangle 24"
                     BackgroundColor="#FFF4E8"
                     Padding="16">
                 <VerticalStackLayout Spacing="6">
-                    <Label Text="Solde retraite"
+                    <Label Text="Prix unitaire (€)"
                            FontSize="18"
                            FontAttributes="Bold" />
 
                     <Entry Placeholder="0,00 €"
                            Keyboard="Numeric"
-                           Text="{Binding Retirement, Mode=TwoWay}" />
+                           Text="{Binding UnitPrice, Mode=TwoWay, Converter={StaticResource DoubleConverter}}" />
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Carte Bloqué -->
             <Border StrokeShape="RoundRectangle 24"
-                    BackgroundColor="#FFE8E8"
+                    BackgroundColor="#FFF4E8"
                     Padding="16">
                 <VerticalStackLayout Spacing="6">
-                    <Label Text="Solde bloqué"
+                    <Label Text="Prix total (€)"
                            FontSize="18"
                            FontAttributes="Bold" />
 
-                    <Entry Placeholder="0,00 €"
+                    <Entry Placeholder="Calcul automatique"
                            Keyboard="Numeric"
-                           Text="{Binding Blocked, Mode=TwoWay}" />
+                           IsReadOnly="True"
+                           Text="{Binding TotalPrice, Mode=TwoWay, Converter={StaticResource DoubleConverter}}" />
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Bouton Enregistrer -->
+            <Border StrokeShape="RoundRectangle 24"
+                    BackgroundColor="#FFF4E8"
+                    Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Loyer"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <Entry Placeholder="loyer"
+                           Keyboard="Numeric"
+                           Text="{Binding Rent, Mode=TwoWay, Converter={StaticResource DoubleConverter}}" />
+                </VerticalStackLayout>
+            </Border>
+
             <Button Text="Enregistrer"
                     HeightRequest="52"
                     CornerRadius="14"

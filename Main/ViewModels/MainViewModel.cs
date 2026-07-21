@@ -123,7 +123,7 @@ namespace Main.ViewModels
         /// </summary>
         public async void OnAdd()
         {
-            await Shell.Current.GoToAsync(nameof(NewBankAccountPage));
+            await Shell.Current.GoToAsync(nameof(EditAccountPage));
             Load();
         }
 
@@ -137,10 +137,11 @@ namespace Main.ViewModels
             foreach (var item in items)
             {
                 if (item is BankAccount account) results.Add(new BankAccountViewModel(account, CurrentDate));
-                if (item is SavingAccount savingaccount) results.Add(new SavingAccountViewModel(savingaccount, CurrentDate));
-                if (item is AssuranceVie assurancevie) results.Add(new AssuranceVieViewModel(assurancevie, CurrentDate));
-                if (item is PEE pee) results.Add(new PeeViewModel(pee, CurrentDate));
-                if (item is OverviewAccounts overview) results.Add(new OverviewViewModel(overview));
+                else if (item is SavingAccount savingaccount) results.Add(new SavingAccountViewModel(savingaccount, CurrentDate));
+                else if (item is AssuranceVie assurancevie) results.Add(new AssuranceVieViewModel(assurancevie, CurrentDate));
+                else if (item is PEE pee) results.Add(new PeeViewModel(pee, CurrentDate));
+                else if (item is SCPI scpi) results.Add(new ScpiViewModel(scpi, CurrentDate));
+                else if (item is OverviewAccounts overview) results.Add(new OverviewViewModel(overview));
             }
             Accounts = new ObservableCollection<IBaseAccountViewModel>(results);
         }

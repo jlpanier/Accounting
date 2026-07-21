@@ -1,0 +1,115 @@
+<ContentPage
+    x:Class="Main.Pages.EditAccountPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:Main.ViewModels"
+    xmlns:converter="clr-namespace:Main.Converter"
+    Title="Compte bancaire"
+    >
+
+    <ContentPage.BindingContext>
+        <viewmodel:EditAccountViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:DoubleConverter x:Key="DoubleConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="22">
+
+            <Border StrokeShape="RoundRectangle 24"
+                    BackgroundColor="#EEF8E8"
+                    Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Compte bancaire "
+                           FontSize="18"
+                           FontAttributes="Bold" />
+                    <Entry 
+                           Grid.Column="1"
+                           Placeholder="Label"
+                           Text="{Binding Label}"
+                           VerticalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Carte Balance -->
+            <Border StrokeShape="RoundRectangle 24"
+                    BackgroundColor="#E8F2FF"
+                    Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Account Number"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <Entry 
+                            Grid.Column="1"
+                            Placeholder="Identifiant"
+                            Text="{Binding AccountNo}"
+                            />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <Border StrokeShape="RoundRectangle 24"
+                    BackgroundColor="#EEF8E8"
+                    Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Date de début"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <DatePicker Date="{Binding StartDate, Mode=TwoWay}"
+                                Format="dd/MM/yyyy" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border StrokeShape="RoundRectangle 24"
+                    BackgroundColor="#EEF8E8"
+                    Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Date de fin"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <DatePicker Date="{Binding EndDate, Mode=TwoWay}"
+                                Format="dd/MM/yyyy" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border StrokeShape="RoundRectangle 24"
+                    BackgroundColor="#EEF8E8"
+                    Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="🏷️ Type de compte" FontAttributes="Bold" />
+
+                    <Button 
+                        Margin="0,0,0,10"
+                        Text="{Binding SelectedAccountType, Converter={StaticResource AccountTypeToTextConverter}}"
+                        BackgroundColor="#EDEDED"
+                        TextColor="Black"
+                        CornerRadius="8"
+                        Opacity="10"
+                        HeightRequest="48"
+                        Command="{Binding TypeAccountCommand}">
+                        <Button.Shadow>
+                            <Shadow Brush="#50000000"
+                                Offset="0,12"
+                                Radius="10"
+                                Opacity="0.25" />
+                        </Button.Shadow>
+                    </Button>
+                </VerticalStackLayout>
+            </Border>
+            <!-- Bouton Enregistrer -->
+            <Button Text="Enregistrer"
+                    HeightRequest="52"
+                    CornerRadius="14"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding SaveCommand}" />
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>

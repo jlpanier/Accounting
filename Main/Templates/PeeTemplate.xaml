@@ -6,7 +6,7 @@
     <Border Margin="0,6" Padding="12" BackgroundColor="#E8F2FF" StrokeShape="RoundRectangle 24">
         <Border.GestureRecognizers>
             <TapGestureRecognizer 
-                Command="{Binding SelectAccountCommand}"
+                Command="{Binding SelectCommand}"
                 CommandParameter="{Binding}" />
         </Border.GestureRecognizers>
 

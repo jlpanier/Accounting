@@ -12,10 +12,11 @@ namespace Main
             var currentTheme = Application.Current!.RequestedTheme;
             ThemeSegmentedControl.SelectedIndex = currentTheme == AppTheme.Light ? 0 : 1;
 
-            Routing.RegisterRoute(nameof(NewBankAccountPage), typeof(NewBankAccountPage));
+            Routing.RegisterRoute(nameof(EditAccountPage), typeof(EditAccountPage));
             Routing.RegisterRoute(nameof(EditBalancePage), typeof(EditBalancePage));
             Routing.RegisterRoute(nameof(SelectTypeAccountPage), typeof(SelectTypeAccountPage));
             Routing.RegisterRoute(nameof(EditPeePage), typeof(EditPeePage));
+            Routing.RegisterRoute(nameof(EditScpiPage), typeof(EditScpiPage));
         }
 
         public static async Task DisplaySnackbarAsync(string message)
