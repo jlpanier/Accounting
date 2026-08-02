@@ -36,9 +36,15 @@ namespace Business
         {
             get
             {
-                return DatabaseAccess.Instance.GetMonthlyScpi(BankAccountId).Select(i => new ScpiBalance(i));
+                if (_balances == null)
+                {
+                    _balances = DatabaseAccess.Instance.GetMonthlyScpi(BankAccountId).Select(i => new ScpiBalance(i));
+                }
+                return _balances;
+
             }
         }
+        private IEnumerable<ScpiBalance>? _balances;
 
         /// <summary>
         /// Obtenir la balance du SCPI à cette date
@@ -58,5 +64,21 @@ namespace Business
             return item;
         }
 
+        /// <summary>
+        /// Ajout d'une item 
+        /// </summary>
+        public void AddBalance(DateTime effectiveOn, int numberOfShares, double unitPrice, double rente)
+        {
+            var item = Balances.FirstOrDefault(_ => _.EffectiveOn == effectiveOn);
+            if (item == null)
+            {
+                ScpiBalance.Create(BankAccountId, effectiveOn, numberOfShares, unitPrice, rente);
+                _balances = null; // force le rechargement de la liste des balances
+            }
+            else
+            {
+                item.Save(effectiveOn, numberOfShares, unitPrice, rente);
+            }
+        }
     }
 }

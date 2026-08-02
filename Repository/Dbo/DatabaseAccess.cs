@@ -38,17 +38,6 @@ namespace Repository.Dbo
         /// <summary>
         /// Compte bancaire lié 
         /// </summary>
-        public AccountEntity? GetBankAccountNo(string bankNo)
-        {
-            lock (dbLock)
-            {
-                return Db.Query<AccountEntity>("Select * from ACCOUNT WHERE AccountNo = ? ", bankNo).FirstOrDefault();
-            }
-        }
-
-        /// <summary>
-        /// Compte bancaire lié 
-        /// </summary>
         public AccountEntity? GetBankAccountId(int bankId)
         {
             lock (dbLock)
@@ -80,6 +69,17 @@ namespace Repository.Dbo
         }
 
         /// <summary>
+        /// Balances mensuelles d'un compte bancaire
+        /// </summary>
+        public IEnumerable<AccountBalanceEntity> GetMonthlyBalances(int id, DateTime effectiveOn)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<AccountBalanceEntity>("Select * from ACCOUNT_BALANCE WHERE BankAccountId = ? and EffectiveOn = ?", id, effectiveOn);
+            }
+        }
+
+        /// <summary>
         /// Balances mensuelles d'un plan epargne entreprise
         /// </summary>
         public IEnumerable<PeeEntity> GetMonthlyPee(int id)
@@ -87,6 +87,17 @@ namespace Repository.Dbo
             lock (dbLock)
             {
                 return Db.Query<PeeEntity>("Select * from PEE WHERE BankAccountId = ?", id);
+            }
+        }
+
+        /// <summary>
+        /// Balances mensuelles d'un plan epargne entreprise
+        /// </summary>
+        public IEnumerable<PeaEntity> GetMonthlyPea(int id)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<PeaEntity>("Select * from PEA WHERE BankAccountId = ?", id);
             }
         }
 

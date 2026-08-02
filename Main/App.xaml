@@ -9,7 +9,7 @@
 
             <Color x:Key="PrimaryColor">#6750A4</Color>
             <Color x:Key="OnPrimaryColor">White</Color>
-            <Color x:Key="SurfaceColor">#F7F2FA</Color>
+            <Color x:Key="SurfaceColor">White</Color>
 
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="#222" />

@@ -113,6 +113,9 @@
 	  <MauiXaml Update="Pages\EditScpiPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Templates\PeaTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Templates\PeeTemplate.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

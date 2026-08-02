@@ -8,7 +8,14 @@ namespace Main.Converter
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
             => value?.ToString() == parameter?.ToString();
 
-        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-            => (bool)value ? parameter : null;
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            object? result = null;
+            if (value is bool val)
+            {
+                result = parameter;
+            }
+            return result;
+        }
     }
 }

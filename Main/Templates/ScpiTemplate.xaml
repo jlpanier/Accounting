@@ -1,68 +1,61 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView x:Class="Main.Templates.ScpiTemplate"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ContentView 
+    x:Class="Main.Templates.ScpiTemplate"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Border Margin="0,6" Padding="12" BackgroundColor="#FFF8E1" StrokeShape="RoundRectangle 24">
-        <Border.GestureRecognizers>
-            <TapGestureRecognizer 
-                Command="{Binding SelectCommand}"
-                CommandParameter="{Binding}" />
-        </Border.GestureRecognizers>
+    <Grid Margin="24,12,24,0"  RowDefinitions="Auto,Auto,Auto">
 
-        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto">
-            <Label Grid.Column="0" Grid.Row="0"  Text="{Binding Label}" FontSize="18" FontAttributes="Bold" />
-            <Label Grid.Column="0" Grid.Row="1" Text="{Binding AccountNo}" />
+        <Grid Grid.Row="0" >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer 
+                    Command="{Binding ClickEditAccountCommand}"
+                    CommandParameter="{Binding}" />
+            </Grid.GestureRecognizers>
 
-            <Label Grid.Column="0" Grid.Row="2" Text="Nombre de parts" FontSize="18" FontAttributes="Bold" />
-            <Label Grid.Column="1" Grid.Row="2" Grid.RowSpan="2"
-                   Text="{Binding NumberOfShares}"
-                   FontSize="14"
-                   TextColor="{Binding BalanceColor}"
-                   HorizontalTextAlignment="End"
-                   VerticalTextAlignment="Center" />
+            <Grid ColumnDefinitions="Auto, Auto">
+                <Label Grid.Column="0"
+                       Text="{Binding Label}"
+                       Margin="0,0,5,0"
+                       FontSize="18"
+                       FontAttributes="Bold" />
 
-            <Label Grid.Column="0" Grid.Row="3" Text="Prix / parts " FontSize="18" FontAttributes="Bold" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.RowSpan="2"
-                   Text="{Binding UnitPrice, StringFormat='{0:N2} €'}"
-                   FontSize="14"
-                   TextColor="{Binding BalanceColor}"
-                   HorizontalTextAlignment="End"
-                   VerticalTextAlignment="Center" />
-            
-            <Label Grid.Column="0" Grid.Row="4" Text="Investissement" FontSize="18" FontAttributes="Bold" />
-            <Label Grid.Column="1" Grid.Row="4" Grid.RowSpan="2"
-                   Text="{Binding TotalPrice, StringFormat='{0:N2} €'}"
-                   FontSize="14"
-                   TextColor="{Binding BalanceColor}"
-                   HorizontalTextAlignment="End"
-                   VerticalTextAlignment="Center" />
-
-            <Label Grid.Column="0" Grid.Row="5" Text="Loyer" FontSize="18" FontAttributes="Bold" />
-            <Label Grid.Column="1" Grid.Row="5" Grid.RowSpan="2"
-                   Text="{Binding Rent, StringFormat='{0:N2} €'}"
-                   FontSize="14"
-                   TextColor="{Binding BalanceColor}"
-                   HorizontalTextAlignment="End"
-                   VerticalTextAlignment="Center" />
-
-            <Label Grid.Column="0" Grid.Row="6" Text="Loyer annuel" FontSize="18" FontAttributes="Bold" />
-            <Label Grid.Column="1" Grid.Row="6" Grid.RowSpan="2"
-                   Text="{Binding AnnuelRent, StringFormat='{0:N2} €'}"
-                   FontSize="14"
-                   TextColor="{Binding BalanceColor}"
-                   HorizontalTextAlignment="End"
-                   VerticalTextAlignment="Center" />
-
-            <Label Grid.Column="0" Grid.Row="7" Text="Rendement" FontSize="18" FontAttributes="Bold" />
-            <Label Grid.Column="1" Grid.Row="7" Grid.RowSpan="2"
-                   Text="{Binding Rendement, StringFormat='{0:N2} %'}"
-                   FontSize="14"
-                   TextColor="{Binding BalanceColor}"
-                   HorizontalTextAlignment="End"
-                   VerticalTextAlignment="Center" />
+                <Label Grid.Column="1"
+                       Text="{Binding AccountNo}"
+                       FontSize="14"
+                       VerticalTextAlignment="Center" />
+            </Grid>
         </Grid>
-    </Border>
+
+        <Grid Grid.Row="1" >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer 
+                    Command="{Binding ClickEditBalanceCommand}"
+                    CommandParameter="{Binding}" />
+            </Grid.GestureRecognizers>
+
+            <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto, Auto">
+
+                <Label Grid.Column="0" Grid.Row="0" 
+                       Text="{Binding Ligne1}" 
+                       FontSize="14" 
+                       HorizontalTextAlignment="End"
+                       FontAttributes="None" />
+                <Label Grid.Column="0" Grid.Row="1" 
+                       Text="{Binding Ligne2}" 
+                       FontSize="14" 
+                       HorizontalTextAlignment="End"
+                       FontAttributes="None" />
+            </Grid>
+        </Grid>
+
+
+        <BoxView Grid.Row="2" 
+                 HeightRequest="1"
+                 BackgroundColor="#E0E0E0"
+                 Margin="0,12,0,0" />
+    </Grid>
+
 
 </ContentView>
 

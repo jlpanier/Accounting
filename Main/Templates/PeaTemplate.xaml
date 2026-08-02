@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView x:Class="Main.Templates.PeaTemplate"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid Margin="24,12,24,0"  RowDefinitions="Auto,Auto,Auto">
+
+        <Grid Grid.Row="0" >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer 
+                    Command="{Binding ClickAccountCommand}"
+                    CommandParameter="{Binding}" />
+            </Grid.GestureRecognizers>
+
+            <Grid ColumnDefinitions="Auto, Auto">
+                <Label Grid.Column="0"
+                       Text="{Binding Label}"
+                       Margin="0,0,5,0"
+                       FontSize="18"
+                       FontAttributes="Bold" />
+
+                <Label Grid.Column="1"
+                       Text="{Binding AccountNo}"
+                       FontSize="14"
+                       VerticalTextAlignment="Center" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer 
+                    Command="{Binding ClickBalanceCommand}"
+                    CommandParameter="{Binding}" />
+            </Grid.GestureRecognizers>
+
+            <Grid ColumnDefinitions="*,*,*,*,*" RowDefinitions="Auto, Auto, Auto, Auto, Auto">
+
+                <Label Grid.Column="0" Grid.Row="1"
+                       Text="Libre"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="0" Grid.Row="2"
+                       Text="Profilé"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="1" Grid.Row="0"
+                       Text="Investissement"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="1" Grid.Row="1" 
+                       Text="{Binding InvestLibre, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="1" Grid.Row="2" 
+                       Text="{Binding InvestProfile, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="1" Grid.Row="4" 
+                       Text="{Binding Investissement, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="2" Grid.Row="0"
+                       Text="Titre"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="2" Grid.Row="1"
+                       Text="{Binding TitreLibre, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="2" Grid.Row="2" 
+                       Text="{Binding TitreProfile, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="2" Grid.Row="4" 
+                       Text="{Binding Titre, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="3" Grid.Row="0"
+                       Text="Liquidité"
+                       Margin="0"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="3" Grid.Row="4" 
+                       Text="{Binding Cash, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="4" Grid.Row="0"
+                       Text="Total"
+                       Margin="0"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="4" Grid.Row="4" 
+                       Text="{Binding Total, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+                
+                <BoxView Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="4" BackgroundColor="#E0E0E0" HeightRequest="1" Margin="30,0,30,0" />
+            </Grid>
+        </Grid>
+
+
+        <BoxView Grid.Row="2" 
+                 HeightRequest="1"
+                 BackgroundColor="#E0E0E0"
+                 Margin="0,12,0,10" />
+    </Grid>
+
+</ContentView>

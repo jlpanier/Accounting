@@ -11,10 +11,12 @@ public partial class EditScpiPage : ContentPage, IQueryAttributable
     {
         if (BindingContext is EditScpiViewModel vm)
         {
-            if (query.TryGetValue("item", out var objAccount) && objAccount is Business.SCPI scpi
-                && query.TryGetValue("effectiveOn", out var objEffectiveOn) && objEffectiveOn is DateTime effecetiveOn)
+            if (query.TryGetValue("BankAccountId", out var objId) && objId is int bankAccountId)
             {
-                vm.Init(scpi, effecetiveOn);
+                if (query.TryGetValue("EffectiveOn", out var objDate) && objDate is DateTime dt)
+                {
+                    vm.Init(bankAccountId, dt);
+                }
             }
         }
     }

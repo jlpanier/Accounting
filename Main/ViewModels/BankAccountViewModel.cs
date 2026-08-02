@@ -1,5 +1,4 @@
 ﻿using Business;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -7,26 +6,19 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class BankAccountViewModel : INotifyPropertyChanged, IBaseAccountViewModel
+    public class BankAccountViewModel : BaseViewModel
     {
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler? handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
+        #region Propriétés
 
         /// <summary>
-        /// Evenement de sélection d'un compte
+        /// Evenement pour édition du compte
         /// </summary>
-        public ICommand SelectCommand { get; }
+        public ICommand ClickEditAccountCommand => new Command(OnEditAccount);
+
+        /// <summary>
+        /// Evenement pour édition de la balance pour cette période
+        /// </summary>
+        public ICommand ClickEditBalanceCommand => new Command(OnEditBalance);
 
         /// <summary>
         /// Label du compte
@@ -79,82 +71,56 @@ namespace Main.ViewModels
         }
         public double _balance;
 
+        /// <summary>
+        /// Référence du compte
+        /// </summary>
+        public readonly int BankAccountId;
 
         /// <summary>
-        /// Compte
+        /// Date courante de la balance
         /// </summary>
-        public BankAccount? BankAccount
-        {
-            get => _bankAccount;
-            set
-            {
-                if (_bankAccount != value)
-                {
-                    _bankAccount = value;
-                    Label = _bankAccount.Label;
-                    AccountNo = _bankAccount.AccountNo;
-                    Balance = _bankAccount.GetBalanceOn(CurrentDate);
-                    NotifyPropertyChanged(nameof(BankAccount));
-                }
-            }
-        }
-        public BankAccount? _bankAccount;
+        public DateTime EffectiveOn;
 
-        /// <summary>
-        /// Couleur du texte de la balance : vert si positif, rouge si négatif
-        /// </summary>
-        public Color BalanceColor => Balance >= 0 ? Colors.DarkGreen : Colors.DarkRed;
-
-        public DateTime CurrentDate;
+        #endregion
 
         public BankAccountViewModel()
         {
-            SelectCommand = new Command(OnAccountSelected);
-            CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public BankAccountViewModel(BankAccount account, DateTime dt)
+        public BankAccountViewModel(int bankAccountId, DateTime dt)
         {
-            BankAccount = account;
-            CurrentDate = dt;
-            var item = GetBalance();
-            Balance = item.Balance;
-            SelectCommand = new Command(OnAccountSelected);
+            EffectiveOn = dt;
+            BankAccountId = bankAccountId;
+            if (BankAccount.GetById(bankAccountId) is BankAccount account)
+            {
+                Label = account.Label;
+                AccountNo = account.AccountNo;
+                Balance = account.GetBalanceOn(EffectiveOn);
+             }
         }
 
         /// <summary>
-        /// Evenement de sélection d'un compte
+        /// Edition du compte
         /// </summary>
-        private async void OnAccountSelected()
+        private async void OnEditAccount()
         {
-            var item = GetBalance();
+            await Shell.Current.GoToAsync($"{nameof(EditAccountPage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = BankAccountId,
+            });
+        }
 
+        /// <summary>
+        /// Edition de la balance pour cette période
+        /// </summary>
+        private async void OnEditBalance()
+        {
             await Shell.Current.GoToAsync($"{nameof(EditBalancePage)}", new Dictionary<string, object>
             {
-                ["item"] = item
+                ["BankAccountId"] = BankAccountId,
+                ["EffectiveOn"] = EffectiveOn,
             });
-       }
-
-        private BankAccountBalance GetBalance()
-        {
-            var item = BankAccount.Balances.FirstOrDefault(_=>_.EffectiveOn == CurrentDate);
-            if (item == null)
-            {
-                item = BankAccountBalance.Create(BankAccount.BankAccountId, CurrentDate, 0);
-            }
-            return item;
-        }
-
-        /// <summary>
-        /// Suppression du compte bancaire
-        /// </summary>
-        public void Delete()
-        {
-            var item = BankAccount.GetByAccountNo(AccountNo);
-            if (item != null)
-            {
-                item.Delete();
-            }
         }
     }
 }

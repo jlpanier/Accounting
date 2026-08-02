@@ -25,6 +25,11 @@ namespace Main.Templates
         /// <summary>
         /// Template compte d'épargne
         /// </summary>
+        public required DataTemplate PeaTemplate { get; set; }
+
+        /// <summary>
+        /// Template compte d'épargne
+        /// </summary>
         public required DataTemplate ScpiTemplate { get; set; }
 
         /// <summary>
@@ -37,8 +42,9 @@ namespace Main.Templates
             return item switch
             {
                 BankAccountViewModel => BankTemplate,
-                MonthlyBalancesViewModel => SavingTemplate,
+//                MonthlyBalancesViewModel => SavingTemplate,
                 PeeViewModel => PeeTemplate,
+                PeaViewModel => PeaTemplate,
                 ScpiViewModel => ScpiTemplate,
                 OverviewViewModel => OverviewTemplate,
                 _ => BankTemplate

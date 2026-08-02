@@ -1,5 +1,4 @@
 ﻿using Business;
-using System.ComponentModel;
 using System.Windows.Input;
 using static Business.BaseAccount;
 
@@ -8,31 +7,27 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion des comptes bancaires
     /// </summary>
-    public class EditAccountViewModel : BaseViewModel, INotifyPropertyChanged
+    public class EditAccountViewModel : BaseViewModel
     {
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler? handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         /// <summary>
         /// Appel pour sélection du type de compte
         /// </summary>
-        public ICommand TypeAccountCommand { get; set; }
+        public ICommand TypeAccountCommand => new Command(OnTypeAccount);
 
         /// <summary>
         /// Sauvegarde des données
         /// </summary>
-        public ICommand SaveCommand { get; set; }
+        public ICommand SaveCommand => new Command(OnSave);
+
+        /// <summary>
+        /// Sauvegarde des données
+        /// </summary>
+        public ICommand CancelCommand => new Command(OnCancel);
+
+        /// <summary>
+        /// Sauvegarde des données
+        /// </summary>
+        public ICommand DeleteCommand => new Command(OnDelete);
 
         /// <summary>
         /// Type de compte
@@ -95,8 +90,8 @@ namespace Main.ViewModels
             {
                 if (_startDate != value)
                 {
-                    NotifyPropertyChanged(nameof(StartDate));
                     _startDate = value;
+                    NotifyPropertyChanged(nameof(StartDate));
                 }
             }
         }
@@ -119,31 +114,30 @@ namespace Main.ViewModels
         }
         private DateTime _endDate = DateTime.Today;
 
-
+        /// <summary>
+        /// Référence du compte
+        /// </summary>
+        private int BankAccountId;
+        
         public EditAccountViewModel()
         {
-            SaveCommand = new Command(OnSave);
-            TypeAccountCommand = new Command(OnTypeAccount);
         }
 
         /// <summary>
         /// Initialisation des données
         /// </summary>
-        public void Init(BankAccount item)
+        public void Init(int bankAccountId)
         {
-            Label = item.Label;
-            AccountNo = item.AccountNo;
-            StartDate = item.StartOn;
-            EndDate = item.EndOn;
-            SelectedAccountType = item.Type;
-        }
-
-        /// <summary>
-        /// Initialisation des données
-        /// </summary>
-        public void Init(AccountType item)
-        {
-            SelectedAccountType = item;
+            BankAccountId = bankAccountId;
+            var account = BankAccount.GetById(BankAccountId);
+            if (account is IBaseAccounts item)
+            {
+                Label = item.Label;
+                AccountNo = item.AccountNo;
+                StartDate = item.StartOn;
+                EndDate = item.EndOn;
+                SelectedAccountType = item.Type;
+            }
         }
 
         /// <summary>
@@ -190,10 +184,18 @@ namespace Main.ViewModels
         {
             try
             {
-                BankAccount.Update(Label.Trim(), AccountNo, StartDate, EndDate, SelectedAccountType);
+                var account = BankAccount.GetById(BankAccountId);
+                if (account is IBaseAccounts item)
+                {
+                    item.Save(AccountNo, Label, StartDate, EndDate, SelectedAccountType);
+                }
+                else
+                {
+                    BankAccount.Create(AccountNo, Label, StartDate, EndDate, SelectedAccountType);
+                }
                 await Shell.Current.GoToAsync(".."); // Retour à la page précédente
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // Préférer l'utilisation de la fenêtre courante (Windows[0].Page) plutôt que Application.Current.MainPage (obsolète).
                 var app = Application.Current;
@@ -216,6 +218,27 @@ namespace Main.ViewModels
                 // Si aucune fenêtre/page disponible, consigner l'erreur (évite les déréférencements null)
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public async void OnCancel()
+        {
+            await Shell.Current.GoToAsync(".."); // Retour à la page précédente
+        }
+
+        /// <summary>
+        /// Suppression
+        /// </summary>
+        public async void OnDelete()
+        {
+            var account = BankAccount.GetById(BankAccountId);
+            if (account is IBaseAccounts item)
+            {
+                item.Delete();
+            }
+            await Shell.Current.GoToAsync(".."); // Retour à la page précédente
         }
     }
 }

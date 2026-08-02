@@ -5,6 +5,13 @@ namespace Main.ViewModels
 {
     public class EditPeeViewModel : BaseViewModel
     {
+        #region Propriétés
+
+        /// <summary>
+        /// Enregistrer 
+        /// </summary>
+        public ICommand SaveCommand => new Command(OnSave);
+
         /// <summary>
         /// Label du compte
         /// </summary>
@@ -39,7 +46,6 @@ namespace Main.ViewModels
         }
         public int _bankAccountId;
 
-
         /// <summary>
         /// Numéro du compte
         /// </summary>
@@ -67,8 +73,8 @@ namespace Main.ViewModels
             {
                 if (_effectiveOn != value)
                 {
-                    NotifyPropertyChanged(nameof(EffectiveOn));
                     _effectiveOn = value;
+                    NotifyPropertyChanged(nameof(EffectiveOn));
                 }
             }
         }
@@ -125,45 +131,53 @@ namespace Main.ViewModels
         }
         private double _blocked = 0.0;
 
-        /// <summary>
-        /// Enregistrer 
-        /// </summary>
-        public ICommand SaveCommand { get; }
+        #endregion
 
         public EditPeeViewModel()
         {
-            SaveCommand = new Command(OnSave);
         }
 
         /// <summary>
         /// Initialisation des données
         /// </summary>
-        public void Init(PeeBalance item)
+        public void Init(int bankAccountId, DateTime effectiveOn)
         {
-            var bankAccount = BankAccount.GetByAccountId(item.BankAccountId);
-            if (bankAccount != null && bankAccount.Type == BaseAccount.AccountType.PEE)
+            var bankAccount = BankAccount.GetById(bankAccountId);
+            if (bankAccount is PEE account)
             {
-                BankAccountId = item.BankAccountId;
-                Label = bankAccount.Label;
-                AccountNo = bankAccount.AccountNo;
-                EffectiveOn = item.EffectiveOn;
-                Disponible = item.Disponible;
-                Blocked = item.Blocked;
-                Retirement = item.Retirement;
+                BankAccountId = account.BankAccountId;
+                Label = account.Label;
+                AccountNo = account.AccountNo;
+                EffectiveOn = effectiveOn;
+                var balance = account.GetBalance(effectiveOn);
+                if (balance != null)
+                {
+                    Disponible = balance.Disponible;
+                    Blocked = balance.Blocked;
+                    Retirement = balance.Retirement;
+                }
             }
         }
 
+        /// <summary>
+        /// Sauvegarde de la balance
+        /// </summary>
         private async void OnSave()
         {
             var effectiveOn = new DateTime(EffectiveOn.Year, EffectiveOn.Month, 1);
-            var bankAccount = PEE.GetByAccountId(BankAccountId);
-            if (bankAccount is PEE pee)
+            var bankAccount = BankAccount.GetById(BankAccountId);
+            if (bankAccount is PEE account)
             {
-                var balance = pee.GetBalance(effectiveOn);
-                balance.Save(effectiveOn, Disponible, Retirement, Blocked);
+                var balance = account.GetBalance(effectiveOn);
+                if (balance != null)
+                {
+                    balance.Save(Disponible, Retirement, Blocked);
+                }
+                else
+                {
+                    account.AddBalance(effectiveOn, Disponible, Retirement, Blocked);
+                }
             }
-
-            // TODO: sauvegarde dans ton repository
             await Shell.Current.GoToAsync(".."); // Retour à la page précédente
         }
     }
