@@ -1,5 +1,4 @@
 ﻿using Business;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -7,26 +6,19 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class ScpiViewModel : INotifyPropertyChanged, IBaseAccountViewModel
+    public class ScpiViewModel : BaseViewModel
     {
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler? handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
+        #region Propriétés
 
         /// <summary>
-        /// Evenement de sélection d'un compte
+        /// Evenement pour édition du compte
         /// </summary>
-        public ICommand SelectCommand { get; }
+        public ICommand ClickEditAccountCommand => new Command(OnEditAccount);
+
+        /// <summary>
+        /// Evenement pour édition de la previous pour cette période
+        /// </summary>
+        public ICommand ClickEditBalanceCommand => new Command(OnEditBalance);
 
         /// <summary>
         /// Label du compte
@@ -164,6 +156,46 @@ namespace Main.ViewModels
         }
         public double _rendement = 0.0;
 
+        /// <summary>
+        /// Ligne1
+        /// </summary>
+        public string Ligne1
+        {
+            get => _ligne1;
+            set
+            {
+                if (_ligne1 != value)
+                {
+                    _ligne1 = value;
+                    NotifyPropertyChanged(nameof(Ligne1));
+                }
+            }
+        }
+        public string _ligne1 = "";
+
+        /// <summary>
+        /// Ligne2
+        /// </summary>
+        public string Ligne2
+        {
+            get => _ligne2;
+            set
+            {
+                if (_ligne2 != value)
+                {
+                    _ligne2 = value;
+                    NotifyPropertyChanged(nameof(Ligne2));
+                }
+            }
+        }
+        public string _ligne2 = "";
+
+        /// <summary>
+        /// Date courante
+        /// </summary>
+        public DateTime EffectiveOn;
+
+        #endregion
 
         /// <summary>
         /// Compte
@@ -184,30 +216,42 @@ namespace Main.ViewModels
         }
         public SCPI _item = SCPI.Empty();
 
-        /// <summary>
-        /// Couleur du texte de la balance : vert si positif, rouge si négatif
-        /// </summary>
-        public Color BalanceColor => NumberOfShares >= 0 ? Colors.DarkGreen : Colors.DarkRed;
-
-        public DateTime CurrentDate;
-
         public ScpiViewModel()
         {
-            SelectCommand = new Command(OnSelected);
-            CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
         public ScpiViewModel(SCPI account, DateTime dt)
         {
             Item = account;
-            CurrentDate = dt;
-            var balance = Item.GetBalance(CurrentDate);
+            EffectiveOn = dt;
+
+            NumberOfShares = 0;
+            TotalPrice = 0;
+            UnitPrice = 0;
+            Rent = 0;
+            var balance = Item.GetBalance(EffectiveOn);
             if (balance==null)
             {
-                NumberOfShares = 0;
-                TotalPrice = 0;
-                UnitPrice = 0;
-                Rent = 0;
+                var previous = Item.GetBalance(EffectiveOn.AddMonths(-1));
+                if (previous==null)
+                {
+                    var next = Item.GetBalance(EffectiveOn.AddMonths(1));
+                    if (next != null)
+                    {
+                        NumberOfShares = next.NumberOfShares;
+                        TotalPrice = next.TotalPrice;
+                        UnitPrice = next.UnitPrice;
+                        Rent = next.Rent;
+                    }
+                }
+                else
+                {
+                    NumberOfShares = previous.NumberOfShares;
+                    TotalPrice = previous.TotalPrice;
+                    UnitPrice = previous.UnitPrice;
+                    Rent = previous.Rent;
+                }
             }
             else
             {
@@ -216,25 +260,34 @@ namespace Main.ViewModels
                 UnitPrice = balance.UnitPrice;
                 Rent = balance.Rent;
             }
-            AnnuelRent = account.GetYearlyRent(CurrentDate);
+            AnnuelRent = account.GetYearlyRent(EffectiveOn);
             Rendement = TotalPrice>0 ? 100 * AnnuelRent / TotalPrice : 0.0;
-            SelectCommand = new Command(OnSelected);
+            Ligne1 = $"{NumberOfShares} parts x {UnitPrice:N2} € = {TotalPrice:N2} €";
+            Ligne2 = $"Loyer {AnnuelRent-Rent:N2} € + {Rent:N2} € = {AnnuelRent:N2} € → {Rendement:N2} %";
         }
 
         /// <summary>
-        /// Evenement de sélection d'un compte : affichage de la page d'édition de la balance
+        /// Edition du compte
         /// </summary>
-        private async void OnSelected()
+        private async void OnEditAccount()
         {
-            await Shell.Current.GoToAsync($"{nameof(EditScpiPage)}", new Dictionary<string, object>
+            await Shell.Current.GoToAsync($"{nameof(EditAccountPage)}", new Dictionary<string, object>
             {
-                ["item"] = Item,
-                ["effectiveOn"] = CurrentDate
-
+                ["BankAccountId"] = Item?.BankAccountId ?? 0,
             });
         }
 
-
+        /// <summary>
+        /// Edition de la previous pour cette période
+        /// </summary>
+        private async void OnEditBalance()
+        {
+            await Shell.Current.GoToAsync($"{nameof(EditScpiPage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = Item?.BankAccountId ?? 0,
+                ["EffectiveOn"] = EffectiveOn,
+            });
+        }
     }
 
 }

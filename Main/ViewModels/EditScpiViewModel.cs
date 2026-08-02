@@ -1,4 +1,5 @@
 ﻿using Business;
+using Repository.Dbo;
 using Syncfusion.Maui.GridCommon.Collections.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -90,18 +91,24 @@ namespace Main.ViewModels
         /// <summary>
         /// Initialisation des données
         /// </summary>
-        public void Init(SCPI item, DateTime effectiveOn)
+        public void Init(int bankAccountId, DateTime effectiveOn)
         {
-            BankAccountId = item.BankAccountId;
-            Label = item.Label;
-            AccountNo = item.AccountNo;
+            BankAccountId = bankAccountId;
             EffectiveOn = effectiveOn;
-            var balance = item.GetBalance(effectiveOn);
-            if (balance != null)
+            var account = BaseAccount.GetById(BankAccountId);
+            if (account is SCPI item)
             {
-                NumberOfShares = balance.NumberOfShares;
-                UnitPrice = balance.UnitPrice;
-                Rent = balance.Rent;
+                Label = item.Label;
+                AccountNo = item.AccountNo;
+                EffectiveOn = effectiveOn;
+                var balance = item.GetBalance(effectiveOn);
+                if (balance != null)
+                {
+                    NumberOfShares = balance.NumberOfShares;
+                    UnitPrice = balance.UnitPrice;
+                    Rent = balance.Rent;
+                }
+
             }
         }
 
@@ -116,19 +123,18 @@ namespace Main.ViewModels
         private async void OnSave()
         {
             var effectiveOn = new DateTime(EffectiveOn.Year, EffectiveOn.Month, 1);
-            var bankAccount = SCPI.GetByAccountId(BankAccountId);
-            if (bankAccount is SCPI item)
+            var item = SCPI.GetById(BankAccountId);
+            if (item is SCPI account)
             {
-                var balance = item.GetBalance(effectiveOn);
+                var balance = account.GetBalance(effectiveOn);
                 if (balance != null)
                 {
                     balance.Save(effectiveOn, NumberOfShares, UnitPrice, Rent);
                 }
                 else
                 {
-                    ScpiBalance.Create(BankAccountId, effectiveOn, NumberOfShares, UnitPrice, Rent);
+                    account.AddBalance(effectiveOn, NumberOfShares, UnitPrice, Rent);
                 }
-
             }
             // TODO: sauvegarde dans ton repository
             await Shell.Current.GoToAsync(".."); // Retour à la page précédente

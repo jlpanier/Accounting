@@ -11,7 +11,7 @@ namespace Business
         /// <summary>
         /// Création d'une nouvelle entrée du solde
         /// </summary>
-        public static BankAccountBalance Create(int bankAccountId, DateTime effectiveOn, double balance)
+        public static void Create(int bankAccountId, DateTime effectiveOn, double balance)
         {
             var item = new AccountBalanceEntity
             {
@@ -21,7 +21,6 @@ namespace Business
                 DateMaj = DateTime.Now
             };
             DatabaseAccess.Instance.Add(item);
-            return new BankAccountBalance(item);
         }
 
         /// <summary>

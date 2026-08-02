@@ -6,8 +6,13 @@ namespace Business
     /// <summary>
     /// Bilan global : épargne disponible, bloquée ou disponible à la retraite
     /// </summary>
-    public class OverviewAccounts: IBaseAccounts
+    public class OverviewAccounts
     {
+        /// <summary>
+        /// Référence du compte bancaire
+        /// </summary>
+        public int BankAccountId => 0;
+
         /// <summary>
         /// Epargne disponible
         /// </summary>
@@ -33,6 +38,10 @@ namespace Business
         public string Label => "Overview";
 
         public string AccountNo => "Overview";
+
+        public DateTime StartOn => DateTime.Now;
+
+        public DateTime EndOn => DateTime.Now;
 
         public AccountType Type => AccountType.Overview;
     }

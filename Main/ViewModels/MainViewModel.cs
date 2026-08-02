@@ -48,6 +48,7 @@ namespace Main.ViewModels
                 {
                     _currentDate = value;
                     MonthLabel = _currentDate.ToString("MMMM yyyy", new System.Globalization.CultureInfo("fr-FR"));
+                    PeriodLabel = $"{_currentDate.AddMonths(-1).ToString("dd/MM/yyyy")} \u2192 {_currentDate.ToString("dd/MM/yyyy")}";
                     NotifyPropertyChanged(nameof(CurrentDate));
                 }
             }
@@ -70,6 +71,23 @@ namespace Main.ViewModels
             }
         }
         private string _monthLabel = "";
+
+        /// <summary>
+        /// Label de la période 
+        /// </summary>
+        public string PeriodLabel
+        {
+            get => _periodLabel;
+            set
+            {
+                if (_periodLabel != value)
+                {
+                    _periodLabel = value;
+                    NotifyPropertyChanged(nameof(PeriodLabel));
+                }
+            }
+        }
+        private string _periodLabel = "";
 
         /// <summary>
         /// Liste des comptes
@@ -133,13 +151,13 @@ namespace Main.ViewModels
         public async void Load()
         {
             var results = new List<IBaseAccountViewModel>();
-            var items = BankAccount.GetAll(CurrentDate);
-            foreach (var item in items)
+            foreach (var item in BaseAccount.Accounts)
             {
-                if (item is BankAccount account) results.Add(new BankAccountViewModel(account, CurrentDate));
+                if (item is BankAccount account) results.Add(new BankAccountViewModel(account.BankAccountId, CurrentDate));
                 else if (item is SavingAccount savingaccount) results.Add(new SavingAccountViewModel(savingaccount, CurrentDate));
                 else if (item is AssuranceVie assurancevie) results.Add(new AssuranceVieViewModel(assurancevie, CurrentDate));
                 else if (item is PEE pee) results.Add(new PeeViewModel(pee, CurrentDate));
+                else if (item is PEA pea) results.Add(new PeaViewModel(pea, CurrentDate));
                 else if (item is SCPI scpi) results.Add(new ScpiViewModel(scpi, CurrentDate));
                 else if (item is OverviewAccounts overview) results.Add(new OverviewViewModel(overview));
             }

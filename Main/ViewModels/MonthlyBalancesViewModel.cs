@@ -154,31 +154,6 @@ namespace Main.ViewModels
         /// <summary>
         /// Chargement des balances du compte 
         /// </summary>
-        public async void Load(string accountno)
-        {
-            var account = BaseAccount.GetByAccountNo(accountno);
-            if (account!=null)
-            {
-                switch (account.Type)
-                {
-                    case BaseAccount.AccountType.Cheque:
-                        BankAccount = (BankAccount)account;
-                        break;
-                    case BaseAccount.AccountType.Saving:
-                        BankAccount = (SavingAccount)account;
-                        break;
-                    case BaseAccount.AccountType.AssuranceVie:
-                        BankAccount = (AssuranceVie)account;
-                        break;
-                }
-
-                Load();
-            }
-        }
-
-        /// <summary>
-        /// Chargement des balances du compte 
-        /// </summary>
         public async void Load()
         {
             System.Diagnostics.Debug.Assert(BankAccount != null);

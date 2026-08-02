@@ -30,10 +30,57 @@ namespace Business
             Overview
         }
 
+        #region Propriétés
+
         /// <summary>
         /// Liste de tous les comptes bancaires et ajout d'un bilan
         /// </summary>
-        public static List<IBaseAccounts> GetAll(DateTime effectiveOn) 
+        public static List<IBaseAccounts> Accounts
+        {
+            get
+            {
+                if (!_accounts.Any())
+                {
+                    _accounts = new List<IBaseAccounts>();
+                    var items = DatabaseAccess.Instance.GetAccounts();
+
+                    foreach (var item in items)
+                    {
+                        switch ((AccountType)item.Type)
+                        {
+                            case AccountType.AssuranceVie:
+                                _accounts.Add(AssuranceVie.New(item));
+                                break;
+                            case AccountType.PEA:
+                                _accounts.Add(PEA.New(item));
+                                break;
+                            case AccountType.PEE:
+                                _accounts.Add(PEE.New(item));
+                                break;
+                            case AccountType.Saving:
+                                _accounts.Add(SavingAccount.New(item));
+                                break;
+                            case AccountType.SCPI:
+                                _accounts.Add(SCPI.New(item));
+                                break;
+                            case AccountType.Cheque:
+                            default:
+                                _accounts.Add(BankAccount.New(item));
+                                break;
+                        }
+                    }
+                }
+                return _accounts;
+            }
+        }
+        private static List<IBaseAccounts> _accounts = new List<IBaseAccounts>();
+
+        #endregion
+
+        /// <summary>
+        /// Liste de tous les comptes bancaires et ajout d'un bilan
+        /// </summary>
+        private static List<IBaseAccounts> GetAll(DateTime effectiveOn) 
         {
             double disponible = 0.0;
             double blocked = 0.0;
@@ -52,6 +99,11 @@ namespace Business
                         bankaccount = assurancevie;
                         break;
                     case AccountType.PEA:
+                        var pea = new PEA(item);
+                        var peabalance = pea.GetBalance(effectiveOn);
+                        blocked += peabalance.Cash + peabalance.AmountLibre + peabalance.InvestProfile;
+                        bankaccount = pea;
+                        break;
                     case AccountType.PEE:
                         var pee = new PEE(item);
                         var balance= pee.GetBalance(effectiveOn);
@@ -77,14 +129,14 @@ namespace Business
                 }
                 result.Add(bankaccount);
             }
-            result.Add(new OverviewAccounts(disponible, blocked, retirement));
+            //result.Add(new OverviewAccounts(disponible, blocked, retirement));
             return result;
         }
 
         /// <summary>
         /// Création d'un compte bancaire
         /// </summary>
-        public static BaseAccount Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd, AccountType accountType)
+        public static BaseAccount Create(string accountNo, string label, DateTime dtStart, DateTime dtEnd, AccountType accountType)
         {
             var item = new AccountEntity
             {
@@ -99,95 +151,10 @@ namespace Business
             return new BaseAccount(item);
         }
 
-        /// <summary>
-        /// Création d'un compte bancaire vide
-        /// </summary>
-        public static BaseAccount Empty() => new BaseAccount();
-
-        /// <summary>
+         /// <summary>
         /// Obtenir un compte bancaire par son numéro de compte
         /// </summary>
-        public static BaseAccount? GetByAccountNo(string accountNo)
-        {
-            var item = DatabaseAccess.Instance.GetBankAccountNo(accountNo);
-            if (item == null)
-            {
-                return null;
-            }
-            else
-            {
-                switch ((AccountType)item.Type)
-                {
-                    case AccountType.Cheque:
-                        return BankAccount.New(item);
-                    case AccountType.Saving:
-                        break;
-                    default:
-                        break;
-                }
-                return item == null ? null : new BaseAccount(item);
-            }
-        }
-
-        /// <summary>
-        /// Obtenir un compte bancaire par son numéro de compte
-        /// </summary>
-        public static IBaseAccounts? GetByAccountId(int accountId)
-        {
-            var item = DatabaseAccess.Instance.GetBankAccountId(accountId);
-            if (item == null)
-            {
-                return null;
-            }
-            else
-            {
-                switch ((AccountType)item.Type)
-                {
-                    case AccountType.Cheque:
-                        return BankAccount.New(item);
-                    case AccountType.Saving:
-                        return SavingAccount.New(item); 
-                    case AccountType.PEA:
-                        break;
-                    case AccountType.PEE:
-                        return PEE.New(item);
-                    case AccountType.SCPI:
-                        return SCPI.New(item);
-                    case AccountType.AssuranceVie:
-                        return AssuranceVie.New(item);
-                }
-            }
-            return item == null ? null : new BaseAccount(item);
-        }
-
-        /// <summary>
-        /// Mise à jour d'un compte bancaire, si le compte n'existe pas, il est créé
-        /// </summary>
-        public static BaseAccount Update(string label, string accountNo, DateTime dtStart, DateTime dtEnd, AccountType accountType)
-        {
-            if (string.IsNullOrEmpty(label))
-            {
-                throw new ArgumentException("Label is required", nameof(label));
-            }
-            if (string.IsNullOrWhiteSpace(accountNo))
-            {
-                throw new ArgumentException("AccountNo is required", nameof(accountNo));
-            }
-            if (dtStart > dtEnd)
-            {
-                throw new ArgumentException("Date is required", nameof(dtStart));
-            }
-            var bankAccount = GetByAccountNo(accountNo);
-            if (bankAccount != null)
-            {
-                bankAccount.Save(label, dtStart, dtEnd, accountType);
-            }
-            else
-            {
-                bankAccount = BankAccount.Create(label, accountNo, dtStart, dtEnd, accountType);
-            }
-            return bankAccount;
-        }
+        public static IBaseAccounts? GetById(int accountId) => Accounts.FirstOrDefault(a => a.BankAccountId == accountId);
 
         /// <summary>
         /// Référence vers l'entité de la base de données
@@ -244,8 +211,22 @@ namespace Business
         /// <summary>
         /// Sauvegarde du compte bancaire
         /// </summary>
-        private void Save(string label, DateTime dtStart, DateTime dtEnd, AccountType accountType)
+        public void Save(string accountNo, string label, DateTime dtStart, DateTime dtEnd, AccountType accountType)
         {
+            if (string.IsNullOrEmpty(label))
+            {
+                throw new ArgumentException("Label is required", nameof(label));
+            }
+            if (string.IsNullOrWhiteSpace(accountNo))
+            {
+                throw new ArgumentException("AccountNo is required", nameof(accountNo));
+            }
+            if (dtStart > dtEnd)
+            {
+                throw new ArgumentException("Date is required", nameof(dtStart));
+            }
+
+            Item.AccountNo = accountNo;
             Item.DateMaj = DateTime.Now;
             Item.Label = label;
             Item.StartOn = dtStart;
@@ -260,6 +241,7 @@ namespace Business
         public void Delete()
         {
             DatabaseAccess.Instance.Remove(Item);
+            _accounts = new List<IBaseAccounts>();
         }
     }
 }

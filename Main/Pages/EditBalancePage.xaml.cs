@@ -14,9 +14,12 @@ public partial class EditBalancePage : ContentPage, IQueryAttributable
     {
         if (BindingContext is EditBalanceViewModel vm)
         {
-            if (query.TryGetValue("item", out var obj) && obj is Business.BankAccountBalance item)
+            if (query.TryGetValue("BankAccountId", out var objId) && objId is int bankAccountId)
             {
-                vm.Init(item);
+                if (query.TryGetValue("EffectiveOn", out var objDate) && objDate is DateTime dt)
+                {
+                    vm.Init(bankAccountId, dt);
+                }
             }
         }
     }

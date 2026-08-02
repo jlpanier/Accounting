@@ -8,7 +8,7 @@ namespace Business
         /// <summary>
         /// Création d'une nouvelle entrée du solde
         /// </summary>
-        public static PeeBalance Create(int bankAccountId, DateTime effectiveOn, double disponible, double retirement, double blocked)
+        public static void Create(int bankAccountId, DateTime effectiveOn, double disponible, double retirement, double blocked)
         {
             var item = new PeeEntity
             {
@@ -20,7 +20,6 @@ namespace Business
                 DateMaj = DateTime.Now
             };
             DatabaseAccess.Instance.Add(item);
-            return new PeeBalance(item);
         }
 
         /// <summary>
@@ -39,17 +38,17 @@ namespace Business
         public int BankAccountId => Item.BankAccountId;
 
         /// <summary>
-        /// Solde disponible sur ce plan épargne entreprise (PEE)
+        /// Cash disponible sur ce plan épargne entreprise (PEE)
         /// </summary>
         public double Disponible => Item.Disponible;
 
         /// <summary>
-        /// Solde disponible à la retraite sur ce plan épargne entreprise (PEE)
+        /// Cash disponible à la retraite sur ce plan épargne entreprise (PEE)
         /// </summary>
         public double Retirement => Item.Retirement;
 
         /// <summary>
-        /// Solde bloqué sur ce plan épargne entreprise (PEE)
+        /// Cash bloqué sur ce plan épargne entreprise (PEE)
         /// </summary>
         public double Blocked => Item.Blocked;
 
@@ -61,10 +60,9 @@ namespace Business
         /// <summary>
         /// Sauvegarde
         /// </summary>
-        public int Save(DateTime effectiveOn, double disponible, double retirement, double blocked)
+        public int Save(double disponible, double retirement, double blocked)
         {
             Item.DateMaj = DateTime.Now;
-            Item.EffectiveOn = effectiveOn;
             Item.Disponible = disponible;
             Item.Retirement = retirement;
             Item.Blocked = blocked;

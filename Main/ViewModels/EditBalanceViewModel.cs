@@ -1,4 +1,5 @@
 ﻿using Business;
+using Repository.Dbo;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -121,11 +122,15 @@ namespace Main.ViewModels
         /// <summary>
         /// Initialisation des données
         /// </summary>
-        public void Init(BankAccountBalance item)
+        public void Init(int bankAccountId, DateTime effectiveOn)
         {
-            BankAccountId=item.BankAccountId;
-            EffectiveOn = item.EffectiveOn;
-            Balance = item.Balance;
+            BankAccountId= bankAccountId;
+            EffectiveOn = effectiveOn;
+            var item = DatabaseAccess.Instance.GetMonthlyBalances(bankAccountId, effectiveOn).FirstOrDefault();
+            if (item != null)
+            {
+                Balance = item.Balance;
+            }
         }
 
         /// <summary>
@@ -134,11 +139,18 @@ namespace Main.ViewModels
         private async void OnSave()
         {
             var effectiveOn = new DateTime(EffectiveOn.Year, EffectiveOn.Month, 1);
-            var bankAccount = BankAccount.GetByAccountId(BankAccountId);
-            if (bankAccount is BalanceAccount item)
+            var bankAccount = BankAccount.GetById(BankAccountId);
+            if (bankAccount is BalanceAccount account)
             {
-                var balance = item.GetBalance(effectiveOn);
-                balance.Save(effectiveOn, Balance);
+                var balance = account.GetBalance(effectiveOn);
+                if (balance != null)
+                {
+                    balance.Save(effectiveOn, Balance);
+                }
+                else
+                {
+                    account.AddBalance(effectiveOn, Balance);
+                }
             }
 
             // TODO: sauvegarde dans ton repository

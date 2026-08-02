@@ -10,9 +10,12 @@ public partial class EditPeePage : ContentPage, IQueryAttributable
     {
         if (BindingContext is EditPeeViewModel vm)
         {
-            if (query.TryGetValue("item", out var objBankAccount) && objBankAccount is Business.PeeBalance balance)
+            if (query.TryGetValue("BankAccountId", out var objId) && objId is int bankAccountId)
             {
-                vm.Init(balance);
+                if (query.TryGetValue("EffectiveOn", out var objDate) && objDate is DateTime dt)
+                {
+                    vm.Init(bankAccountId, dt);
+                }
             }
         }
     }

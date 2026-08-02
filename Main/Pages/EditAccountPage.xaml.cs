@@ -1,5 +1,4 @@
 using Main.ViewModels;
-using static Business.BaseAccount;
 
 namespace Main.Pages;
 
@@ -15,13 +14,9 @@ public partial class EditAccountPage : ContentPage, IQueryAttributable
     {
         if (BindingContext is EditAccountViewModel vm)
         {
-            if (query.TryGetValue("item", out var objBankAccount) && objBankAccount is Business.BankAccount bankAccount)
+            if (query.TryGetValue("BankAccountId", out var objBankAccount) && objBankAccount is int bankAccountId)
             {
-                vm.Init(bankAccount);
-            }
-            else if (query.TryGetValue("accounttype", out var objAccountType) && objAccountType is AccountType accountType)
-            {
-                vm.Init(accountType);
+                vm.Init(bankAccountId);
             }
         }
     }

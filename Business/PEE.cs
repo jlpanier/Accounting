@@ -32,15 +32,8 @@ namespace Business
         /// <summary>
         /// Obtenir la balance du PEE à cette date
         /// </summary>
-        public PeeBalance GetBalance(DateTime effectiveOn)
-        {
-            var item = Balances.FirstOrDefault(i => i.EffectiveOn == effectiveOn);
-            if (item == null)
-            {
-                item = PeeBalance.Create(BankAccountId, effectiveOn, 0, 0, 0);
-            }
-            return item;
-        }
+        public PeeBalance? GetBalance(DateTime effectiveOn) => Balances.FirstOrDefault(i => i.EffectiveOn == effectiveOn);
+
 
         public PEE()
         {
@@ -48,6 +41,23 @@ namespace Business
 
         public PEE(AccountEntity item):base(item) 
         {
+        }
+
+        /// <summary>
+        /// Ajout d'une item du compte bancaire
+        /// </summary>
+        public void AddBalance(DateTime effectiveOn, double disponible, double retirement, double blocked)
+        {
+            var item = Balances.FirstOrDefault(_ => _.EffectiveOn == effectiveOn);
+            if (item == null)
+            {
+                PeeBalance.Create(BankAccountId, effectiveOn, disponible, retirement, blocked);
+                _balances = null; // force le rechargement de la liste des balances
+            }
+            else
+            {
+                item.Save(disponible, retirement, blocked);
+            }
         }
     }
 }
