@@ -55,7 +55,7 @@ namespace Main.ViewModels
         public string _accountno = "";
 
         /// <summary>
-        /// Balance du compte
+        /// CanDelete du compte
         /// </summary>
         public double Balance
         {

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="Main.Pages.EditPeaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Main.ViewModels"
+    xmlns:templates="clr-namespace:Main.Templates"
+    xmlns:selectors="clr-namespace:Main.Templates"
+    xmlns:converter="clr-namespace:Main.Converter"
+    Title="Opération">
+
+    <ContentPage.BindingContext>
+        <vm:EditPeaViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+
+        <DataTemplate x:Key="TransferTemplate">
+            <Grid ColumnDefinitions="Auto, *">
+                <Label Grid.Column="0" Text="Montant" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Entry Grid.Column="1" Placeholder="Montant" Text="{Binding Amount}" />
+            </Grid>
+        </DataTemplate>
+
+        <!-- Template : Achat / Vente d'actions -->
+        <DataTemplate x:Key="StockTradeTemplate">
+            <Grid ColumnDefinitions="Auto, *,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
+                <Label Grid.Column="0" Grid.Row="0" Text="Montant" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Entry Grid.Column="1" Grid.Row="0" Placeholder="Montant" Text="{Binding Amount}" />
+                <Label Grid.Column="0" Grid.Row="1" Text="Quantité" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Entry Grid.Column="1" Grid.Row="1" Placeholder="Quantité" Keyboard="Numeric" Text="{Binding Quantity}" />
+                <Label Grid.Column="0" Grid.Row="2" Text="Prix unitaire" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Entry Grid.Column="1" Grid.Row="2" Placeholder="Prix unitaire" Keyboard="Numeric" Text="{Binding UnitPrice}" />
+                <Label Grid.Column="0" Grid.Row="3" Text="Action" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Picker Grid.Column="1" Grid.Row="3" ItemsSource="{Binding OperationTypes}" SelectedItem="{Binding SelectedOperationType}" FontSize="14" ItemDisplayBinding="{Binding .}"/>
+                <ImageButton Grid.Column="2" Grid.Row="3"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    Margin="0"
+                    Padding="6"
+                    Source="plus.png"
+                    HeightRequest="24"
+                    WidthRequest="28"
+                    BackgroundColor="Transparent"
+                    Command="{Binding AddCommand}" />
+            </Grid>
+        </DataTemplate>
+
+        <!-- Template : Dividende -->
+        <DataTemplate x:Key="DividendTemplate">
+            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto,Auto,Auto">
+                <Label Grid.Column="0" Grid.Row="0" Text="Montant" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Entry Grid.Column="1" Grid.Row="0" Placeholder="Montant" Text="{Binding Amount}" />
+                <Label Grid.Column="0" Grid.Row="2" Text="Prix unitaire" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Entry Grid.Column="1" Grid.Row="2" Placeholder="Prix unitaire" Keyboard="Numeric" Text="{Binding UnitPrice}" />
+            </Grid>
+        </DataTemplate>
+
+        <!-- TemplateSelector -->
+        <selectors:OperationTemplateSelector
+            x:Key="OperationSelector"
+            TransferTemplate="{StaticResource TransferTemplate}"
+            StockTradeTemplate="{StaticResource StockTradeTemplate}"
+            DividendTemplate="{StaticResource DividendTemplate}" />
+
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="18">
+
+            <HorizontalStackLayout Spacing="18">
+                <!-- Date -->
+                <DatePicker Date="{Binding Date}" />
+                <!-- Type d'opération -->
+                <Picker ItemsSource="{Binding OperationTypes}" SelectedItem="{Binding SelectedOperationType}" FontSize="14"/>
+            </HorizontalStackLayout>
+            
+
+            <!-- TemplateSelector -->
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding OperationHost}">
+
+                <BindableLayout.ItemTemplateSelector>
+                    <selectors:OperationTemplateSelector
+                        TransferTemplate="{StaticResource TransferTemplate}"
+                        StockTradeTemplate="{StaticResource StockTradeTemplate}"
+                        DividendTemplate="{StaticResource DividendTemplate}" />
+                </BindableLayout.ItemTemplateSelector>
+
+            </VerticalStackLayout>
+
+            <Grid  ColumnDefinitions="*, *, *" >
+                <Button Grid.Column="0"
+                    Margin="0,0,12,0"
+                    Text="Enregistrer"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickSaveCommand}" />
+
+                <Button Text="Annuler" Grid.Column="1"
+                    Margin="12,0,12,0"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickCancelCommand}" />
+
+                <Button Text="Supprimer" Grid.Column="2"
+                    Margin="12,0,0,0"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    IsVisible="{Binding CanDelete}"
+                    Command="{Binding ClickDeleteCommand}" />
+
+            </Grid>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

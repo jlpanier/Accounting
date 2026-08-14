@@ -64,12 +64,16 @@ namespace Repository.Dbo
             DbPath = databasePath;
             //if (!File.Exists(DbPath)) throw new FileNotFoundException("File does not exists", DbPath);
             Db.BusyTimeout = TimeSpan.FromSeconds(busyTimeout);
-            //DropTable<SolutionEntity>();
+            //DropTable<ShareEntity>();
             CreateTable<AccountEntity>();
             CreateTable<AccountBalanceEntity>();
             CreateTable<PeeEntity>();
             CreateTable<PeaEntity>();
             CreateTable<ScpiEntity>();
+            CreateTable<ShareEntity>();
+            CreateTable<OrderEntity>();
+            CreateTable<TranferEntity>();
+            CreateTable<DividendeEntity>();
         }
 
         /// <summary>

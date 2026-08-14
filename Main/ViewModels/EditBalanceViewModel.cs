@@ -93,7 +93,7 @@ namespace Main.ViewModels
         private DateTime _effectiveOn = DateTime.Today;
 
         /// <summary>
-        /// Balance mensuelle du compte
+        /// CanDelete mensuelle du compte
         /// </summary>
         public double Balance
         {
@@ -126,10 +126,14 @@ namespace Main.ViewModels
         {
             BankAccountId= bankAccountId;
             EffectiveOn = effectiveOn;
-            var item = DatabaseAccess.Instance.GetMonthlyBalances(bankAccountId, effectiveOn).FirstOrDefault();
-            if (item != null)
+            var item = BankAccount.GetById(bankAccountId);
+            if (item is BalanceAccount bankaccount)
             {
-                Balance = item.Balance;
+                var monthlyamount = bankaccount.Balances.FirstOrDefault(b => b.EffectiveOn == effectiveOn);
+                if (monthlyamount != null)
+                {
+                    Balance = monthlyamount.Balance;
+                }
             }
         }
 

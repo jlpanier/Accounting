@@ -36,7 +36,6 @@
         }
         public int _bankAccountId;
 
-
         /// <summary>
         /// Numéro du compte
         /// </summary>
@@ -64,8 +63,8 @@
             {
                 if (_effectiveOn != value)
                 {
-                    NotifyPropertyChanged(nameof(EffectiveOn));
                     _effectiveOn = value;
+                    NotifyPropertyChanged(nameof(EffectiveOn));
                 }
             }
         }

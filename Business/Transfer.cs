@@ -4,29 +4,35 @@ using Repository.Entities;
 namespace Business
 {
     /// <summary>
-    /// Gestion des comptes bancaires
+    /// Gestion des transactions de virement
     /// </summary>
-    public class BankAccountBalance
+    public class Transfer: ITransaction
     {
         /// <summary>
-        /// Création d'une nouvelle entrée du solde
+        /// Création d'une transaction de virement
         /// </summary>
-        public static void Create(int bankAccountId, DateTime effectiveOn, double balance)
+        public static Transfer Create(int bankAccountId, DateTime effectiveOn, double amount)
         {
-            var item = new AccountBalanceEntity
+            var item = new TranferEntity()
             {
+                BankAccountId = bankAccountId,
                 EffectiveOn = effectiveOn,
-                BankAccountId= bankAccountId,
-                Balance=balance,
-                DateMaj = DateTime.Now
+                Amount = amount,
+                DateMaj = DateTime.Now,
             };
             DatabaseAccess.Instance.Add(item);
+            return new Transfer(item);
         }
 
         /// <summary>
         /// Référence vers l'entité de la base de données
         /// </summary>
-        public readonly AccountBalanceEntity Item;
+        public readonly TranferEntity Item;
+
+        /// <summary>
+        /// Référence vers l'entité de la base de données
+        /// </summary>
+        public int Id => Item.Id;
 
         /// <summary>
         /// Date d'effet du solde
@@ -39,11 +45,22 @@ namespace Business
         public int BankAccountId => Item.BankAccountId;
 
         /// <summary>
-        /// Balance du compte
+        /// Montant de la transaction
         /// </summary>
-        public double Balance => Item.Balance;
+        public double Amount => Item.Amount;
 
-        public BankAccountBalance(AccountBalanceEntity item)
+        /// <summary>
+        /// Libellé de la transaction
+        /// </summary>
+        public string Label
+        {
+            get
+            {
+                return "Virement";
+            }
+        }
+
+        public Transfer(TranferEntity item)
         {
             Item = item;
         }
@@ -51,16 +68,16 @@ namespace Business
         /// <summary>
         /// Sauvegarde
         /// </summary>
-        public void Save(DateTime effectiveOn, double balance)
+        public void Save(DateTime effectiveOn, double amount)
         {
             Item.EffectiveOn = effectiveOn;
-            Item.Balance = balance;
+            Item.Amount = amount;
             Item.DateMaj = DateTime.Now;
             DatabaseAccess.Instance.Update(Item);
         }
 
         /// <summary>
-        /// Suppression de la balance mensuelle du compte
+        /// Suppression 
         /// </summary>
         public void Delete()
         {

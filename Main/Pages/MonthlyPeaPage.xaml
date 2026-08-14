@@ -1,0 +1,137 @@
+<ContentPage
+    x:Class="Main.Pages.MonthlyPeaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Main.ViewModels"
+    xmlns:templates="clr-namespace:Main.Templates"
+    xmlns:selectors="clr-namespace:Main.Templates"
+    xmlns:customs="clr-namespace:Main.Customs"
+    BackgroundColor="AliceBlue"
+    Title="PEA">
+
+    <ContentPage.BindingContext>
+        <vm:MonthlyPeaViewModel />
+    </ContentPage.BindingContext>
+    
+    <ScrollView Margin="10" BackgroundColor="AliceBlue">
+        <Grid BackgroundColor="AliceBlue" RowDefinitions="Auto, Auto, Auto, Auto, Auto">
+
+            <Label 
+                Grid.Row="0"
+                Text="{Binding MonthLabel}"
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="#333"
+                />
+
+            <Label 
+                Grid.Row="1"
+                Text="{Binding PeriodLabel}"
+                FontSize="12"
+                HorizontalOptions="Center"
+                TextColor="#333"
+                Margin="0,0,0,20"
+                />
+
+            <CollectionView
+                Grid.Row="2"
+                ItemsSource="{Binding Shares}"
+                SelectionMode="None"
+                Margin="20"
+                >
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout Spacing="0">
+
+                            <Grid BackgroundColor="AliceBlue" ColumnDefinitions="*,*,*,*,*" Padding="0,8">
+                                <Label Grid.Column="0" Text="{Binding Label}" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding UnitPrice, StringFormat='{0:N4} €'}" HorizontalOptions="Start" VerticalOptions="Center" />
+                                <Label Grid.Column="2" Text="{Binding Quantity}" HorizontalOptions="End" VerticalOptions="Center" />
+                                <Label Grid.Column="3" Text="{Binding Amount, StringFormat='{0:N2} €'}" HorizontalOptions="End" VerticalOptions="Center" />
+                                <Label Grid.Column="4" Text="{Binding GainLossLabel}" HorizontalOptions="End" VerticalOptions="Center" />
+                            </Grid>
+
+                            <BoxView HeightRequest="1" BackgroundColor="#DADADA" Margin="0,4,0,0" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+
+            </CollectionView>
+
+
+            <Grid Grid.Row="3" BackgroundColor="AliceBlue" ColumnDefinitions="*,*,*,*" >
+                <Button 
+                    Grid.Column="0"
+                    Text="Virement"
+                    CornerRadius="12"
+                    Margin="0,5,5,5"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    MaximumHeightRequest="56"
+                    Command="{Binding ClickNewTransferCommand}" />
+                <Button 
+                    Grid.Column="1"
+                    Text="Achat"
+                    CornerRadius="12"
+                    Margin="5"
+                    BackgroundColor="#4A90E2"
+                    MaximumHeightRequest="56"
+                    TextColor="White"
+                    Command="{Binding ClickNewPurchaseCommand}" />
+                <Button 
+                    Grid.Column="2"
+                    Text="Vente"
+                    CornerRadius="12"
+                    Margin="5"
+                    BackgroundColor="#4A90E2"
+                    MaximumHeightRequest="56"
+                    TextColor="White"
+                    Command="{Binding ClickNewSellCommand}" />
+                <Button 
+                    Grid.Column="3"
+                    Text="Dividende"
+                    CornerRadius="12"
+                    Margin="5,5,0,5"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    MaximumHeightRequest="56"
+                    Command="{Binding ClickNewDividendeCommand}" />
+            </Grid>
+
+
+            <CollectionView
+                Grid.Row="4"
+                ItemsSource="{Binding LineTransactions}"
+                SelectionMode="None"
+                Margin="20"
+                BackgroundColor="White">
+
+                <CollectionView.Header>
+                    <Grid ColumnDefinitions="Auto, *, Auto, Auto" Padding="12" BackgroundColor="#E8F0FE">
+                        <Label Grid.Column="0" Text="Date" MinimumWidthRequest ="72" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="Transaction" FontAttributes="Bold" Margin="10,0"/>
+                        <Label Grid.Column="2" Text="Montant" FontAttributes="Bold" HorizontalTextAlignment="End"/>
+                        <Label Grid.Column="3" Text="Solde" Padding ="5,0,5,0" MinimumWidthRequest ="72" FontAttributes="Bold" HorizontalTextAlignment="End"/>
+                    </Grid>
+                </CollectionView.Header>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="Auto, *, Auto, Auto">
+                            <Label Grid.Column="0" Text="{Binding EffectiveOn, StringFormat='{0:dd/MM/yyyy}'}" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="{Binding Label}" FontSize="12" Padding="12" HorizontalOptions="Start" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Text="{Binding Amount, StringFormat='{0:N2} €'}" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Grid.Column="3" Text="{Binding Solde, StringFormat='{0:N2} €'}" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </Grid>
+
+    </ScrollView>
+</ContentPage>

@@ -33,7 +33,7 @@ namespace Business
         DateTime EndOn { get; }
 
         /// <summary>
-        /// Type du compte bancaire
+        /// Operation du compte bancaire
         /// </summary>
         AccountType Type { get; }
 
