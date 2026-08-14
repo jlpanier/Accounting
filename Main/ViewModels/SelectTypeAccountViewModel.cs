@@ -36,7 +36,7 @@ namespace Main.ViewModels
         private ObservableCollection<AccountType>? _accountTypes = null;
 
         /// <summary>
-        /// Type de compte
+        /// Operation de compte
         /// </summary>
         public AccountType SelectedAccountType
         {

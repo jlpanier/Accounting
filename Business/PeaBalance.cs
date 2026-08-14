@@ -79,12 +79,10 @@ namespace Business
         /// <summary>
         /// Sauvegarde
         /// </summary>
-        public int Save(DateTime effectiveOn, double cash, double investLibre, double amountLibre, double investProfile, double amountProfile, double unitPriceProfile)
+        public int Save(double cash, double investLibre, double amountLibre, double investProfile, double amountProfile, double unitPriceProfile)
         {
             Item.DateMaj = DateTime.Now;
-            Item.EffectiveOn = effectiveOn;
             Item.Cash = cash;
-            Item.DateMaj = DateTime.Now;
             Item.AmountLibre = amountLibre;
             Item.AmountProfile = amountProfile;
             Item.InvestLibre = investLibre;

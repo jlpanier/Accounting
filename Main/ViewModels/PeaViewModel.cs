@@ -1,5 +1,4 @@
 ﻿using Business;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -7,26 +6,19 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class PeaViewModel : INotifyPropertyChanged, IBaseAccountViewModel
+    public class PeaViewModel : BaseViewModel
     {
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler? handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
+        #region Propriétés
 
         /// <summary>
-        /// Evenement de sélection d'un compte
+        /// Evenement pour édition du compte
         /// </summary>
-        public ICommand SelectCommand { get; }
+        public ICommand ClickEditAccountCommand => new Command(OnEditAccount);
+
+        /// <summary>
+        /// Evenement pour édition de la balance pour cette période
+        /// </summary>
+        public ICommand ClickEditBalanceCommand => new Command(OnEditBalance);
 
         /// <summary>
         /// Label du compte
@@ -218,40 +210,48 @@ namespace Main.ViewModels
         public PEA _item = PEA.Empty();
 
         /// <summary>
-        /// Couleur du texte de la balance : vert si positif, rouge si négatif
+        /// Date courante
         /// </summary>
-        public Color BalanceColor => TitreProfile >= 0 ? Colors.DarkGreen : Colors.DarkRed;
+        public DateTime EffectiveOn;
 
-        public DateTime CurrentDate;
+        #endregion
 
         public PeaViewModel()
         {
-            SelectCommand = new Command(OnSelected);
-            CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
         public PeaViewModel(PEA account, DateTime dt)
         {
             Item = account;
-            CurrentDate = dt;
-            var balance = Item.GetBalance(CurrentDate);
+            EffectiveOn = dt;
+            //var balance = Item.GetBalance(EffectiveOn);
             //TitreProfile = balance.TitreProfile;
             //InvestProfile = balance.InvestProfile;
             //InvestLibre= balance.InvestLibre;
-            SelectCommand = new Command(OnSelected);
         }
 
         /// <summary>
-        /// Evenement de sélection d'un compte : affichage de la page d'édition de la balance
+        /// Edition du compte
         /// </summary>
-        private async void OnSelected()
+        private async void OnEditAccount()
         {
-            await Shell.Current.GoToAsync($"{nameof(EditPeePage)}", new Dictionary<string, object>
+            await Shell.Current.GoToAsync($"{nameof(EditAccountPage)}", new Dictionary<string, object>
             {
-                ["item"] = Item.GetBalance(CurrentDate)
+                ["BankAccountId"] = Item?.BankAccountId ?? 0,
             });
         }
 
-
+        /// <summary>
+        /// Edition de la balance pour cette période
+        /// </summary>
+        private async void OnEditBalance()
+        {
+            await Shell.Current.GoToAsync($"{nameof(MonthlyPeaPage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = Item?.BankAccountId ?? 0,
+                ["EffectiveOn"] = EffectiveOn,
+            });
+        }
     }
 }

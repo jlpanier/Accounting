@@ -30,7 +30,7 @@ namespace Main.ViewModels
         public ICommand DeleteCommand => new Command(OnDelete);
 
         /// <summary>
-        /// Type de compte
+        /// Operation de compte
         /// </summary>
         public AccountType SelectedAccountType
         {

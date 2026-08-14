@@ -10,7 +10,7 @@ namespace Business
     public class BaseAccount: IBaseAccounts
     {
         /// <summary>
-        /// Type de compte
+        /// Operation de compte
         /// </summary>
         public enum AccountType 
         {
@@ -78,62 +78,6 @@ namespace Business
         #endregion
 
         /// <summary>
-        /// Liste de tous les comptes bancaires et ajout d'un bilan
-        /// </summary>
-        private static List<IBaseAccounts> GetAll(DateTime effectiveOn) 
-        {
-            double disponible = 0.0;
-            double blocked = 0.0;
-            double retirement = 0.0;
-            var result = new List<IBaseAccounts>();
-            var items = DatabaseAccess.Instance.GetAccounts();
-
-            foreach (var item in items)
-            {
-                IBaseAccounts bankaccount;
-                switch ((AccountType)item.Type)
-                {
-                    case AccountType.AssuranceVie:
-                        var assurancevie = AssuranceVie.New(item);
-                        retirement += assurancevie.GetBalanceOn(effectiveOn);
-                        bankaccount = assurancevie;
-                        break;
-                    case AccountType.PEA:
-                        var pea = new PEA(item);
-                        var peabalance = pea.GetBalance(effectiveOn);
-                        blocked += peabalance.Cash + peabalance.AmountLibre + peabalance.InvestProfile;
-                        bankaccount = pea;
-                        break;
-                    case AccountType.PEE:
-                        var pee = new PEE(item);
-                        var balance= pee.GetBalance(effectiveOn);
-                        disponible += balance.Disponible;
-                        retirement += balance.Retirement;
-                        blocked += balance.Blocked;
-                        bankaccount = pee;
-                        break;
-                    case AccountType.Saving:
-                        var savingaccount = SavingAccount.New(item);
-                        disponible += savingaccount.GetBalanceOn(effectiveOn);
-                        bankaccount = savingaccount;
-                        break;
-                    case AccountType.SCPI:
-                        bankaccount = SCPI.New(item);
-                        break;
-                    case AccountType.Cheque:
-                    default:
-                        var account = BankAccount.New(item);
-                        disponible += account.GetBalanceOn(effectiveOn);
-                        bankaccount = account;
-                        break;
-                }
-                result.Add(bankaccount);
-            }
-            //result.Add(new OverviewAccounts(disponible, blocked, retirement));
-            return result;
-        }
-
-        /// <summary>
         /// Création d'un compte bancaire
         /// </summary>
         public static BaseAccount Create(string accountNo, string label, DateTime dtStart, DateTime dtEnd, AccountType accountType)
@@ -187,7 +131,7 @@ namespace Business
         public DateTime EndOn => Item.EndOn;
 
         /// <summary>
-        /// Type de compte du compte
+        /// Operation de compte du compte
         /// </summary>
         public AccountType Type => (AccountType)Item.Type;
 

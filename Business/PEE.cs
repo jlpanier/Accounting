@@ -10,7 +10,7 @@ namespace Business
     {
         public static PEE New(AccountEntity item) => new PEE(item);
 
-        public new static PEE Empty() => new PEE();
+        public static PEE Empty() => new PEE();
 
         /// <summary>
         /// Valeur de la balance du PEE pour chaque mois

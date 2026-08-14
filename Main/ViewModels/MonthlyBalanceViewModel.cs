@@ -23,7 +23,7 @@ namespace Main.ViewModels
         public string Month => Item.EffectiveOn.ToString("MMMM yyyy");
 
         /// <summary>
-        /// Balance 
+        /// CanDelete 
         /// </summary>
         public double Balance => Item.Balance;
 

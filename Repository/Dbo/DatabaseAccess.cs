@@ -36,17 +36,6 @@ namespace Repository.Dbo
         }
 
         /// <summary>
-        /// Compte bancaire lié 
-        /// </summary>
-        public AccountEntity? GetBankAccountId(int bankId)
-        {
-            lock (dbLock)
-            {
-                return Db.Query<AccountEntity>("Select * from ACCOUNT WHERE Id = ? ", bankId).FirstOrDefault();
-            }
-        }
-
-        /// <summary>
         /// Tous les comptes bancaires  
         /// </summary>
         public IEnumerable<AccountEntity> GetAccounts()
@@ -54,6 +43,17 @@ namespace Repository.Dbo
             lock (dbLock)
             {
                 return Db.Query<AccountEntity>("Select * from ACCOUNT ");
+            }
+        }
+
+        /// <summary>
+        /// Toutes les actions
+        /// </summary>
+        public IEnumerable<ShareEntity> GetShares()
+        {
+            lock (dbLock)
+            {
+                return Db.Query<ShareEntity>("Select * from SHARES ");
             }
         }
 
@@ -79,6 +79,38 @@ namespace Repository.Dbo
             }
         }
 
+        /// <summary>
+        /// Obtenir les transferts bancaires
+        /// </summary>
+        public IEnumerable<TranferEntity> GetTransfers(int id)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<TranferEntity>("Select * from TRANSFER WHERE BankAccountId = ? ", id);
+            }
+        }
+
+        /// <summary>
+        /// Obtenir les ordres d'achat et de vente d'actions
+        /// </summary>
+        public IEnumerable<OrderEntity> GetOrders(int id)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<OrderEntity>("Select * from ORDERS WHERE BankAccountId = ? ", id);
+            }
+        }
+
+        /// <summary>
+        /// Obtenir les ordres d'achat et de vente d'actions
+        /// </summary>
+        public IEnumerable<DividendeEntity> GetDividentes(int id)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<DividendeEntity>("Select * from DIVIDENDES WHERE BankAccountId = ? ", id);
+            }
+        }
         /// <summary>
         /// Balances mensuelles d'un plan epargne entreprise
         /// </summary>

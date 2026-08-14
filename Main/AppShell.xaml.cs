@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using Main.ViewModels;
 using Font = Microsoft.Maui.Font;
 
 namespace Main 
@@ -16,7 +17,14 @@ namespace Main
             Routing.RegisterRoute(nameof(EditBalancePage), typeof(EditBalancePage));
             Routing.RegisterRoute(nameof(SelectTypeAccountPage), typeof(SelectTypeAccountPage));
             Routing.RegisterRoute(nameof(EditPeePage), typeof(EditPeePage));
+            Routing.RegisterRoute(nameof(EditPeaPage), typeof(EditPeaPage));
             Routing.RegisterRoute(nameof(EditScpiPage), typeof(EditScpiPage));
+            Routing.RegisterRoute(nameof(EditTransferPeaPage), typeof(EditTransferPeaPage));
+            Routing.RegisterRoute(nameof(MonthlyPeaPage), typeof(MonthlyPeaPage));
+            Routing.RegisterRoute(nameof(EditPurchasePeaPage), typeof(EditPurchasePeaPage));
+            Routing.RegisterRoute(nameof(SharePage), typeof(SharePage));
+            Routing.RegisterRoute(nameof(EditSellPeaPage), typeof(EditSellPeaPage));
+            Routing.RegisterRoute(nameof(EditDividendePeaPage), typeof(EditDividendePeaPage));
         }
 
         public static async Task DisplaySnackbarAsync(string message)
