@@ -25,7 +25,11 @@ namespace Main.ViewModels
         /// Evenement pour la vente d'une action
         /// </summary>
         public ICommand ClickNewDividendeCommand => new Command(OnDividente);
-        
+
+        /// <summary>
+        /// Evenement pour la vente d'une action
+        /// </summary>
+        public ICommand ClickNameCommand => new Command<int>(OnShare);
 
         /// <summary>
         /// Label de la période 
@@ -191,6 +195,16 @@ namespace Main.ViewModels
                 ["EffectiveOn"] = EffectiveOn,
             });
         }
-        
+
+        /// <summary>
+        /// Ecran d'une vente d'action
+        /// </summary>
+        private async void OnShare(int key)
+        {
+            await Shell.Current.GoToAsync($"{nameof(SharePage)}", new Dictionary<string, object>
+            {
+                ["shareId"] = key,
+            });
+        }
     }
 }

@@ -95,9 +95,6 @@
 	  <Compile Update="Pages\EditBalancePage.xaml.cs">
 	    <DependentUpon>EditBalancePage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Pages\EditPeaPage.xaml.cs">
-	    <DependentUpon>EditPeaPage.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Templates\PeeTemplate.xaml.cs">
 	    <DependentUpon>PeeTemplate.xaml</DependentUpon>
 	  </Compile>
@@ -105,9 +102,6 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Pages\EditDividendePeaPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\EditPeaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\EditPeePage.xaml">

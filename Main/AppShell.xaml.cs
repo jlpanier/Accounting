@@ -17,7 +17,6 @@ namespace Main
             Routing.RegisterRoute(nameof(EditBalancePage), typeof(EditBalancePage));
             Routing.RegisterRoute(nameof(SelectTypeAccountPage), typeof(SelectTypeAccountPage));
             Routing.RegisterRoute(nameof(EditPeePage), typeof(EditPeePage));
-            Routing.RegisterRoute(nameof(EditPeaPage), typeof(EditPeaPage));
             Routing.RegisterRoute(nameof(EditScpiPage), typeof(EditScpiPage));
             Routing.RegisterRoute(nameof(EditTransferPeaPage), typeof(EditTransferPeaPage));
             Routing.RegisterRoute(nameof(MonthlyPeaPage), typeof(MonthlyPeaPage));
