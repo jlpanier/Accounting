@@ -91,7 +91,7 @@ namespace Business
                     var monthlyshare = result.FirstOrDefault(_ => _.ShareId == order.ShareId);
                     if (monthlyshare == null)
                     {
-                        result.Add(new MonthlyShare(order.ShareId, order));
+                        result.Add(new MonthlyShare(order.ShareId, effectiveOn, order));
                     }
                     else 
                     {

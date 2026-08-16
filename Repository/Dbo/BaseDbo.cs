@@ -74,6 +74,7 @@ namespace Repository.Dbo
             CreateTable<OrderEntity>();
             CreateTable<TranferEntity>();
             CreateTable<DividendeEntity>();
+            CreateTable<PriceShareEntity>();
         }
 
         /// <summary>

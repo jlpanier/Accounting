@@ -143,5 +143,17 @@ namespace Repository.Dbo
                 return Db.Query<ScpiEntity>("Select * from SCPI WHERE BankAccountId = ?", id);
             }
         }
+
+        /// <summary>
+        /// Prix de l'action  
+        /// </summary>
+        public IEnumerable<PriceShareEntity> GetPriceShareById(int id)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<PriceShareEntity>("Select * from PRICESHARES WHERE ShareId = ?", id);
+            }
+        }
+
     }
 }

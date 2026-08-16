@@ -1,7 +1,4 @@
-﻿using Repository.Dbo;
-using Repository.Entities;
-
-namespace Business
+﻿namespace Business
 {
     /// <summary>
     /// Comptabiliser les actions du mois
@@ -17,6 +14,11 @@ namespace Business
         /// Liste des ordres sur cette action
         /// </summary>
         public readonly List<Order> Orders;
+
+        /// <summary>
+        /// Mois en cours
+        /// </summary>
+        public readonly DateTime EffectiveOn;
 
         /// <summary>
         /// Référence de l'action
@@ -90,9 +92,22 @@ namespace Business
         /// </summary>
         public string GainLossLabel => GainLoss >= 0 ? $"\u2197 {GainLoss:N2} € (+{PercentageGainLoss:N0}%)" : $"\u2198 {GainLoss:N2} € (-{PercentageGainLoss:N0}%)";
 
-        public MonthlyShare(int shareId, Order order)
+        /// <summary>
+        /// Référence au prix en cours de l'action
+        /// </summary>
+        public readonly PriceShare? Price;
+
+        /// <summary>
+        /// Référence au prix en cours de l'action
+        /// </summary>
+        public int PriceShareId {  get; }
+
+        public MonthlyShare(int shareId, DateTime effectiveOn, Order order)
         {
             Item = Share.All.First(s => s.Id == shareId);
+            Price = Item.Amounts.FirstOrDefault(_=>_.EffectiveOn== effectiveOn);
+            UnitPrice = Price?.UnitPrice ?? 0;
+            PriceShareId = Price?.Id ?? 0;
             Orders = new List<Order>() { order };
         }
 

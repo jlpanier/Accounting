@@ -104,6 +104,9 @@
 	  <MauiXaml Update="Pages\EditDividendePeaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\EditMonthSharePricePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\EditPeePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

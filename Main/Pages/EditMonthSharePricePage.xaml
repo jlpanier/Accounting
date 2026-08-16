@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Main.Pages.EditMonthSharePricePage"
+             xmlns:vm="clr-namespace:Main.ViewModels"
+             Title="Prix action">
+
+        <ContentPage.BindingContext>
+            <vm:EditMonthSharePriceViewModel />
+        </ContentPage.BindingContext>
+
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="18">
+
+                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto,Auto,Auto">
+                    <Label Grid.Column="0" Grid.Row="0" Text="Date" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <DatePicker Grid.Column="1" Grid.Row="0"  Date="{Binding EffectiveOn}"/>
+                    <Label Grid.Column="0" Grid.Row="1" Text="Action" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding ShareName}"  FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Label Grid.Column="0" Grid.Row="2" Text="Prix unitaire" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Entry Grid.Column="1" Grid.Row="2" Placeholder="Prix unitaire" Keyboard="Numeric" Text="{Binding UnitPrice}" />
+                </Grid>
+
+                <Grid  ColumnDefinitions="*, *, *" >
+                    <Button Grid.Column="0"
+                    Margin="0,0,12,0"
+                    Text="Enregistrer"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickSaveCommand}" />
+
+                    <Button Text="Annuler" Grid.Column="1"
+                    Margin="12,0,12,0"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickCancelCommand}" />
+
+                    <Button Text="Supprimer" Grid.Column="2"
+                    Margin="12,0,0,0"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    IsVisible="{Binding CanDelete}"
+                    Command="{Binding ClickDeleteCommand}" />
+
+                </Grid>
+
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage>
