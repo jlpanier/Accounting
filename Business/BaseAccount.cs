@@ -26,6 +26,8 @@ namespace Business
             AssuranceVie,
             [StringValue("Bien immobilier (SCPI)")]
             SCPI,
+            [StringValue("Appartement / bien immobilier")]
+            Appartment,
             [StringValue("Overview")]
             Overview
         }
@@ -62,6 +64,9 @@ namespace Business
                                 break;
                             case AccountType.SCPI:
                                 _accounts.Add(SCPI.New(item));
+                                break;
+                            case AccountType.Appartment:
+                                _accounts.Add(Appartement.New(item));
                                 break;
                             case AccountType.Cheque:
                             default:

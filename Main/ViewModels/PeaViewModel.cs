@@ -225,7 +225,7 @@ namespace Main.ViewModels
         {
             Item = account;
             EffectiveOn = dt;
-            //var balance = Item.GetBalance(EffectiveOn);
+            //var balance = Item.GetBalance(Label);
             //TitreProfile = balance.TitreProfile;
             //InvestProfile = balance.InvestProfile;
             //InvestLibre= balance.InvestLibre;

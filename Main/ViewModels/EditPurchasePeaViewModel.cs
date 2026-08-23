@@ -160,7 +160,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        private Business.Share _selectedShare;
+        private Business.Share _selectedShare = new Business.Share();
 
         
 

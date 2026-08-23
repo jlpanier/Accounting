@@ -42,7 +42,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<AccountEntity>("Select * from ACCOUNT ");
+                return Db.Query<AccountEntity>("SELECT * FROM ACCOUNT ");
             }
         }
 
@@ -53,7 +53,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<ShareEntity>("Select * from SHARES ");
+                return Db.Query<ShareEntity>("SELECT * FROM SHARES ");
             }
         }
 
@@ -64,7 +64,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<AccountBalanceEntity>("Select * from ACCOUNT_BALANCE WHERE BankAccountId = ?", id);
+                return Db.Query<AccountBalanceEntity>("SELECT * FROM ACCOUNT_BALANCE WHERE BankAccountId = ?", id);
             }
         }
 
@@ -75,7 +75,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<AccountBalanceEntity>("Select * from ACCOUNT_BALANCE WHERE BankAccountId = ? and EffectiveOn = ?", id, effectiveOn);
+                return Db.Query<AccountBalanceEntity>("SELECT * FROM ACCOUNT_BALANCE WHERE BankAccountId = ? and EffectiveOn = ?", id, effectiveOn);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<TranferEntity>("Select * from TRANSFER WHERE BankAccountId = ? ", id);
+                return Db.Query<TranferEntity>("SELECT * FROM TRANSFER WHERE BankAccountId = ? ", id);
             }
         }
 
@@ -97,7 +97,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<OrderEntity>("Select * from ORDERS WHERE BankAccountId = ? ", id);
+                return Db.Query<OrderEntity>("SELECT * FROM ORDERS WHERE BankAccountId = ? ", id);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<DividendeEntity>("Select * from DIVIDENDES WHERE BankAccountId = ? ", id);
+                return Db.Query<DividendeEntity>("SELECT * FROM DIVIDENDES WHERE BankAccountId = ? ", id);
             }
         }
         /// <summary>
@@ -118,7 +118,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<PeeEntity>("Select * from PEE WHERE BankAccountId = ?", id);
+                return Db.Query<PeeEntity>("SELECT * FROM PEE WHERE BankAccountId = ?", id);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<PeaEntity>("Select * from PEA WHERE BankAccountId = ?", id);
+                return Db.Query<PeaEntity>("SELECT * FROM PEA WHERE BankAccountId = ?", id);
             }
         }
 
@@ -140,7 +140,7 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<ScpiEntity>("Select * from SCPI WHERE BankAccountId = ?", id);
+                return Db.Query<ScpiEntity>("SELECT * FROM SCPI WHERE BankAccountId = ?", id);
             }
         }
 
@@ -151,7 +151,18 @@ namespace Repository.Dbo
         {
             lock (dbLock)
             {
-                return Db.Query<PriceShareEntity>("Select * from PRICESHARES WHERE ShareId = ?", id);
+                return Db.Query<PriceShareEntity>("SELECT * FROM PRICESHARES WHERE ShareId = ?", id);
+            }
+        }
+
+        /// <summary>
+        /// Montant des loyers d'un bien d'appartement
+        /// </summary>
+        public IEnumerable<MonthlyRentEntity> GetMonthlyRent(int id)
+        {
+            lock (dbLock)
+            {
+                return Db.Query<MonthlyRentEntity>("SELECT * FROM RENT WHERE AppartmentId = ?", id);
             }
         }
 

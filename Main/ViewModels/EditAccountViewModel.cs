@@ -141,6 +141,14 @@ namespace Main.ViewModels
         }
 
         /// <summary>
+        /// Initialisation des données
+        /// </summary>
+        public void Init(Business.BaseAccount.AccountType accountType)
+        {
+            SelectedAccountType = accountType;
+        }
+
+        /// <summary>
         /// Sauvegarde des données
         /// </summary>
         public async void OnTypeAccount()

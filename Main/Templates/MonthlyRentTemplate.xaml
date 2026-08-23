@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView 
+    x:Class="Main.Templates.MonthlyRentTemplate"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid Margin="24,12,24,0" RowDefinitions="Auto, Auto, Auto, Auto">
+
+        <Grid Grid.Row="0" >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer 
+                    Command="{Binding ClickEditAccountCommand}"
+                    CommandParameter="{Binding}" />
+            </Grid.GestureRecognizers>
+
+            <Grid ColumnDefinitions="Auto, Auto, Auto, Auto">
+                <Label Grid.Column="0"
+                       Text="{Binding Label}"
+                       Margin="0,0,5,0"
+                       FontSize="18"
+                       FontAttributes="Bold" />
+
+                <Label Grid.Column="1"
+                       Text="{Binding AccountNo}"
+                       FontSize="14"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="2"
+                       Text=" ➤ "
+                       FontSize="14"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="3"
+                      Text="{Binding Renter}"
+                      FontSize="14"
+                      VerticalTextAlignment="Center" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer 
+                    Command="{Binding ClickEditBalanceCommand}"
+                    CommandParameter="{Binding}" />
+            </Grid.GestureRecognizers>
+
+            <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*,*" RowDefinitions="Auto, Auto, Auto">
+
+                <Label Grid.Column="0" Grid.Row="0"
+                       Text="Loyer"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="0" Grid.Row="1"
+                       Text="{Binding Rent, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+                
+                <Label Grid.Column="1" Grid.Row="0"
+                       Text="Provision"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="1" Grid.Row="1"
+                       Text="{Binding Provision, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+                
+                <Label Grid.Column="2" Grid.Row="0"
+                       Text="Entrée/Sortie"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="2" Grid.Row="1" 
+                       Text="{Binding InOut, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="3" Grid.Row="0"
+                       Text="Travaux"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="3" Grid.Row="1" 
+                       Text="{Binding Work, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="4" Grid.Row="0"
+                       Text="Frais exceptionnel"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="5" Grid.Row="1" 
+                       Text="{Binding Exceptionel, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="6" Grid.Row="0"
+                       Text="Garantie"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="6" Grid.Row="1" 
+                       Text="{Binding Garantee, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="7" Grid.Row="0"
+                       Text="Gestion"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="7" Grid.Row="1" 
+                       Text="{Binding Gestion, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="8" Grid.Row="0"
+                       Text="Syndic"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="8" Grid.Row="1" 
+                       Text="{Binding Syndic, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="9" Grid.Row="0"
+                       Text="Virement"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"
+                       />
+
+                <Label Grid.Column="9" Grid.Row="1" 
+                       Text="{Binding Transfer, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2" >
+
+            <Grid ColumnDefinitions="*, Auto, Auto" RowDefinitions="Auto,Auto">
+                <Label Grid.Column="0" Grid.Row="0"
+                       Text="Mouvement"
+                       Margin="0,0,5,0"
+                       FontSize="14" 
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"/>
+
+                <Label Grid.Column="1" Grid.Row="0"
+                       Text="{Binding Mouvement, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       VerticalTextAlignment="Center" />
+
+                <Label Grid.Column="0" Grid.Row="1"
+                       Text="Sommes des virements"
+                       Margin="0,0,5,0"
+                       FontSize="14" 
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"/>
+
+                <Label Grid.Column="1" Grid.Row="1"
+                       Text="{Binding AnnualTransfer, StringFormat='{0:N2} €'}"
+                       FontSize="14"
+                       VerticalTextAlignment="Center" />
+
+            </Grid>
+        </Grid>
+
+
+        <BoxView Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"
+                 HeightRequest="1"
+                 BackgroundColor="#E0E0E0"
+                 Margin="0,12,0,12" />
+    </Grid>
+
+</ContentView>
+

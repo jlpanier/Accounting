@@ -140,7 +140,7 @@ namespace Main.ViewModels
         public double _annuelRent = 0.0;
 
         /// <summary>
-        /// Rendement sur 1 an
+        /// Exceptionel sur 1 an
         /// </summary>
         public double Rendement
         {
@@ -157,7 +157,7 @@ namespace Main.ViewModels
         public double _rendement = 0.0;
 
         /// <summary>
-        /// Ligne1
+        /// Transfer
         /// </summary>
         public string Ligne1
         {

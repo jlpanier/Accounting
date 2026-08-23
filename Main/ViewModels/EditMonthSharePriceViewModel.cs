@@ -1,6 +1,4 @@
 ﻿using Business;
-using System.Collections.ObjectModel;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Input;
 
 namespace Main.ViewModels

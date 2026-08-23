@@ -25,7 +25,8 @@ namespace Main
             Routing.RegisterRoute(nameof(EditSellPeaPage), typeof(EditSellPeaPage));
             Routing.RegisterRoute(nameof(EditDividendePeaPage), typeof(EditDividendePeaPage));
             Routing.RegisterRoute(nameof(EditMonthSharePricePage), typeof(EditMonthSharePricePage));
-            
+            Routing.RegisterRoute(nameof(EditRentPage), typeof(EditRentPage));
+
         }
 
         public static async Task DisplaySnackbarAsync(string message)

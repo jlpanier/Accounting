@@ -23,7 +23,7 @@ namespace Main.ViewModels
         #endregion
         
         /// <summary>
-        /// NumberOfShares du compte
+        /// Provision du compte
         /// </summary>
         public double Disponible
         {
@@ -40,7 +40,7 @@ namespace Main.ViewModels
         public double _disponible;
 
         /// <summary>
-        /// NumberOfShares du compte
+        /// Provision du compte
         /// </summary>
         public double Block
         {
@@ -57,7 +57,7 @@ namespace Main.ViewModels
         public double _block;
 
         /// <summary>
-        /// NumberOfShares du compte
+        /// Provision du compte
         /// </summary>
         public double Retirement
         {
@@ -78,7 +78,7 @@ namespace Main.ViewModels
         {
         }
 
-        public OverviewViewModel(OverviewAccounts overview)
+        public OverviewViewModel(Overview overview)
         {
             Retirement = overview.Retirement;
             Block= overview.Block;

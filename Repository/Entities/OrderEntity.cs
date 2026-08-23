@@ -135,7 +135,7 @@ namespace Repository.Entities
         [Column("Tax")]
         public double Tax
         {
-            get { return _fees; }
+            get { return _tax; }
             set
             {
                 if (_tax != value)

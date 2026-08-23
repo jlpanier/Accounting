@@ -90,6 +90,23 @@ namespace Main.ViewModels
         private string _periodLabel = "";
 
         /// <summary>
+        /// Label de la période 
+        /// </summary>
+        public double Liquidity
+        {
+            get => _liquidity;
+            set
+            {
+                if (_liquidity != value)
+                {
+                    _liquidity = value;
+                    NotifyPropertyChanged(nameof(Liquidity));
+                }
+            }
+        }
+        private double _liquidity;
+
+        /// <summary>
         /// Liste des comptes
         /// </summary>
         public ObservableCollection<IBaseAccountViewModel> Accounts
@@ -159,9 +176,17 @@ namespace Main.ViewModels
                 else if (item is PEE pee) results.Add(new PeeViewModel(pee, CurrentDate));
                 else if (item is PEA pea) results.Add(new PeaViewModel(pea, CurrentDate));
                 else if (item is SCPI scpi) results.Add(new ScpiViewModel(scpi, CurrentDate));
-                else if (item is OverviewAccounts overview) results.Add(new OverviewViewModel(overview));
+                else if (item is Appartement appartement) results.Add(new MonthlyRentViewModel(appartement, CurrentDate));
+                else if (item is Overview overview) results.Add(new OverviewViewModel(overview));
             }
             Accounts = new ObservableCollection<IBaseAccountViewModel>(results);
+
+            Liquidity = 0;
+            foreach (var item in BaseAccount.Accounts)
+            {
+                if (item is BankAccount bankAccount) Liquidity += bankAccount.GetBalanceOn(CurrentDate);
+               else  if (item is SavingAccount savingAccount) Liquidity += savingAccount.GetBalanceOn(CurrentDate);
+            }
         }
     }
 }

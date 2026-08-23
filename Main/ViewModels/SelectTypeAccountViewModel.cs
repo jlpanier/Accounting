@@ -74,7 +74,7 @@ namespace Main.ViewModels
             {
                 await Shell.Current.GoToAsync("..", new Dictionary<string, object>
                 {
-                    { "accounttype", SelectedAccountType }
+                    { "AccountType", SelectedAccountType }
                 }); // Retour à la page précédente
             }
             catch (Exception ex)

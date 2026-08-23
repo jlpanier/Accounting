@@ -18,6 +18,10 @@ public partial class EditAccountPage : ContentPage, IQueryAttributable
             {
                 vm.Init(bankAccountId);
             }
+            if (query.TryGetValue("AccountType", out var objAccountType) && objAccountType is Business.BaseAccount.AccountType accountType)
+            {
+                vm.Init(accountType);
+            }
         }
     }
 

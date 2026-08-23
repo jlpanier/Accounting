@@ -8,6 +8,15 @@ namespace Business
     /// </summary>
     public class PEA: BaseAccount
     {
+        /// <summary>
+        /// Création d'un compte bancaire
+        /// </summary>
+        public static PEA Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd)
+        {
+            var baseaccount = Create(label, accountNo, dtStart, dtEnd, AccountType.PEA);
+            return new PEA(baseaccount.Item);
+        }
+
         public static PEA New(AccountEntity item) => new PEA(item);
 
         public static PEA Empty() => new PEA();

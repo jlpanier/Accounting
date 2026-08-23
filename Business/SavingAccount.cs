@@ -10,7 +10,11 @@ namespace Business
         /// <summary>
         /// Création d'un compte bancaire
         /// </summary>
-        public static SavingAccount Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd) => (SavingAccount)Create(label, accountNo, dtStart, dtEnd, AccountType.Saving);
+        public static SavingAccount Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd)
+        {
+            var baseaccount = Create(label, accountNo, dtStart, dtEnd, AccountType.Saving);
+            return new SavingAccount(baseaccount.Item);
+        }
 
         private SavingAccount(AccountEntity item):base(item) 
         {

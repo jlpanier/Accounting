@@ -39,6 +39,10 @@
             <templates:ScpiTemplate />
         </DataTemplate>
 
+        <DataTemplate x:Key="MonthlyRentTemplate">
+            <templates:MonthlyRentTemplate />
+        </DataTemplate>
+
         <DataTemplate x:Key="OverviewTemplate">
             <templates:OverviewTemplate />
         </DataTemplate>
@@ -54,13 +58,14 @@
             PeeTemplate="{StaticResource PeeTemplate}"
             PeaTemplate="{StaticResource PeaTemplate}"
             ScpiTemplate="{StaticResource ScpiTemplate}"
+            AppartmentTemplate="{StaticResource MonthlyRentTemplate}"
             OverviewTemplate="{StaticResource OverviewTemplate}"
             SavingTemplate="{StaticResource SavingTemplate}" />
 
     </ContentPage.Resources>
 
     <ScrollView Margin="10" BackgroundColor="AliceBlue">
-        <Grid BackgroundColor="AliceBlue" RowDefinitions="Auto, Auto, Auto, Auto">
+        <Grid BackgroundColor="AliceBlue" RowDefinitions="Auto, Auto, Auto, Auto, Auto">
 
             <!-- Zone de swipe -->
             <Grid.GestureRecognizers>
@@ -85,10 +90,35 @@
                 TextColor="#333"
                 Margin="0,0,0,20"
                 />
-            
-            <!-- Carte contenant la liste -->
+
             <Border 
                 Grid.Row="2"
+                Margin="12,12,0,12"
+                Padding="0"
+                Background="White"
+                BackgroundColor="White"
+                StrokeThickness="0">
+
+                <Grid Grid.Row="0" >
+                    <Grid ColumnDefinitions="Auto, Auto">
+                        <Label 
+                            Grid.Column="0"
+                            Text="Liquidité"
+                            Margin="12,6,12,6"
+                            FontSize="18"
+                            FontAttributes="Bold" />
+
+                        <Label 
+                            Grid.Column="1"
+                            Text="{Binding Liquidity, StringFormat='{0:N2} €'}"
+                            FontSize="14"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border 
+                Grid.Row="3"
                 Margin="0"
                 Padding="0"
                 BackgroundColor="White"
@@ -105,8 +135,8 @@
 
 
             </Border>
-            <!-- FAB pour ajouter un compte -->
-            <ImageButton Grid.Row="3"
+            
+            <ImageButton Grid.Row="4"
                 HorizontalOptions="End"
                 VerticalOptions="End"
                 Margin="20"

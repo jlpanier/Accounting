@@ -9,6 +9,15 @@ namespace Business
     public class SCPI: BaseAccount
     {
         /// <summary>
+        /// Création d'un compte bancaire
+        /// </summary>
+        public static SCPI Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd)
+        {
+            var baseaccount = Create(label, accountNo, dtStart, dtEnd, AccountType.SCPI);
+            return new SCPI(baseaccount.Item);
+        }
+
+        /// <summary>
         /// Loyer annuel
         /// </summary>
         public double GetYearlyRent(DateTime effectiveOn)
@@ -17,15 +26,21 @@ namespace Business
             return dataset.Any() ? dataset.Select(_ => _.Rent).Sum() : 0.0;
         }
 
+        /// <summary>
+        /// Convertir un AccountEntity en SCPI
+        /// </summary>
         public static SCPI New(AccountEntity item) => new SCPI(item);
 
-        public new static SCPI Empty() => new SCPI();
+        /// <summary>
+        /// SCPI vide 
+        /// </summary>
+        public static SCPI Empty() => new SCPI();
 
         public SCPI()
         {
         }
 
-        public SCPI(AccountEntity item):base(item) 
+        private SCPI(AccountEntity item):base(item) 
         {
         }
 

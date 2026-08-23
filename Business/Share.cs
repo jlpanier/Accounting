@@ -19,7 +19,7 @@ namespace Business
         /// <summary>
         /// Création d'une action 
         /// </summary>
-        public static void Create(string code, string label, TypeShare selectedShareType)
+        public static Share Create(string code, string label, TypeShare selectedShareType)
         {
             var newShare = new ShareEntity
             {
@@ -30,6 +30,7 @@ namespace Business
             };
             DatabaseAccess.Instance.Add(newShare);
             _all.Add(new Share(newShare));
+            return new Share(newShare);
         }
 
         /// <summary>
@@ -103,6 +104,11 @@ namespace Business
         private List<PriceShare>? _amounts = null;
 
         #endregion
+
+        public Share()
+        {
+            Item = new ShareEntity();
+        }
 
         public Share(ShareEntity item) 
         {

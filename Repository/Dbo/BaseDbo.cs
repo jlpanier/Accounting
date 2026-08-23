@@ -64,7 +64,17 @@ namespace Repository.Dbo
             DbPath = databasePath;
             //if (!File.Exists(DbPath)) throw new FileNotFoundException("File does not exists", DbPath);
             Db.BusyTimeout = TimeSpan.FromSeconds(busyTimeout);
+            //DropTable<AccountEntity>();
+            //DropTable<AccountBalanceEntity>();
+            //DropTable<PeeEntity>();
+            //DropTable<PeaEntity>();
+            //DropTable<ScpiEntity>();
             //DropTable<ShareEntity>();
+            //DropTable<OrderEntity>();
+            //DropTable<TranferEntity>();
+            //DropTable<DividendeEntity>();
+            //DropTable<PriceShareEntity>();
+            //DropTable<MonthlyRentEntity>();
             CreateTable<AccountEntity>();
             CreateTable<AccountBalanceEntity>();
             CreateTable<PeeEntity>();
@@ -75,6 +85,7 @@ namespace Repository.Dbo
             CreateTable<TranferEntity>();
             CreateTable<DividendeEntity>();
             CreateTable<PriceShareEntity>();
+            CreateTable<MonthlyRentEntity>();
         }
 
         /// <summary>
