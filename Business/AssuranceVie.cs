@@ -12,8 +12,11 @@ namespace Business
         /// <summary>
         /// Création d'un compte bancaire
         /// </summary>
-        public static AssuranceVie Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd) => (AssuranceVie)Create(label, accountNo, dtStart, dtEnd, AccountType.AssuranceVie);
-
+        public static AssuranceVie Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd)
+        {
+            var baseaccount = Create(label, accountNo, dtStart, dtEnd, AccountType.AssuranceVie);
+            return new AssuranceVie(baseaccount.Item);
+        }
         private AssuranceVie(AccountEntity item):base(item) 
         {
         }

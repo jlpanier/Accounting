@@ -1,4 +1,5 @@
-﻿using FFImageLoading.Helpers;
+﻿using Business;
+using FFImageLoading.Helpers;
 using Repository.Dbo;
 
 namespace Main
@@ -29,6 +30,12 @@ namespace Main
                 Directory.CreateDirectory(MapPath);
 
                 DatabaseAccess.Instance.Init(Path.Combine(DbPath, BaseDbo.DatabaseName));
+
+                //if(!BankAccount.Accounts.Any())
+                //{
+                //    // Initialize default accounts or perform other necessary setup
+                //    Business.Default.Init();
+                //}
             }
             catch (FileNotFoundException)
             {

@@ -5,11 +5,11 @@ namespace Main.Templates
 {
     public class OperationTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate TransferTemplate { get; set; }
-        public DataTemplate StockTradeTemplate { get; set; }
-        public DataTemplate DividendTemplate { get; set; }
+        public DataTemplate? TransferTemplate { get; set; }
+        public DataTemplate? StockTradeTemplate { get; set; }
+        public DataTemplate? DividendTemplate { get; set; }
 
-        protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
+        protected override DataTemplate? OnSelectTemplate(object item, BindableObject container)
         {
             if (item is EditPeaViewModel vm)
             {

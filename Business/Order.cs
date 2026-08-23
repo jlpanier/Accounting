@@ -105,22 +105,22 @@ namespace Business
                     {
                         if (Share.Type == TypeShare.Profile)
                         {
-                            result = $"Achat de {Quantity:N4} parts de {Share.Name} au prix unitaire de {UnitPrice:N4} € comprenant {Fees:N2} € de commission et {Tax:N2} € de taxe";
+                            result = $"Achat de {Quantity:N4} parts de {Share.Name} au prix unitaire de {UnitPrice:N4} € comprenant {Fees:N2} € de commission et {Tax:N2} € de frais";
                         }
                         else
                         {
-                            result = $"Achat de {Quantity:N0} parts de {Share.Name} au prix unitaire de {UnitPrice:N2} € comprenant {Fees:N2} € de commission et {Tax:N2} € de taxe";
+                            result = $"Achat de {Quantity:N0} parts de {Share.Name} au prix unitaire de {UnitPrice:N2} € comprenant {Fees:N2} € de commission et {Tax:N2} € de frais";
                         }
                     }
                     else
                     {
                         if (Share.Type == TypeShare.Profile)
                         {
-                            result = $"Vente de {-Quantity:N4} parts de {Share.Name} au prix unitaire de {UnitPrice:N4} € comprenant {Fees:N2} € de commission et {Tax:N2} € de taxe";
+                            result = $"Vente de {-Quantity:N4} parts de {Share.Name} au prix unitaire de {UnitPrice:N4} € comprenant {Fees:N2} € de commission et {Tax:N2} € de frais";
                         }
                         else
                         {
-                            result = $"Vente de {-Quantity:N0} parts de {Share.Name} au prix unitaire de {UnitPrice:N2} € comprenant {Fees:N2} € de commission et {Tax:N2} € de taxe";
+                            result = $"Vente de {-Quantity:N0} parts de {Share.Name} au prix unitaire de {UnitPrice:N2} € comprenant {Fees:N2} € de commission et {Tax:N2} € de frais";
                         }
                     }
                 }

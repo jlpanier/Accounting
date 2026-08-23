@@ -25,7 +25,18 @@ namespace Main.ViewModels
         /// Evenement pour la vente d'une action
         /// </summary>
         public ICommand ClickNewDividendeCommand => new Command(OnDividente);
-        
+
+        /// <summary>
+        /// Evenement pour la modification d'une action
+        /// </summary>
+        public ICommand ClickNameCommand => new Command<int>(OnShare);
+
+
+        /// <summary>
+        /// Evenement pour la modification du montant d'une action
+        /// </summary>
+        public ICommand ClickMonthlyCommand => new Command<int>(OnMonthlyShare);
+
 
         /// <summary>
         /// Label de la période 
@@ -191,6 +202,43 @@ namespace Main.ViewModels
                 ["EffectiveOn"] = EffectiveOn,
             });
         }
-        
+
+        /// <summary>
+        /// Ecran d'une vente d'action
+        /// </summary>
+        private async void OnShare(int shareId)
+        {
+            await Shell.Current.GoToAsync($"{nameof(SharePage)}", new Dictionary<string, object>
+            {
+                ["shareId"] = shareId,
+            });
+        }
+
+        /// <summary>
+        /// Ecran d'une vente d'action
+        /// </summary>
+        private async void OnMonthlyShare(int shareId)
+        {
+            await Shell.Current.GoToAsync($"{nameof(EditMonthSharePricePage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = BankAccountId,
+                ["EffectiveOn"] = EffectiveOn,
+                ["ShareId"] = shareId,
+            });
+        }
+
+        /// <summary>
+        /// Ecran d'une vente d'action
+        /// </summary>
+        private async void OnMonthlyShare(int shareId, int priceShareId)
+        {
+            await Shell.Current.GoToAsync($"{nameof(EditMonthSharePricePage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = BankAccountId,
+                ["EffectiveOn"] = EffectiveOn,
+                ["ShareId"] = shareId,
+            });
+        }
+
     }
 }

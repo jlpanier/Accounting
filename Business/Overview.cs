@@ -6,13 +6,8 @@ namespace Business
     /// <summary>
     /// Bilan global : épargne disponible, bloquée ou disponible à la retraite
     /// </summary>
-    public class OverviewAccounts
+    public class Overview
     {
-        /// <summary>
-        /// Référence du compte bancaire
-        /// </summary>
-        public int BankAccountId => 0;
-
         /// <summary>
         /// Epargne disponible
         /// </summary>
@@ -28,7 +23,7 @@ namespace Business
         /// </summary>
         public readonly double Retirement;
 
-        public OverviewAccounts(double disponible, double block, double retirement) 
+        public Overview(double disponible, double block, double retirement) 
         { 
             Disponible = disponible;
             Block = block;

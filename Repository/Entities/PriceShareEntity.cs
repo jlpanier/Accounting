@@ -3,8 +3,8 @@ using System.ComponentModel;
 
 namespace Repository.Entities 
 {
-    [Table("ORDERS")]
-    public partial class OrderEntity : BaseEntity, INotifyPropertyChanged
+    [Table("PRICESHARES")]
+    public partial class PriceShareEntity : BaseEntity, INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
 
@@ -56,22 +56,6 @@ namespace Repository.Entities
         }
         private int _shareId;
 
-        [Indexed]
-        [Column("BankAccountId")]
-        public int BankAccountId
-        {
-            get { return _bankAccountId; }
-            set
-            {
-                if (_bankAccountId != value)
-                {
-                    _bankAccountId = value;
-                    NotifyPropertyChanged(nameof(BankAccountId));
-                }
-            }
-        }
-        private int _bankAccountId;
-
         [Column("EffectiveOn")]
         public DateTime EffectiveOn
         {
@@ -87,65 +71,21 @@ namespace Repository.Entities
         }
         private DateTime _effectiveOn;
 
-        [Column("Quantity")]
-        public double Quantity
-        {
-            get { return _quantity; }
-            set
-            {
-                if (_quantity != value)
-                {
-                    _quantity = value;
-                    NotifyPropertyChanged(nameof(Quantity));
-                }
-            }
-        }
-        private double _quantity;
-
         [Column("UnitPrice")]
         public double UnitPrice
         {
-            get { return _unitPrice; }
+            get { return _amount; }
             set
             {
-                if (_unitPrice != value)
+                if (_amount != value)
                 {
-                    _unitPrice = value;
+                    _amount = value;
                     NotifyPropertyChanged(nameof(UnitPrice));
                 }
             }
         }
-        private double _unitPrice;
+        private double _amount;
 
-        [Column("Fees")]
-        public double Fees
-        {
-            get { return _fees; }
-            set
-            {
-                if (_fees != value)
-                {
-                    _fees = value;
-                    NotifyPropertyChanged(nameof(Fees));
-                }
-            }
-        }
-        private double _fees;
-
-        [Column("Tax")]
-        public double Tax
-        {
-            get { return _tax; }
-            set
-            {
-                if (_tax != value)
-                {
-                    _tax = value;
-                    NotifyPropertyChanged(nameof(Tax));
-                }
-            }
-        }
-        private double _tax;
 
         [Column("DateMaj")]
         public DateTime DateMaj

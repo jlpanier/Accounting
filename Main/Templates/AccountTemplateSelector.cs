@@ -18,19 +18,24 @@ namespace Main.Templates
         public required DataTemplate SavingTemplate { get; set; }
 
         /// <summary>
-        /// Template compte d'épargne
+        /// Template pour PEE
         /// </summary>
         public required DataTemplate PeeTemplate { get; set; }
 
         /// <summary>
-        /// Template compte d'épargne
+        /// Template pour PEA
         /// </summary>
         public required DataTemplate PeaTemplate { get; set; }
 
         /// <summary>
-        /// Template compte d'épargne
+        /// Template pour SCPI
         /// </summary>
         public required DataTemplate ScpiTemplate { get; set; }
+
+        /// <summary>
+        /// Template pour apartement
+        /// </summary>
+        public required DataTemplate AppartmentTemplate { get; set; }
 
         /// <summary>
         /// Template bilan global
@@ -46,6 +51,7 @@ namespace Main.Templates
                 PeeViewModel => PeeTemplate,
                 PeaViewModel => PeaTemplate,
                 ScpiViewModel => ScpiTemplate,
+                MonthlyRentViewModel => AppartmentTemplate,
                 OverviewViewModel => OverviewTemplate,
                 _ => BankTemplate
             };

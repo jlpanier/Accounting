@@ -8,6 +8,15 @@ namespace Business
     /// </summary>
     public class PEE: BaseAccount
     {
+        /// <summary>
+        /// Création d'un compte bancaire
+        /// </summary>
+        public static PEE Create(string label, string accountNo, DateTime dtStart, DateTime dtEnd)
+        {
+            var baseaccount = Create(label, accountNo, dtStart, dtEnd, AccountType.PEE);
+            return new PEE(baseaccount.Item);
+        }
+
         public static PEE New(AccountEntity item) => new PEE(item);
 
         public static PEE Empty() => new PEE();

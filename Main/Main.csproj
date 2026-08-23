@@ -95,11 +95,11 @@
 	  <Compile Update="Pages\EditBalancePage.xaml.cs">
 	    <DependentUpon>EditBalancePage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Pages\EditPeaPage.xaml.cs">
-	    <DependentUpon>EditPeaPage.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Templates\PeeTemplate.xaml.cs">
 	    <DependentUpon>PeeTemplate.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Templates\MonthlyRentTemplate.xaml.cs">
+	    <DependentUpon>MonthlyRentTemplate.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -107,7 +107,7 @@
 	  <MauiXaml Update="Pages\EditDividendePeaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\EditPeaPage.xaml">
+	  <MauiXaml Update="Pages\EditMonthSharePricePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\EditPeePage.xaml">
@@ -120,6 +120,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\EditPurchasePeaPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\EditRentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\EditScpiPage.xaml">
@@ -147,6 +150,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Templates\OverviewTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Templates\MonthlyRentTemplate.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Templates\SavingAccountTemplate.xaml">

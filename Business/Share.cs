@@ -19,7 +19,7 @@ namespace Business
         /// <summary>
         /// Création d'une action 
         /// </summary>
-        public static void Create(string code, string label, TypeShare selectedShareType)
+        public static Share Create(string code, string label, TypeShare selectedShareType)
         {
             var newShare = new ShareEntity
             {
@@ -30,6 +30,7 @@ namespace Business
             };
             DatabaseAccess.Instance.Add(newShare);
             _all.Add(new Share(newShare));
+            return new Share(newShare);
         }
 
         /// <summary>
@@ -85,11 +86,57 @@ namespace Business
         /// </summary>
         public TypeShare Type => (TypeShare)Item.Type;
 
+        /// <summary>
+        /// Prix de cette action
+        /// </summary>
+        public List<PriceShare> Amounts
+        {
+            get
+            {
+                if (_amounts==null)
+                {
+                    _amounts = new List<PriceShare>();
+                    _amounts.AddRange(DatabaseAccess.Instance.GetPriceShareById(Id).Select(i=>new PriceShare(i)));
+                }
+                return _amounts ?? [];
+            }
+        }
+        private List<PriceShare>? _amounts = null;
+
         #endregion
+
+        public Share()
+        {
+            Item = new ShareEntity();
+        }
 
         public Share(ShareEntity item) 
         {
             Item = item;
+        }
+
+        /// <summary>
+        /// Montant de l'action à une date donnée
+        /// </summary>
+        public PriceShare? GetPriceOn(DateTime effectiveOn) => Amounts.FirstOrDefault(a => a.EffectiveOn == effectiveOn);
+
+        /// <summary>
+        /// Montant de l'action à une date donnée
+        /// </summary>
+        public PriceShare? AddAmount(DateTime effectiveOn, double unitPrice)
+        {
+            var existingPrice = GetPriceOn(effectiveOn);
+            if (existingPrice != null)
+            {
+                existingPrice.Save(effectiveOn, unitPrice);
+                return existingPrice;
+            }
+            else
+            {
+                PriceShare.Create(Id, effectiveOn, unitPrice);
+                _amounts = null; // Reset the cached amounts to force reloading
+                return GetPriceOn(effectiveOn);
+            }
         }
 
         /// <summary>
