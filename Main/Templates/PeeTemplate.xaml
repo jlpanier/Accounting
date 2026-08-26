@@ -14,7 +14,7 @@
                     CommandParameter="{Binding}" />
             </Grid.GestureRecognizers>
 
-            <Grid ColumnDefinitions="Auto, Auto">
+            <Grid ColumnDefinitions="Auto,*,Auto">
                 <Label Grid.Column="0"
                        Text="{Binding Label}"
                        Margin="0,0,5,0"
@@ -25,6 +25,14 @@
                        Text="{Binding AccountNo}"
                        FontSize="14"
                        VerticalTextAlignment="Center" />
+                
+                <Label Grid.Column="2"
+                       Text="{Binding TotalAmount, StringFormat='{0:N2} €'}"
+                       Margin="0,0,0,0"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="CadetBlue"
+                       VerticalTextAlignment="End" />                
             </Grid>
         </Grid>
 

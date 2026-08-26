@@ -7,7 +7,7 @@
     xmlns:selectors="clr-namespace:Main.Templates"
     xmlns:customs="clr-namespace:Main.Customs"
     BackgroundColor="AliceBlue"
-    Title="Sélection du mois">
+    Title="Bilan mensuel">
 
     <ContentPage.BindingContext>
         <vm:MainViewModel />
@@ -43,11 +43,6 @@
             <templates:MonthlyRentTemplate />
         </DataTemplate>
 
-        <DataTemplate x:Key="OverviewTemplate">
-            <templates:OverviewTemplate />
-        </DataTemplate>
-
-
         <!-- ===================== -->
         <!--   TEMPLATE SELECTOR   -->
         <!-- ===================== -->
@@ -59,7 +54,6 @@
             PeaTemplate="{StaticResource PeaTemplate}"
             ScpiTemplate="{StaticResource ScpiTemplate}"
             AppartmentTemplate="{StaticResource MonthlyRentTemplate}"
-            OverviewTemplate="{StaticResource OverviewTemplate}"
             SavingTemplate="{StaticResource SavingTemplate}" />
 
     </ContentPage.Resources>
@@ -73,47 +67,130 @@
                 <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}" />
             </Grid.GestureRecognizers>
 
-            <Label 
-                Grid.Row="0"
-                Text="{Binding MonthLabel}"
-                FontSize="24"
-                FontAttributes="Bold"
-                HorizontalOptions="Center"
-                TextColor="#333"
-                />
+            <Grid ColumnDefinitions="*,Auto,*" RowDefinitions="Auto,Auto" Padding="0,10">
+                <Label 
+                    Grid.Column="0" Grid.RowSpan="2"
+                    Text="◁"
+                    FontSize="28"
+                    TextColor="#333"
+                    Padding="12,0,12,0"
+                    HorizontalOptions="End"
+                    VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PreviousMonthCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label 
+                    Grid.Row="0" Grid.Column="1"
+                    Text="{Binding MonthLabel}"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    TextColor="#333"
+                    />
+                <Label 
+                    Grid.Row="1" Grid.Column="1"
+                    Text="{Binding PeriodLabel}"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    TextColor="#333"
+                    />
+                <Label 
+                    Grid.Column="2" Grid.RowSpan="2"
+                    Text="▷"
+                    FontSize="28"
+                    TextColor="#333"
+                    Padding="12,0,12,0"
+                    VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NextMonthCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
 
-            <Label 
-                Grid.Row="1"
-                Text="{Binding PeriodLabel}"
-                FontSize="12"
-                HorizontalOptions="Center"
-                TextColor="#333"
-                Margin="0,0,0,20"
-                />
 
+ 
             <Border 
                 Grid.Row="2"
-                Margin="12,12,0,12"
-                Padding="0"
+                Margin="0,0,0,12"
+                Padding="24,12,12,12"
                 Background="White"
                 BackgroundColor="White"
                 StrokeThickness="0">
 
-                <Grid Grid.Row="0" >
-                    <Grid ColumnDefinitions="Auto, Auto">
-                        <Label 
-                            Grid.Column="0"
-                            Text="Liquidité"
-                            Margin="12,6,12,6"
-                            FontSize="18"
-                            FontAttributes="Bold" />
+                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                    
+                    <Label 
+                        Grid.Column="0" Grid.Row="0"
+                        Text="Liquidité"
+                        Margin="0"
+                        Padding="0"
+                        FontSize="18"
+                        FontAttributes="Bold" />
+                    
+                    <Label 
+                        Grid.Column="1"  Grid.Row="0"
+                        Text="{Binding Cash, StringFormat='{0:N2} €'}"
+                        FontSize="14"
+                        Margin="0"
+                        Padding="0"
+                        TextColor="CadetBlue"
+                        VerticalTextAlignment="Center" 
+                        HorizontalTextAlignment="End" />
+                    
 
-                        <Label 
-                            Grid.Column="1"
-                            Text="{Binding Liquidity, StringFormat='{0:N2} €'}"
-                            FontSize="14"
-                            VerticalTextAlignment="Center" />
-                    </Grid>
+                    <Label 
+                        Grid.Column="0" Grid.Row="3"
+                        Text="Rente"
+                        Margin="0"
+                        Padding="0"
+                        FontSize="18"
+                        FontAttributes="Bold" />
+
+                    <Label 
+                        Grid.Column="1"  Grid.Row="3"
+                        Text="{Binding Annuity, StringFormat='{0:N2} €'}"
+                        Margin="0"
+                        Padding="0"
+                        FontSize="14"
+                        TextColor="CadetBlue"
+                        VerticalTextAlignment="Center" 
+                        HorizontalTextAlignment="End" />
+                    
+                    <Label 
+                        Grid.Column="0" Grid.Row="4"
+                        Text="Disponible"
+                        Margin="0"
+                        Padding="0"
+                        FontSize="18"
+                        FontAttributes="Bold" />
+                    
+                    <Label 
+                        Grid.Column="1"  Grid.Row="4"
+                        Text="{Binding Disponible, StringFormat='{0:N2} €'}"
+                        Margin="0"
+                        Padding="0"
+                        FontSize="14"
+                        TextColor="CadetBlue"
+                        VerticalTextAlignment="Center" 
+                        HorizontalTextAlignment="End" />
+
+                    <Label 
+                        Grid.Column="0" Grid.Row="5"
+                        Text="Bloqué"
+                        Margin="0"
+                        Padding="0"
+                        FontSize="18"
+                        FontAttributes="Bold" />
+
+                    <Label 
+                        Grid.Column="1"  Grid.Row="5"
+                        Text="{Binding Blocked, StringFormat='{0:N2} €'}"
+                        FontSize="14"
+                        TextColor="CadetBlue"
+                        VerticalTextAlignment="Center" 
+                        HorizontalTextAlignment="End" />
                 </Grid>
             </Border>
 
@@ -124,7 +201,6 @@
                 BackgroundColor="White"
                 StrokeThickness="0">
 
-                <!-- Liste des comptes -->
                 <CollectionView 
                     BackgroundColor="White"
                     ItemsSource="{Binding Accounts}"

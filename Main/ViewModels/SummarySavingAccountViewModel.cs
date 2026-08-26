@@ -6,7 +6,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class AssuranceVieViewModel : BaseViewModel
+    public class SummarySavingAccountViewModel : BaseViewModel
     {
         #region Propriétés
 
@@ -74,7 +74,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Compte
         /// </summary>
-        public AssuranceVie? BankAccount
+        public SavingAccount? BankAccount
         {
             get => _bankAccount;
             set
@@ -86,7 +86,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public AssuranceVie? _bankAccount;
+        public SavingAccount? _bankAccount;
 
         /// <summary>
         /// Date courante
@@ -95,12 +95,12 @@ namespace Main.ViewModels
 
         #endregion
 
-        public AssuranceVieViewModel()
+        public SummarySavingAccountViewModel()
         {
             EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public AssuranceVieViewModel(AssuranceVie account, DateTime dt)
+        public SummarySavingAccountViewModel(SavingAccount account, DateTime dt)
         {
             BankAccount = account;
             EffectiveOn = dt;
@@ -110,7 +110,7 @@ namespace Main.ViewModels
         }
 
         /// <summary>
-        /// Evenement de sélection d'un compte
+        /// Edition du compte
         /// </summary>
         private async void OnEditAccount()
         {
@@ -131,6 +131,7 @@ namespace Main.ViewModels
                 ["EffectiveOn"] = EffectiveOn,
             });
         }
+
 
     }
 }

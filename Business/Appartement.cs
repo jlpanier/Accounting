@@ -66,5 +66,13 @@ namespace Business
             }
         }
 
+
+        /// <summary>
+        /// Somme des loyers/virements effectivement perçus
+        /// </summary>
+        /// <param name="staron"></param>
+        /// <param name="endon"></param>
+        /// <returns></returns>
+        public double GetTransfer(DateTime staron, DateTime endon) => Balances.Where(i => i.EffectiveOn > staron && i.EffectiveOn <= endon).Sum(i => i.Transfer);
     }
 }

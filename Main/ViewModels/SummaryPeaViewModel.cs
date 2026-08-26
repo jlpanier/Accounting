@@ -1,4 +1,5 @@
 ﻿using Business;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -6,7 +7,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class PeaViewModel : BaseViewModel
+    public class SummaryPeaViewModel : BaseViewModel
     {
         #region Propriétés
 
@@ -55,109 +56,24 @@ namespace Main.ViewModels
         public string _accountno = "";
 
         /// <summary>
-        /// Somme disponible à la retraite sur ce plan épargne entreprise (PEE)
+        /// Somme des virements effectuées sur ce PRA
         /// </summary>
-        public double InvestLibre
+        public double Transfer
         {
-            get => _investLibre;
+            get => _transfer;
             set
             {
-                if (_investLibre != value)
+                if (_transfer != value)
                 {
-                    _investLibre = value;
-                    NotifyPropertyChanged(nameof(InvestLibre));
+                    _transfer = value;
+                    NotifyPropertyChanged(nameof(Transfer));
                 }
             }
         }
-        public double _investLibre = 0.0;
+        public double _transfer = 0.0;
 
         /// <summary>
-        /// Somme bloquée sur ce plan épargne entreprise (PEE)
-        /// </summary>
-        public double InvestProfile
-        {
-            get => _investProfile;
-            set
-            {
-                if (_investProfile != value)
-                {
-                    _investProfile = value;
-                    NotifyPropertyChanged(nameof(InvestProfile));
-                }
-            }
-        }
-        public double _investProfile = 0.0;
-
-        /// <summary>
-        /// Somme disponible sur ce plan épargne entreprise (PEE)
-        /// </summary>
-        public double Investissement
-        {
-            get => _investissement;
-            set
-            {
-                if (_investissement != value)
-                {
-                    _investissement = value;
-                    NotifyPropertyChanged(nameof(Investissement));
-                }
-            }
-        }
-        public double _investissement = 0.0;
-
-        /// <summary>
-        /// Somme disponible sur ce plan épargne entreprise (PEE)
-        /// </summary>
-        public double TitreLibre
-        {
-            get => _titreLibre;
-            set
-            {
-                if (_titreLibre != value)
-                {
-                    _titreLibre = value;
-                    NotifyPropertyChanged(nameof(TitreLibre));
-                }
-            }
-        }
-        public double _titreLibre = 0.0;
-
-        /// <summary>
-        /// Somme disponible sur ce plan épargne entreprise (PEE)
-        /// </summary>
-        public double TitreProfile
-        {
-            get => _titreProfile;
-            set
-            {
-                if (_titreProfile != value)
-                {
-                    _titreProfile = value;
-                    NotifyPropertyChanged(nameof(TitreProfile));
-                }
-            }
-        }
-        public double _titreProfile = 0.0;
-
-        /// <summary>
-        /// Somme disponible sur ce plan épargne entreprise (PEE)
-        /// </summary>
-        public double Titre
-        {
-            get => _titre;
-            set
-            {
-                if (_titre != value)
-                {
-                    _titre = value;
-                    NotifyPropertyChanged(nameof(Titre));
-                }
-            }
-        }
-        public double _titre = 0.0;
-
-        /// <summary>
-        /// Somme disponible sur ce plan épargne entreprise (PEE)
+        /// Somme disponible sur ce plan épargne entreprise (PEA)
         /// </summary>
         public double Cash
         {
@@ -174,21 +90,54 @@ namespace Main.ViewModels
         public double _cash = 0.0;
 
         /// <summary>
-        /// Somme disponible sur ce plan épargne entreprise (PEE)
+        /// Dividendes sur un an de ce plan épargne entreprise (PEA)
         /// </summary>
-        public double Total
+        public double Dividendes
         {
-            get => _total;
+            get => _dividendes;
             set
             {
-                if (_total != value)
+                if (_dividendes != value)
                 {
-                    _total = value;
-                    NotifyPropertyChanged(nameof(Total));
+                    _dividendes = value;
+                    NotifyPropertyChanged(nameof(Dividendes));
                 }
             }
         }
-        public double _total = 0.0;
+        public double _dividendes = 0.0;
+        /// <summary>
+        /// Valeur titre de ce plan épargne entreprise (PEA)
+        /// </summary>
+        public double Valorisation
+        {
+            get => _valorisation;
+            set
+            {
+                if (_valorisation != value)
+                {
+                    _valorisation = value;
+                    NotifyPropertyChanged(nameof(Valorisation));
+                }
+            }
+        }
+        public double _valorisation = 0.0;
+
+        /// <summary>
+        /// Liste des actions déjà acquises
+        /// </summary>
+        public ObservableCollection<PeaGroupStatut> Groups
+        {
+            get => _groups;
+            set
+            {
+                if (_groups != value)
+                {
+                    _groups = value;
+                    NotifyPropertyChanged(nameof(Groups));
+                }
+            }
+        }
+        private ObservableCollection<PeaGroupStatut> _groups = new ObservableCollection<PeaGroupStatut>();
 
         /// <summary>
         /// Compte
@@ -216,19 +165,21 @@ namespace Main.ViewModels
 
         #endregion
 
-        public PeaViewModel()
+        public SummaryPeaViewModel()
         {
             EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public PeaViewModel(PEA account, DateTime dt)
+        public SummaryPeaViewModel(PEA account, DateTime dt)
         {
             Item = account;
             EffectiveOn = dt;
-            //var balance = Item.GetBalance(Label);
-            //TitreProfile = balance.TitreProfile;
-            //InvestProfile = balance.InvestProfile;
-            //InvestLibre= balance.InvestLibre;
+            PeaStatut statut = account.StatutOn(EffectiveOn);
+            Cash = statut.Cash;
+            Transfer = statut.Transfer;
+            Groups = new ObservableCollection<PeaGroupStatut>(statut.Groups) { };
+            Valorisation = statut.Groups.Select(_ => _.Valorisation).Sum();
+            Dividendes = account.GetDividendes(dt.AddYears(-1), dt);
         }
 
         /// <summary>

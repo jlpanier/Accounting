@@ -1,4 +1,6 @@
-﻿namespace Business
+﻿using static Business.Share;
+
+namespace Business
 {
     /// <summary>
     /// Comptabiliser les actions du mois
@@ -24,6 +26,11 @@
         /// Référence de l'action
         /// </summary>
         public int ShareId => Item.Id;
+
+        /// <summary>
+        /// Type d'action
+        /// </summary>
+        public TypeShare Type => Item.Type;
 
         /// <summary>
         /// Code de l'action
@@ -83,14 +90,14 @@
         public double GainLoss => Amount + Investement;
 
         /// <summary>
-        /// Pourcentage de gain
+        /// Pourcentage de Gain
         /// </summary>
         public double PercentageGainLoss => Investement == 0 ? 0 : 100 * (Amount+ Investement) / Investement;
 
         /// <summary>
         /// Gain ou perte sur l'action en clair
         /// </summary>
-        public string GainLossLabel => GainLoss >= 0 ? $"\u2197 {GainLoss:N2} € (+{PercentageGainLoss:N0}%)" : $"\u2198 {GainLoss:N2} € (-{PercentageGainLoss:N0}%)";
+        public string GainLossLabel => GainLoss >= 0 ? $"\u2197 {GainLoss:N2} € ({PercentageGainLoss:N0}%)" : $"\u2198 {GainLoss:N2} € ({PercentageGainLoss:N0}%)";
 
         /// <summary>
         /// Référence au prix en cours de l'action

@@ -1,5 +1,8 @@
-﻿using Repository.Dbo;
+﻿using Common;
+using Repository.Dbo;
 using Repository.Entities;
+using System.Transactions;
+using static SQLite.SQLite3;
 
 namespace Business
 {
@@ -17,12 +20,21 @@ namespace Business
             return new PEA(baseaccount.Item);
         }
 
+        /// <summary>
+        /// Utilsé lors du chargement des comptes
+        /// </summary>
         public static PEA New(AccountEntity item) => new PEA(item);
 
+        /// <summary>
+        /// pour l'initialisation
+        /// </summary>
         public static PEA Empty() => new PEA();
 
         #region Propriétés
 
+        /// <summary>
+        /// Transactions du compte PEA
+        /// </summary>
         public List<ITransaction> Transactions 
         { 
             get
@@ -39,14 +51,13 @@ namespace Business
         }
         private List<ITransaction>? _transactions=null;
 
-
         #endregion
 
         public PEA()
         {
         }
 
-        public PEA(AccountEntity item):base(item) 
+        private PEA(AccountEntity item):base(item) 
         {
         }
 
@@ -110,5 +121,73 @@ namespace Business
             }
             return result;
         }
+
+        /// <summary>
+        /// Valeur titre
+        /// </summary>
+        public PeaStatut StatutOn(DateTime effectiveOn)
+        {
+            List<MonthlyShare> shares = ShareOn(effectiveOn);
+            List<PeaGroupStatut> groups = new List<PeaGroupStatut>();
+            foreach (Share.TypeShare accountType in Enum.GetValues(typeof(Share.TypeShare)))
+            {
+                groups.Add(new PeaGroupStatut()
+                {
+                    Transfer=0,
+                    Valorisation=0,
+                    Label= accountType.GetStringValue(),
+                    Type = accountType
+                });
+            }
+            double cash = 0;
+            double transfer = 0;
+            double dividendes = 0;
+            foreach (var transaction in Transactions.Where(_ => _.EffectiveOn <= effectiveOn))
+            {
+                cash += transaction.Amount;
+                if (transaction is Transfer itemtransfer) transfer += itemtransfer.Amount;
+                else if (transaction is Dividende dividendeitem) dividendes += dividendeitem.Amount;
+                else if (transaction is Order itemorder)
+                {
+                    var share = itemorder.Share;
+                    if (share != null)
+                    {
+                        var group = groups.First(_ => _.Type == share.Type);
+                        switch (itemorder.Type)
+                        {
+                            case Order.OrderType.Buy:
+                                group.Transfer -= itemorder.Amount;
+                                break;
+                            case Order.OrderType.Sell:
+                                group.Transfer += itemorder.Amount;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            foreach (var group in groups) 
+            {
+                var monthlyshare = shares.Where(_ => _.Item.Type == group.Type);
+                group.Valorisation = monthlyshare.Select(_=>_.Amount).Sum();
+            }
+
+            return new PeaStatut()
+            {
+                Cash=cash,
+                Transfer= transfer,
+                Groups=groups,
+                Dividendes = dividendes
+            };
+        }
+
+
+        /// <summary>
+        /// Somme des dividendes entre ces deux dates
+        /// </summary>
+        /// <param name="starton"></param>
+        /// <param name="endon"></param>
+        /// <returns></returns>
+        public double GetDividendes(DateTime starton, DateTime endon) => Transactions.Where(_ => _.GetType() == typeof(Dividende) && _.EffectiveOn > starton && _.EffectiveOn < endon).Select(_ => _.Amount).Sum();
     }
 }

@@ -18,15 +18,6 @@ namespace Business
         }
 
         /// <summary>
-        /// Loyer annuel
-        /// </summary>
-        public double GetYearlyRent(DateTime effectiveOn)
-        {
-            var dataset = DatabaseAccess.Instance.GetMonthlyScpi(BankAccountId).Where(i => i.EffectiveOn > effectiveOn.AddYears(-1) && i.EffectiveOn <= effectiveOn).Select(i => new ScpiBalance(i));
-            return dataset.Any() ? dataset.Select(_ => _.Rent).Sum() : 0.0;
-        }
-
-        /// <summary>
         /// Convertir un AccountEntity en SCPI
         /// </summary>
         public static SCPI New(AccountEntity item) => new SCPI(item);
@@ -64,20 +55,7 @@ namespace Business
         /// <summary>
         /// Obtenir la balance du SCPI à cette date
         /// </summary>
-        public ScpiBalance? GetBalance(DateTime effectiveOn)
-        {
-            var item = Balances.FirstOrDefault(i => i.EffectiveOn == effectiveOn);
-            if (item == null || item.NumberOfShares == 0)
-            {
-                var previousmonth = effectiveOn.AddMonths(-1);
-                var previous = Balances.FirstOrDefault(i => i.EffectiveOn == previousmonth);
-                if(previous != null && previous.NumberOfShares>0)
-                {
-                    item = ScpiBalance.Create(BankAccountId, effectiveOn, previous.NumberOfShares, previous.UnitPrice, 0);
-                }
-            }
-            return item;
-        }
+        public ScpiBalance? GetBalance(DateTime effectiveOn) => Balances.FirstOrDefault(i => i.EffectiveOn == effectiveOn);
 
         /// <summary>
         /// Ajout d'une item 
@@ -95,5 +73,13 @@ namespace Business
                 item.Save(effectiveOn, numberOfShares, unitPrice, rente);
             }
         }
+
+        /// <summary>
+        /// Somme des loyers sur une période d'un an
+        /// </summary>
+        /// <param name="starton"></param>
+        /// <param name="endOn"></param>
+        /// <returns></returns>
+        public double GetRent(DateTime starton, DateTime endOn) => Balances.Where(_ => _.EffectiveOn > starton && _.EffectiveOn < endOn).Select(_ => _.Rent).Sum();
     }
 }

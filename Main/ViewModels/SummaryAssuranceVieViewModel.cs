@@ -6,7 +6,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class BankAccountViewModel : BaseViewModel
+    public class SummaryAssuranceVieViewModel : BaseViewModel
     {
         #region Propriétés
 
@@ -72,42 +72,51 @@ namespace Main.ViewModels
         public double _balance;
 
         /// <summary>
-        /// Référence du compte
+        /// Compte
         /// </summary>
-        public readonly int BankAccountId;
+        public AssuranceVie? BankAccount
+        {
+            get => _bankAccount;
+            set
+            {
+                if (_bankAccount != value)
+                {
+                    _bankAccount = value;
+                    NotifyPropertyChanged(nameof(BankAccount));
+                }
+            }
+        }
+        public AssuranceVie? _bankAccount;
 
         /// <summary>
-        /// Date courante de la balance
+        /// Date courante
         /// </summary>
         public DateTime EffectiveOn;
 
         #endregion
 
-        public BankAccountViewModel()
+        public SummaryAssuranceVieViewModel()
         {
             EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public BankAccountViewModel(int bankAccountId, DateTime dt)
+        public SummaryAssuranceVieViewModel(AssuranceVie account, DateTime dt)
         {
+            BankAccount = account;
             EffectiveOn = dt;
-            BankAccountId = bankAccountId;
-            if (BankAccount.GetById(bankAccountId) is BankAccount account)
-            {
-                Label = account.Label;
-                AccountNo = account.AccountNo;
-                Balance = account.GetBalanceOn(EffectiveOn);
-             }
+            Label = BankAccount?.Label ?? string.Empty;
+            AccountNo = BankAccount?.AccountNo ?? string.Empty;
+            Balance = BankAccount?.Balances.FirstOrDefault(_ => _.EffectiveOn == EffectiveOn)?.Balance ?? 0;
         }
 
         /// <summary>
-        /// Edition du compte
+        /// Evenement de sélection d'un compte
         /// </summary>
         private async void OnEditAccount()
         {
             await Shell.Current.GoToAsync($"{nameof(EditAccountPage)}", new Dictionary<string, object>
             {
-                ["BankAccountId"] = BankAccountId,
+                ["BankAccountId"] = BankAccount?.BankAccountId ?? 0,
             });
         }
 
@@ -118,9 +127,10 @@ namespace Main.ViewModels
         {
             await Shell.Current.GoToAsync($"{nameof(EditBalancePage)}", new Dictionary<string, object>
             {
-                ["BankAccountId"] = BankAccountId,
+                ["BankAccountId"] = BankAccount?.BankAccountId ?? 0,
                 ["EffectiveOn"] = EffectiveOn,
             });
         }
+
     }
 }

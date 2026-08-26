@@ -37,22 +37,17 @@ namespace Main.Templates
         /// </summary>
         public required DataTemplate AppartmentTemplate { get; set; }
 
-        /// <summary>
-        /// Template bilan global
-        /// </summary>
-        public required DataTemplate OverviewTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
             return item switch
             {
-                BankAccountViewModel => BankTemplate,
+                SummaryBankAccountViewModel => BankTemplate,
 //                MonthlyBalancesViewModel => SavingTemplate,
-                PeeViewModel => PeeTemplate,
-                PeaViewModel => PeaTemplate,
-                ScpiViewModel => ScpiTemplate,
-                MonthlyRentViewModel => AppartmentTemplate,
-                OverviewViewModel => OverviewTemplate,
+                SummaryPeeViewModel => PeeTemplate,
+                SummaryPeaViewModel => PeaTemplate,
+                SummaryScpiViewModel => ScpiTemplate,
+                SummaryRentViewModel => AppartmentTemplate,
                 _ => BankTemplate
             };
         }

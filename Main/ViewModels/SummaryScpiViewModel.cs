@@ -6,7 +6,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class ScpiViewModel : BaseViewModel
+    public class SummaryScpiViewModel : BaseViewModel
     {
         #region Propriétés
 
@@ -157,40 +157,6 @@ namespace Main.ViewModels
         public double _rendement = 0.0;
 
         /// <summary>
-        /// Transfer
-        /// </summary>
-        public string Ligne1
-        {
-            get => _ligne1;
-            set
-            {
-                if (_ligne1 != value)
-                {
-                    _ligne1 = value;
-                    NotifyPropertyChanged(nameof(Ligne1));
-                }
-            }
-        }
-        public string _ligne1 = "";
-
-        /// <summary>
-        /// Ligne2
-        /// </summary>
-        public string Ligne2
-        {
-            get => _ligne2;
-            set
-            {
-                if (_ligne2 != value)
-                {
-                    _ligne2 = value;
-                    NotifyPropertyChanged(nameof(Ligne2));
-                }
-            }
-        }
-        public string _ligne2 = "";
-
-        /// <summary>
         /// Date courante
         /// </summary>
         public DateTime EffectiveOn;
@@ -216,12 +182,12 @@ namespace Main.ViewModels
         }
         public SCPI _item = SCPI.Empty();
 
-        public ScpiViewModel()
+        public SummaryScpiViewModel()
         {
             EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public ScpiViewModel(SCPI account, DateTime dt)
+        public SummaryScpiViewModel(SCPI account, DateTime dt)
         {
             Item = account;
             EffectiveOn = dt;
@@ -231,39 +197,15 @@ namespace Main.ViewModels
             UnitPrice = 0;
             Rent = 0;
             var balance = Item.GetBalance(EffectiveOn);
-            if (balance==null)
-            {
-                var previous = Item.GetBalance(EffectiveOn.AddMonths(-1));
-                if (previous==null)
-                {
-                    var next = Item.GetBalance(EffectiveOn.AddMonths(1));
-                    if (next != null)
-                    {
-                        NumberOfShares = next.NumberOfShares;
-                        TotalPrice = next.TotalPrice;
-                        UnitPrice = next.UnitPrice;
-                        Rent = next.Rent;
-                    }
-                }
-                else
-                {
-                    NumberOfShares = previous.NumberOfShares;
-                    TotalPrice = previous.TotalPrice;
-                    UnitPrice = previous.UnitPrice;
-                    Rent = previous.Rent;
-                }
-            }
-            else
+            if (balance!=null)
             {
                 NumberOfShares = balance.NumberOfShares;
                 TotalPrice = balance.TotalPrice;
                 UnitPrice = balance.UnitPrice;
                 Rent = balance.Rent;
             }
-            AnnuelRent = account.GetYearlyRent(EffectiveOn);
-            Rendement = TotalPrice>0 ? 100 * AnnuelRent / TotalPrice : 0.0;
-            Ligne1 = $"{NumberOfShares} parts x {UnitPrice:N2} € = {TotalPrice:N2} €";
-            Ligne2 = $"Loyer {AnnuelRent-Rent:N2} € + {Rent:N2} € = {AnnuelRent:N2} € → {Rendement:N2} %";
+            AnnuelRent = account.GetRent(EffectiveOn.AddYears(-1), EffectiveOn);
+            Rendement = NumberOfShares>0 && UnitPrice>0 ? 100 * AnnuelRent / (NumberOfShares * UnitPrice): 0.0;
         }
 
         /// <summary>
