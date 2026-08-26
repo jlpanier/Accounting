@@ -26,6 +26,7 @@ namespace Main
             Routing.RegisterRoute(nameof(EditDividendePeaPage), typeof(EditDividendePeaPage));
             Routing.RegisterRoute(nameof(EditMonthSharePricePage), typeof(EditMonthSharePricePage));
             Routing.RegisterRoute(nameof(EditRentPage), typeof(EditRentPage));
+            Routing.RegisterRoute(nameof(HistoricAppartmentPage), typeof(HistoricAppartmentPage));
 
         }
 

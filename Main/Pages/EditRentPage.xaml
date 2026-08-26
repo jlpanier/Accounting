@@ -5,7 +5,7 @@
     xmlns:vm="clr-namespace:Main.ViewModels"
     x:Class="Main.Pages.EditRentPage"
     xmlns:converter="clr-namespace:Main.Converter"
-    Title="Location">
+    Title="Saisie compte rendu">
     <ContentPage.BindingContext>
         <vm:EditRentViewModel />
     </ContentPage.BindingContext>
@@ -173,7 +173,7 @@
             </Border>
 
 
-            <Grid  ColumnDefinitions="*,*" >
+            <Grid  ColumnDefinitions="*,*,*" >
                 <Button Grid.Column="0"
                     Margin="0,0,12,0"
                     Text="Enregistrer"
@@ -189,6 +189,12 @@
                     TextColor="White"
                     Command="{Binding ClickCancelCommand}" />
 
+                <Button Text="Historique" Grid.Column="2"
+                    Margin="12,0,12,0"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickHistoricCommand}" />
 
             </Grid>
 

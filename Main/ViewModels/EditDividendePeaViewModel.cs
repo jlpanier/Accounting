@@ -134,7 +134,7 @@ namespace Main.ViewModels
 
                 Shares = new ObservableCollection<Business.Share>(Business.Share.All);
 
-                var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key);
+                var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key && _.GetType()== typeof(Dividende));
                 if (transaction is Dividende dividende)
                 {
                     EffectiveOn = dividende.EffectiveOn;
@@ -183,10 +183,10 @@ namespace Main.ViewModels
             var bankAccount = BankAccount.GetById(BankAccountId);
             if (bankAccount is PEA account)
             {
-                var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key);
-                if (transaction is not null)
+                var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key && _.GetType() == typeof(Dividende));
+                if (transaction is Dividende dividende)
                 {
-                    transaction.Delete();
+                    dividende.Delete();
                 }
             }
             await Shell.Current.GoToAsync("..");

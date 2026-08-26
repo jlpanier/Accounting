@@ -6,7 +6,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion des comptes rendus d'un appartement
     /// </summary>
-    public class MonthlyRentViewModel: BaseViewModel
+    public class SummaryRentViewModel: BaseViewModel
     {
         #region Propriétés
 
@@ -125,7 +125,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Travaux réalisés sur la période
         /// </summary>
-        public double Work
+        public double Charge
         {
             get => _work;
             set
@@ -133,7 +133,7 @@ namespace Main.ViewModels
                 if (_work != value)
                 {
                     _work = value;
-                    NotifyPropertyChanged(nameof(Work));
+                    NotifyPropertyChanged(nameof(Charge));
                 }
             }
         }
@@ -290,38 +290,31 @@ namespace Main.ViewModels
         }
         public Appartement? _item;
 
-        public MonthlyRentViewModel()
+        public SummaryRentViewModel()
         {
             EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public MonthlyRentViewModel(Appartement account, DateTime effectiveOn)
+        public SummaryRentViewModel(Appartement account, DateTime effectiveOn)
         {
             Item = account;
             EffectiveOn = effectiveOn;
             BankAccountId = account.BankAccountId;
 
             Provision = 0;
-            Work = 0;
+            Charge = 0;
             InOut = 0;
             Rent = 0;
+            var oneyearago = EffectiveOn.AddYears(-1);
             var balance = Item.GetBalance(EffectiveOn);
             if (balance != null)
             {
-                var dt = balance.EffectiveOn.AddYears(-1);
                 Renter = balance.Renter;
-                Rent = balance.Rent;
-                Provision = balance.Provision;
-                Work = balance.Work;
-                InOut = balance.InOut;
-                Garantee = balance.Garantee;
-                Gestion = balance.Gestion;
-                Syndic = balance.Syndic;
+                Rent = balance.Rent + balance.Provision;
+                Charge = balance.Work + balance.InOut + balance.Garantee+ balance.Gestion+ balance.Syndic + balance.Exceptionel;
                 Transfer = balance.Transfer;
-                Exceptionel = balance.Exceptionel;
-                Mouvement = Rent + Provision - Work - InOut - Garantee - Gestion - Syndic - Exceptionel;
-                AnnualTransfer=Item.Balances.Where(i => i.EffectiveOn > dt && i.EffectiveOn <= EffectiveOn).Sum(i => i.Transfer);
             }
+            AnnualTransfer = account.GetTransfer(oneyearago, EffectiveOn);
         }
 
         /// <summary>

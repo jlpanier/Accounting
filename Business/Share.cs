@@ -10,9 +10,9 @@ namespace Business
     public class Share 
     {
         public enum TypeShare {
-            [StringValue("Gestion profilé")]
+            [StringValue("Profilé")]
             Profile,
-            [StringValue("Gestion libre")]
+            [StringValue("Libre")]
             Libre
         }
 

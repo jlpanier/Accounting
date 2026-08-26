@@ -33,6 +33,7 @@
                FontSize="14"
                TextColor="CadetBlue"
                HorizontalTextAlignment="End"
+               FontAttributes="Bold"
                VerticalTextAlignment="Center">
             <Label.GestureRecognizers>
                 <TapGestureRecognizer 

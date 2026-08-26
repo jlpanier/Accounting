@@ -45,8 +45,9 @@
                     <DataTemplate>
                         <VerticalStackLayout Spacing="0">
 
-                            <Grid BackgroundColor="AliceBlue" ColumnDefinitions="*,*,*,*,*" Padding="0,8">
-                                <Label Grid.Column="0" Text="{Binding Label}" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" >
+                            <Grid BackgroundColor="AliceBlue" ColumnDefinitions="*,*,*" RowDefinitions ="Auto,Auto" Padding="0,8">
+
+                                <Label Grid.Column="0"  Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Label}" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" >
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer
                                             NumberOfTapsRequired="1"
@@ -54,7 +55,7 @@
                                             CommandParameter="{Binding ShareId}" />
                                     </Label.GestureRecognizers>
                                 </Label>
-                                <Label Grid.Column="1" Text="{Binding UnitPrice, StringFormat='{0:N4} €'}" HorizontalOptions="Start" VerticalOptions="Center" >
+                                <Label Grid.Column="0" Grid.Row="1" FontSize="12" Text="{Binding Quantity, StringFormat='{0:N4}'}" HorizontalOptions="Start" VerticalOptions="Center" >
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer
                                             NumberOfTapsRequired="1"
@@ -62,7 +63,7 @@
                                             CommandParameter="{Binding ShareId}" />
                                     </Label.GestureRecognizers>
                                 </Label>
-                                <Label Grid.Column="2" Text="{Binding Quantity}" HorizontalOptions="End" VerticalOptions="Center" >
+                                <Label Grid.Column="1" Grid.Row="1" FontSize="12" Text="{Binding UnitPrice, StringFormat='{0:N4} €'}" HorizontalOptions="Start" VerticalOptions="Center" >
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer
                                             NumberOfTapsRequired="1"
@@ -70,7 +71,7 @@
                                             CommandParameter="{Binding ShareId}" />
                                     </Label.GestureRecognizers>
                                 </Label>
-                                <Label Grid.Column="3" Text="{Binding Amount, StringFormat='{0:N2} €'}" HorizontalOptions="End" VerticalOptions="Center" >
+                                <Label Grid.Column="2" Grid.Row="0" TextColor="CadetBlue" FontAttributes="Bold" Text="{Binding Amount, StringFormat='{0:N2} €'}" HorizontalOptions="End" VerticalOptions="Center" >
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer
                                             NumberOfTapsRequired="1"
@@ -78,7 +79,7 @@
                                             CommandParameter="{Binding ShareId}" />
                                     </Label.GestureRecognizers>
                                 </Label>
-                                <Label Grid.Column="4" Text="{Binding GainLossLabel}" HorizontalOptions="End" VerticalOptions="Center" >
+                                <Label Grid.Column="2" Grid.Row="1" FontSize="12" Text="{Binding GainLossLabel}" HorizontalOptions="End" VerticalOptions="Center" >
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer
                                             NumberOfTapsRequired="1"
@@ -140,26 +141,24 @@
             <CollectionView
                 Grid.Row="4"
                 ItemsSource="{Binding LineTransactions}"
-                SelectionMode="None"
-                Margin="20"
-                BackgroundColor="White">
+                Margin="12,48,12,4"
+                SelectionMode="None">
 
-                <CollectionView.Header>
-                    <Grid ColumnDefinitions="Auto, *, Auto, Auto" Padding="12" BackgroundColor="#E8F0FE">
-                        <Label Grid.Column="0" Text="Date" MinimumWidthRequest ="72" FontAttributes="Bold" />
-                        <Label Grid.Column="1" Text="Transaction" FontAttributes="Bold" Margin="10,0"/>
-                        <Label Grid.Column="2" Text="Montant" FontAttributes="Bold" HorizontalTextAlignment="End"/>
-                        <Label Grid.Column="3" Text="Solde" Padding ="5,0,5,0" MinimumWidthRequest ="72" FontAttributes="Bold" HorizontalTextAlignment="End"/>
-                    </Grid>
-                </CollectionView.Header>
-                
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid ColumnDefinitions="Auto, *, Auto, Auto">
-                            <Label Grid.Column="0" Text="{Binding EffectiveOn, StringFormat='{0:dd/MM/yyyy}'}" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Grid.Column="1" Text="{Binding Label}" FontSize="12" Padding="12" HorizontalOptions="Start" VerticalOptions="Center" />
-                            <Label Grid.Column="2" Text="{Binding Amount, StringFormat='{0:N2} €'}" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Grid.Column="3" Text="{Binding Solde, StringFormat='{0:N2} €'}" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                        <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,Auto" Padding="0">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MonthlyPeaViewModel}}, Path=ClickTransactionCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Grid.GestureRecognizers>
+
+                            <Label Grid.Column="0" Grid.Row="0" Text="{Binding EffectiveOn, StringFormat='{0:dd/MM/yyyy}'}" FontAttributes="Bold" Margin="0" Padding="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Label}" FontSize="12" Margin="12,0,0,0" Padding="0" HorizontalOptions="Start" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Grid.Row="0" Text="{Binding Amount, StringFormat='{0:N2} €'}" Margin="0" Padding="0" FontSize="12"  HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Grid.Row="0" Text="{Binding Solde, StringFormat='{0:N2} €'}" TextColor="CadetBlue" FontAttributes="Bold" Margin="0" Padding="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <BoxView Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" HeightRequest="1" BackgroundColor="#DADADA" Margin="0,4,0,4" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

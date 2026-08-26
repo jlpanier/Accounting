@@ -21,6 +21,11 @@ namespace Main.ViewModels
         public ICommand ClickCancelCommand => new Command(OnCancel);
 
         /// <summary>
+        /// Annuler 
+        /// </summary>
+        public ICommand ClickHistoricCommand => new Command(OnHistory);
+
+        /// <summary>
         /// Référence de l'appartement
         /// </summary>
         public string AccountNo
@@ -326,6 +331,18 @@ namespace Main.ViewModels
         public async void OnCancel()
         {
             await Shell.Current.GoToAsync(".."); // Retour à la page précédente
+        }
+
+        /// <summary>
+        /// Appel à l'historique du compte 
+        /// </summary>
+        public async void OnHistory()
+        {
+            await Shell.Current.GoToAsync($"{nameof(HistoricAppartmentPage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = BankAccountId,
+                ["EffectiveOn"] = EffectiveOn,
+            });
         }
     }
 }

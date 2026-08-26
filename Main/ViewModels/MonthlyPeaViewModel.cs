@@ -1,10 +1,12 @@
 ﻿using Business;
+using Syncfusion.Maui.DataSource.Extensions;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using static Business.Order;
 
 namespace Main.ViewModels
 {
-    public class MonthlyPeaViewModel: BaseViewModel
+    public class MonthlyPeaViewModel : BaseViewModel
     {
         /// <summary>
         /// Evenement pour édition du compte
@@ -31,12 +33,15 @@ namespace Main.ViewModels
         /// </summary>
         public ICommand ClickNameCommand => new Command<int>(OnShare);
 
-
         /// <summary>
         /// Evenement pour la modification du montant d'une action
         /// </summary>
         public ICommand ClickMonthlyCommand => new Command<int>(OnMonthlyShare);
 
+        /// <summary>
+        /// Evenement pour la modification du montant d'une action
+        /// </summary>
+        public ICommand ClickTransactionCommand => new Command<LineTransactions>(OnTransaction);
 
         /// <summary>
         /// Label de la période 
@@ -144,14 +149,16 @@ namespace Main.ViewModels
             var item = BankAccount.GetById(bankAccountId);
             if (item is PEA bankaccount)
             {
-                Shares = new ObservableCollection<Business.MonthlyShare>(bankaccount.ShareOn(effectiveOn));
-               
+                Shares = new ObservableCollection<Business.MonthlyShare>(bankaccount.ShareOn(effectiveOn).OrderBy(_=>_.Type).ThenBy(_=>_.Label));
+
                 double solde = 0;
+                var lines = new List<LineTransactions>();
                 foreach (var transaction in bankaccount.Transactions.OrderBy(_ => _.EffectiveOn))
                 {
                     solde += transaction.Amount;
-                    LineTransactions.Add(new Business.LineTransactions(transaction, solde));
+                    lines.Add(new Business.LineTransactions(transaction, solde));
                 }
+                LineTransactions = new ObservableCollection<LineTransactions>(lines.Where(_ => _.EffectiveOn > DateTime.Now.AddYears(-1)).OrderByDescending(_ => _.EffectiveOn));
             }
         }
 
@@ -230,15 +237,47 @@ namespace Main.ViewModels
         /// <summary>
         /// Ecran d'une vente d'action
         /// </summary>
-        private async void OnMonthlyShare(int shareId, int priceShareId)
+        private async void OnTransaction(LineTransactions transaction)
         {
-            await Shell.Current.GoToAsync($"{nameof(EditMonthSharePricePage)}", new Dictionary<string, object>
+            if (transaction.Transaction is Transfer transfer)
             {
-                ["BankAccountId"] = BankAccountId,
-                ["EffectiveOn"] = EffectiveOn,
-                ["ShareId"] = shareId,
-            });
+                await Shell.Current.GoToAsync($"{nameof(EditTransferPeaPage)}", new Dictionary<string, object>
+                {
+                    ["BankAccountId"] = BankAccountId,
+                    ["EffectiveOn"] = EffectiveOn,
+                    ["Key"] = transaction.Id,
+                });
+            }
+            else if (transaction.Transaction is Order order)
+            {
+                if (order.Type == OrderType.Buy)
+                {
+                    await Shell.Current.GoToAsync($"{nameof(EditPurchasePeaPage)}", new Dictionary<string, object>
+                    {
+                        ["BankAccountId"] = BankAccountId,
+                        ["EffectiveOn"] = EffectiveOn,
+                        ["Key"] = transaction.Id,
+                    });
+                }
+                else if (order.Type == OrderType.Sell)
+                {
+                    await Shell.Current.GoToAsync($"{nameof(EditSellPeaPage)}", new Dictionary<string, object>
+                    {
+                        ["BankAccountId"] = BankAccountId,
+                        ["EffectiveOn"] = EffectiveOn,
+                        ["Key"] = transaction.Id,
+                    });
+                }
+            }
+            else if (transaction.Transaction is Dividende dividende)
+            {
+                await Shell.Current.GoToAsync($"{nameof(EditDividendePeaPage)}", new Dictionary<string, object>
+                {
+                    ["BankAccountId"] = BankAccountId,
+                    ["EffectiveOn"] = EffectiveOn,
+                    ["Key"] = transaction.Id,
+                });
+            }
         }
-
     }
 }

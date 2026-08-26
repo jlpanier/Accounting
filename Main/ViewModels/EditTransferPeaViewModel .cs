@@ -103,6 +103,7 @@ namespace Main.ViewModels
             }
         }
 
+
         /// <summary>
         /// Sauvegarde
         /// </summary>
@@ -141,10 +142,10 @@ namespace Main.ViewModels
             var bankAccount = BankAccount.GetById(BankAccountId);
             if (bankAccount is PEA account)
             {
-                var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key);
-                if (transaction is not null)
+                var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key && _.GetType() == typeof(Transfer));
+                if (transaction is Transfer transfer)
                 {
-                    transaction.Delete();
+                    transfer.Delete();
                 }
             }
             await Shell.Current.GoToAsync("..");

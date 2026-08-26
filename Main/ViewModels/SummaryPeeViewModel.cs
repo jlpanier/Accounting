@@ -1,5 +1,4 @@
 ﻿using Business;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -7,7 +6,7 @@ namespace Main.ViewModels
     /// <summary>
     /// Gestion d'un compte bancaire
     /// </summary>
-    public class PeeViewModel : BaseViewModel
+    public class SummaryPeeViewModel : BaseViewModel
     {
         #region Propriétés
 
@@ -107,6 +106,23 @@ namespace Main.ViewModels
         public double _blocked = 0.0;
 
         /// <summary>
+        /// Montant total sur ce plan épargne entreprise (PEE)
+        /// </summary>
+        public double TotalAmount
+        {
+            get => _totalAmount;
+            set
+            {
+                if (_totalAmount != value)
+                {
+                    _totalAmount = value;
+                    NotifyPropertyChanged(nameof(TotalAmount));
+                }
+            }
+        }
+        public double _totalAmount = 0.0;
+
+        /// <summary>
         /// Compte
         /// </summary>
         public PEE Item
@@ -130,12 +146,12 @@ namespace Main.ViewModels
 
         #endregion
 
-        public PeeViewModel()
+        public SummaryPeeViewModel()
         {
             EffectiveOn = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
 
-        public PeeViewModel(PEE account, DateTime dt)
+        public SummaryPeeViewModel(PEE account, DateTime dt)
         {
             Item = account;
             EffectiveOn = dt;
@@ -148,6 +164,7 @@ namespace Main.ViewModels
                 Disponible = balance.Disponible;
                 Blocked = balance.Blocked;
                 Retirement = balance.Retirement;
+                TotalAmount = Disponible + Blocked + Retirement;
             }
         }
 

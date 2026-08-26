@@ -92,19 +92,105 @@ namespace Main.ViewModels
         /// <summary>
         /// Label de la période 
         /// </summary>
-        public double Liquidity
+        public double Cash
         {
-            get => _liquidity;
+            get => _cash;
             set
             {
-                if (_liquidity != value)
+                if (_cash != value)
                 {
-                    _liquidity = value;
-                    NotifyPropertyChanged(nameof(Liquidity));
+                    _cash = value;
+                    NotifyPropertyChanged(nameof(Cash));
                 }
             }
         }
-        private double _liquidity;
+        private double _cash;
+
+        /// <summary>
+        /// Epargne du mois 
+        /// </summary>
+        public double Saving
+        {
+            get => _saving;
+            set
+            {
+                if (_saving != value)
+                {
+                    _saving = value;
+                    NotifyPropertyChanged(nameof(Saving));
+                }
+            }
+        }
+        private double _saving;
+
+        /// <summary>
+        /// Epargne mensuel lisé sur 12 mois 
+        /// </summary>
+        public double MensuelSaving
+        {
+            get => _mensuelSaving;
+            set
+            {
+                if (_mensuelSaving != value)
+                {
+                    _mensuelSaving = value;
+                    NotifyPropertyChanged(nameof(MensuelSaving));
+                }
+            }
+        }
+        private double _mensuelSaving;
+
+        /// <summary>
+        /// Rente annuel 
+        /// </summary>
+        public double Annuity
+        {
+            get => _annuity;
+            set
+            {
+                if (_annuity != value)
+                {
+                    _annuity = value;
+                    NotifyPropertyChanged(nameof(Annuity));
+                }
+            }
+        }
+        private double _annuity;
+
+
+        /// <summary>
+        /// Somme disponible sur cette période
+        /// </summary>
+        public double Disponible
+        {
+            get => _disponible;
+            set
+            {
+                if (_disponible != value)
+                {
+                    _disponible = value;
+                    NotifyPropertyChanged(nameof(Disponible));
+                }
+            }
+        }
+        private double _disponible;
+
+        /// <summary>
+        /// Somme bloquée sur cette période
+        /// </summary>
+        public double Blocked
+        {
+            get => _blocked;
+            set
+            {
+                if (_blocked != value)
+                {
+                    _blocked = value;
+                    NotifyPropertyChanged(nameof(Blocked));
+                }
+            }
+        }
+        private double _blocked;
 
         /// <summary>
         /// Liste des comptes
@@ -170,23 +256,69 @@ namespace Main.ViewModels
             var results = new List<IBaseAccountViewModel>();
             foreach (var item in BaseAccount.Accounts)
             {
-                if (item is BankAccount account) results.Add(new BankAccountViewModel(account.BankAccountId, CurrentDate));
-                else if (item is SavingAccount savingaccount) results.Add(new SavingAccountViewModel(savingaccount, CurrentDate));
-                else if (item is AssuranceVie assurancevie) results.Add(new AssuranceVieViewModel(assurancevie, CurrentDate));
-                else if (item is PEE pee) results.Add(new PeeViewModel(pee, CurrentDate));
-                else if (item is PEA pea) results.Add(new PeaViewModel(pea, CurrentDate));
-                else if (item is SCPI scpi) results.Add(new ScpiViewModel(scpi, CurrentDate));
-                else if (item is Appartement appartement) results.Add(new MonthlyRentViewModel(appartement, CurrentDate));
-                else if (item is Overview overview) results.Add(new OverviewViewModel(overview));
+                if (item is BankAccount account) results.Add(new SummaryBankAccountViewModel(account.BankAccountId, CurrentDate));
+                else if (item is SavingAccount savingaccount) results.Add(new SummarySavingAccountViewModel(savingaccount, CurrentDate));
+                else if (item is AssuranceVie assurancevie) results.Add(new SummaryAssuranceVieViewModel(assurancevie, CurrentDate));
+                else if (item is PEE pee) results.Add(new SummaryPeeViewModel(pee, CurrentDate));
+                else if (item is PEA pea) results.Add(new SummaryPeaViewModel(pea, CurrentDate));
+                else if (item is SCPI scpi) results.Add(new SummaryScpiViewModel(scpi, CurrentDate));
+                else if (item is Appartement appartement) results.Add(new SummaryRentViewModel(appartement, CurrentDate));
             }
             Accounts = new ObservableCollection<IBaseAccountViewModel>(results);
 
-            Liquidity = 0;
+            Cash = 0;
+            Disponible = 0;
+            Blocked = 0;
+            Annuity = 0;
+            var previousMensuelCash = 0.0;
+            var previousAnnuelCash = 0.0;
             foreach (var item in BaseAccount.Accounts)
             {
-                if (item is BankAccount bankAccount) Liquidity += bankAccount.GetBalanceOn(CurrentDate);
-               else  if (item is SavingAccount savingAccount) Liquidity += savingAccount.GetBalanceOn(CurrentDate);
+                if (item is BankAccount bankAccount) 
+                {
+                    Cash += bankAccount.GetBalanceOn(CurrentDate);
+                    previousMensuelCash += bankAccount.GetBalanceOn(CurrentDate.AddMonths(-1));
+                    previousAnnuelCash += bankAccount.GetBalanceOn(CurrentDate.AddYears(-1));
+                    Disponible += bankAccount.GetBalanceOn(CurrentDate);
+                }
+                else if (item is SavingAccount savingAccount)
+                {
+                    Cash += savingAccount.GetBalanceOn(CurrentDate);
+                    previousMensuelCash += savingAccount.GetBalanceOn(CurrentDate.AddMonths(-1));
+                    previousAnnuelCash += savingAccount.GetBalanceOn(CurrentDate.AddYears(-1));
+                    Disponible += savingAccount.GetBalanceOn(CurrentDate);
+                }
+                else if (item is Appartement appartement)
+                {
+                    Annuity += appartement.GetTransfer(CurrentDate.AddYears(-1), CurrentDate);
+                }
+                else if (item is AssuranceVie assuranceVie)
+                {
+                    Blocked += assuranceVie.GetBalanceOn(CurrentDate);
+                }
+                else if (item is PEA pea)
+                {
+                    var statut = pea.StatutOn(CurrentDate);
+                    Blocked += statut.TotalAmount;
+                    Annuity += pea.GetDividendes(CurrentDate.AddYears(-1), CurrentDate);
+                }
+                else if (item is PEE pee)
+                {
+                    var balance = pee.GetBalance(CurrentDate);
+                    if (balance!=null)
+                    {
+                        Disponible += balance.Disponible;
+                        Blocked += balance.Blocked + balance.Retirement;
+                    }
+                }
+                else if (item is SCPI scpi)
+                {
+                    Annuity += scpi.GetRent(CurrentDate.AddYears(-1), CurrentDate);
+                }
             }
+
+            Saving = Cash - previousMensuelCash;
+            MensuelSaving = (Cash - previousAnnuelCash)/12;
         }
     }
 }

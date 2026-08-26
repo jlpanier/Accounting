@@ -105,7 +105,7 @@ namespace Business
                     {
                         if (Share.Type == TypeShare.Profile)
                         {
-                            result = $"Achat de {Quantity:N4} parts de {Share.Name} au prix unitaire de {UnitPrice:N4} € comprenant {Fees:N2} € de commission et {Tax:N2} € de frais";
+                            result = $"Achat de {Quantity:N4} parts de {Share.Name} au prix unitaire de {UnitPrice:N4} €";
                         }
                         else
                         {
@@ -116,7 +116,7 @@ namespace Business
                     {
                         if (Share.Type == TypeShare.Profile)
                         {
-                            result = $"Vente de {-Quantity:N4} parts de {Share.Name} au prix unitaire de {UnitPrice:N4} € comprenant {Fees:N2} € de commission et {Tax:N2} € de frais";
+                            result = $"Vente de {-Quantity:N4} parts de {Share.Name} au prix unitaire de {UnitPrice:N4} € ";
                         }
                         else
                         {
