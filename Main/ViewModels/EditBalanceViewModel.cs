@@ -1,5 +1,4 @@
 ﻿using Business;
-using Repository.Dbo;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -23,6 +22,21 @@ namespace Main.ViewModels
         }
 
         #endregion
+
+        /// <summary>
+        /// Enregistrer 
+        /// </summary>
+        public ICommand ClickSaveCommand => new Command(OnSave);
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public ICommand ClickCancelCommand => new Command(OnCancel);
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public ICommand ClickHistoricCommand => new Command(OnHistory);
 
         /// <summary>
         /// Numéro du compte
@@ -109,14 +123,9 @@ namespace Main.ViewModels
         }
         private double _balance;
 
-        /// <summary>
-        /// Enregistrer les soldes
-        /// </summary>
-        public ICommand SaveCommand { get; }
 
         public EditBalanceViewModel()
         {
-            SaveCommand = new Command(OnSave);
         }
 
         /// <summary>
@@ -159,6 +168,26 @@ namespace Main.ViewModels
 
             // TODO: sauvegarde dans ton repository
             await Shell.Current.GoToAsync(".."); // Retour à la page précédente
+        }
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public async void OnCancel()
+        {
+            await Shell.Current.GoToAsync(".."); // Retour à la page précédente
+        }
+
+        /// <summary>
+        /// Appel à l'historique du compte 
+        /// </summary>
+        public async void OnHistory()
+        {
+            await Shell.Current.GoToAsync($"{nameof(HistoricBalancePage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = BankAccountId,
+                ["EffectiveOn"] = EffectiveOn,
+            });
         }
     }
 }

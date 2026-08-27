@@ -1,7 +1,4 @@
 ﻿using Business;
-using Repository.Dbo;
-using Syncfusion.Maui.GridCommon.Collections.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -11,7 +8,17 @@ namespace Main.ViewModels
         /// <summary>
         /// Enregistrer 
         /// </summary>
-        public ICommand SaveCommand { get; }
+        public ICommand ClickSaveCommand => new Command(OnSave);
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public ICommand ClickCancelCommand => new Command(OnCancel);
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public ICommand ClickHistoricCommand => new Command(OnHistory);
 
         /// <summary>
         /// Nombre de parts détenue
@@ -85,7 +92,6 @@ namespace Main.ViewModels
 
         public EditScpiViewModel()
         {
-            SaveCommand = new Command(OnSave);
         }
 
         /// <summary>
@@ -140,5 +146,24 @@ namespace Main.ViewModels
             await Shell.Current.GoToAsync(".."); // Retour à la page précédente
         }
 
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public async void OnCancel()
+        {
+            await Shell.Current.GoToAsync(".."); // Retour à la page précédente
+        }
+
+        /// <summary>
+        /// Appel à l'historique du compte 
+        /// </summary>
+        public async void OnHistory()
+        {
+            await Shell.Current.GoToAsync($"{nameof(HistoricScpiPage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = BankAccountId,
+                ["EffectiveOn"] = EffectiveOn,
+            });
+        }
     }
 }

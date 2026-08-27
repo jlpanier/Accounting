@@ -39,5 +39,27 @@ namespace Main.ViewModels
         {
             Item.Delete();
         }
+
+        /// <summary>
+        /// Conversion en MonthlyRent -> MonthlyAppartmentViewModel
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public static MonthlyBalanceViewModel From(BankAccountBalance item) => new MonthlyBalanceViewModel(item);
+
+        /// <summary>
+        /// Conversion en PeeBalance -> MonthlyPeeViewModel
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static List<MonthlyBalanceViewModel> From(IEnumerable<BankAccountBalance> items)
+        {
+            var result = new List<MonthlyBalanceViewModel>();
+            foreach (var item in items)
+            {
+                result.Add(MonthlyBalanceViewModel.From(item));
+            }
+            return result;
+        }
     }
 }

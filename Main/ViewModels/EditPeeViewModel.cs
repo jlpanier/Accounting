@@ -10,7 +10,18 @@ namespace Main.ViewModels
         /// <summary>
         /// Enregistrer 
         /// </summary>
-        public ICommand SaveCommand => new Command(OnSave);
+        public ICommand ClickSaveCommand => new Command(OnSave);
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public ICommand ClickCancelCommand => new Command(OnCancel);
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public ICommand ClickHistoricCommand => new Command(OnHistory);
+
 
         /// <summary>
         /// Label du compte
@@ -179,6 +190,26 @@ namespace Main.ViewModels
                 }
             }
             await Shell.Current.GoToAsync(".."); // Retour à la page précédente
+        }
+
+        /// <summary>
+        /// Annuler 
+        /// </summary>
+        public async void OnCancel()
+        {
+            await Shell.Current.GoToAsync(".."); // Retour à la page précédente
+        }
+
+        /// <summary>
+        /// Appel à l'historique du compte 
+        /// </summary>
+        public async void OnHistory()
+        {
+            await Shell.Current.GoToAsync($"{nameof(HistoricPeePage)}", new Dictionary<string, object>
+            {
+                ["BankAccountId"] = BankAccountId,
+                ["EffectiveOn"] = EffectiveOn,
+            });
         }
     }
 
