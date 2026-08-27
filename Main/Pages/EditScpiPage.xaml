@@ -99,12 +99,32 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Button Text="Enregistrer"
-                    HeightRequest="52"
-                    CornerRadius="14"
+            <Grid  ColumnDefinitions="*,*,*" >
+
+                <Button Grid.Column="0"
+                    Margin="0,0,12,0"
+                    Text="Enregistrer"
+                    CornerRadius="12"
                     BackgroundColor="#4A90E2"
                     TextColor="White"
-                    Command="{Binding SaveCommand}" />
+                    Command="{Binding ClickSaveCommand}" />
+
+                <Button Text="Annuler" Grid.Column="1"
+                    Margin="12,0,12,0"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickCancelCommand}" />
+
+                <Button Text="Historique" Grid.Column="2"
+                    Margin="12,0,12,0"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickHistoricCommand}" />
+
+            </Grid>
+
 
         </VerticalStackLayout>
     </ScrollView>

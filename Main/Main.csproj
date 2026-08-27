@@ -137,6 +137,15 @@
 	  <MauiXaml Update="Pages\HistoricAppartmentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\HistoricBalancePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\HistoricPeePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\HistoricScpiPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\MonthlyPeaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

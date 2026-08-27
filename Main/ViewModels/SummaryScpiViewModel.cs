@@ -140,7 +140,7 @@ namespace Main.ViewModels
         public double _annuelRent = 0.0;
 
         /// <summary>
-        /// Exceptionel sur 1 an
+        /// Rent sur 1 an
         /// </summary>
         public double Rendement
         {
