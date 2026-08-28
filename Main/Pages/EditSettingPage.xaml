@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Main.ViewModels"
+    x:Class="Main.Pages.EditSettingPage"
+    Title="Configuration">
+
+    <ContentPage.BindingContext>
+        <vm:EditSettingViewModel />
+    </ContentPage.BindingContext>
+    
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="22">
+
+            <Border StrokeShape="RoundRectangle 24" BackgroundColor="#FFE8E8" Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Key" FontSize="18" FontAttributes="Bold" />
+                    <Entry Placeholder="Key" Text="{Binding Key, Mode=TwoWay}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border StrokeShape="RoundRectangle 24" BackgroundColor="#E8F2FF" Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Valeur" FontSize="18" FontAttributes="Bold" />
+                    <Entry Placeholder="Valeur" Text="{Binding Val, Mode=TwoWay}" VerticalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border StrokeShape="RoundRectangle 24" BackgroundColor="#FFF4E8" Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Description" FontSize="18" FontAttributes="Bold" />
+
+                    <Entry Placeholder="Description" Text="{Binding Desc, Mode=TwoWay}" />
+                </VerticalStackLayout>
+            </Border>
+
+
+            <Grid  ColumnDefinitions="*,*" >
+                <Button Grid.Column="0"
+                    Margin="0,0,12,0"
+                    Text="Enregistrer"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickSaveCommand}" />
+
+                <Button Text="Annuler" Grid.Column="1"
+                    Margin="12,0,12,0"
+                    CornerRadius="12"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    Command="{Binding ClickCancelCommand}" />
+
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

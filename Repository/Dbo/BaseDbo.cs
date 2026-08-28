@@ -86,6 +86,7 @@ namespace Repository.Dbo
             CreateTable<DividendeEntity>();
             CreateTable<PriceShareEntity>();
             CreateTable<MonthlyRentEntity>();
+            CreateTable<SettingsEntity>();
         }
 
         /// <summary>

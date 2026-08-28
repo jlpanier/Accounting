@@ -165,6 +165,15 @@ namespace Repository.Dbo
                 return Db.Query<MonthlyRentEntity>("SELECT * FROM RENT WHERE AppartmentId = ?", id);
             }
         }
-
+        /// <summary>
+        /// Chargement de la configuration
+        /// </summary>
+        public IEnumerable<SettingsEntity> GetSettings()
+        {
+            lock (dbLock)
+            {
+                return Db.Query<SettingsEntity>("SELECT * FROM SETTINGS");
+            }
+        }
     }
 }

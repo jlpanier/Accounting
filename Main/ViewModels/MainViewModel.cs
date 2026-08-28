@@ -5,26 +5,17 @@ using System.Windows.Input;
 
 namespace Main.ViewModels
 {
-    public partial class MainViewModel : INotifyPropertyChanged
+    public partial class MainViewModel : BaseAccountViewModel
     {
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler? handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
+        /// <summary>
+        /// Ajout d'un compte 
+        /// </summary>
+        public ICommand ClickAddCommand => new Command(OnAdd);
 
         /// <summary>
         /// Ajout d'un compte 
         /// </summary>
-        public ICommand AddCommand { get; }
+        public ICommand ClickSettingsCommand => new Command(OnSettings);
 
         /// <summary>
         /// Affichage de la période précédente
@@ -47,47 +38,12 @@ namespace Main.ViewModels
                 if (_currentDate != value)
                 {
                     _currentDate = value;
-                    MonthLabel = _currentDate.ToString("MMMM yyyy", new System.Globalization.CultureInfo("fr-FR"));
-                    PeriodLabel = $"{_currentDate.AddMonths(-1).ToString("dd/MM/yyyy")} \u2192 {_currentDate.ToString("dd/MM/yyyy")}";
+                    Init(0, _currentDate.ToString("MMMM yyyy", new System.Globalization.CultureInfo("fr-FR")), $"{_currentDate.AddMonths(-1).ToString("dd/MM/yyyy")} \u2192 {_currentDate.ToString("dd/MM/yyyy")}");
                     NotifyPropertyChanged(nameof(CurrentDate));
                 }
             }
         }
         private DateTime _currentDate;
-
-        /// <summary>
-        /// Label de la période 
-        /// </summary>
-        public string MonthLabel
-        {
-            get => _monthLabel;
-            set
-            {
-                if (_monthLabel != value)
-                {
-                    _monthLabel = value;
-                    NotifyPropertyChanged(nameof(MonthLabel));
-                }
-            }
-        }
-        private string _monthLabel = "";
-
-        /// <summary>
-        /// Label de la période 
-        /// </summary>
-        public string PeriodLabel
-        {
-            get => _periodLabel;
-            set
-            {
-                if (_periodLabel != value)
-                {
-                    _periodLabel = value;
-                    NotifyPropertyChanged(nameof(PeriodLabel));
-                }
-            }
-        }
-        private string _periodLabel = "";
 
         /// <summary>
         /// Label de la période 
@@ -215,7 +171,6 @@ namespace Main.ViewModels
             CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             PreviousMonthCommand = new Command(OnPreviousMonth);
             NextMonthCommand = new Command(OnNextMonth);
-            AddCommand = new Command(OnAdd);
         }
 
         /// <summary>
@@ -242,11 +197,20 @@ namespace Main.ViewModels
         /// <summary>
         /// Ajout d'un compte    
         /// </summary>
-        public async void OnAdd()
+        private async void OnAdd()
         {
             await Shell.Current.GoToAsync(nameof(EditAccountPage));
             Load();
         }
+
+        /// <summary>
+        /// Ajout d'un compte    
+        /// </summary>
+        private async void OnSettings()
+        {
+            await Shell.Current.GoToAsync(nameof(SettingsPage));
+        }
+
 
         /// <summary>
         /// Chargement des comptes
