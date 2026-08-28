@@ -251,16 +251,16 @@ namespace Main.ViewModels
                 var balance = account.GetBalance(effectiveOn);
                 if (balance == null)
                 {
-                    Rent = 339.26;
-                    Provision = 174;
+                    Rent = Settings.Instance.Rent;
+                    Provision = Settings.Instance.Provision;
                     Work = 0;
                     InOut = 0;
-                    Garantee = 15.40;
-                    Gestion = 47.12;
+                    Garantee = Settings.Instance.Garanty;
+                    Gestion = Settings.Instance.Gestion;
                     Syndic = 0;
                     Transfer = 0;
                     Exceptionel = 0;
-                    Renter = "Angelina Ducarteron / GOULOU";
+                    Renter = Settings.Instance.Renter;
                 }
                 else
                 {

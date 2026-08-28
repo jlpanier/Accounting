@@ -1,15 +1,11 @@
 ﻿using Business;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
+
 
 namespace Main.ViewModels
 {
     public class HistoricBalanceViewModel: BaseAccountViewModel
     {
-        #region Propriétés
-
         public ObservableCollection<MonthlyBalanceViewModel> Balances
         {
             get => _balances;
@@ -23,8 +19,6 @@ namespace Main.ViewModels
             }
         }
         public ObservableCollection<MonthlyBalanceViewModel> _balances;
-
-        #endregion
 
         /// <summary>
         /// Initialisation des données

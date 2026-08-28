@@ -30,7 +30,8 @@ namespace Main
             Routing.RegisterRoute(nameof(HistoricPeePage), typeof(HistoricPeePage));
             Routing.RegisterRoute(nameof(HistoricScpiPage), typeof(HistoricScpiPage));
             Routing.RegisterRoute(nameof(HistoricBalancePage), typeof(HistoricBalancePage));
-           
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+            Routing.RegisterRoute(nameof(EditSettingPage), typeof(EditSettingPage));
         }
 
         public static async Task DisplaySnackbarAsync(string message)

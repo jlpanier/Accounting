@@ -55,9 +55,9 @@
                             <VerticalStackLayout Spacing="0">
                                 <Grid ColumnDefinitions="*,*,*,*" >
                                     <Label Grid.Column="0" Text="{Binding EffectiveOn, StringFormat='{0:dd/MM/yyyy}'}" FontAttributes="Bold" FontSize="12" HorizontalOptions="Start" VerticalOptions="Center" />
-                        <Label Grid.Column="1" Text="{Binding Disponible, StringFormat='{0:N2} €'}" FontSize="10" TextColor="CadetBlue" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                        <Label Grid.Column="2" Text="{Binding Blocked, StringFormat='{0:N2} €'}" FontSize="10" TextColor="CadetBlue" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                        <Label Grid.Column="3" Text="{Binding Retirement, StringFormat='{0:N2} €'}" FontSize="10" TextColor="CadetBlue" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  />
+                                    <Label Grid.Column="1" Text="{Binding Disponible, StringFormat='{0:N2} €'}" FontSize="10" TextColor="CadetBlue" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                    <Label Grid.Column="2" Text="{Binding Blocked, StringFormat='{0:N2} €'}" FontSize="10" TextColor="CadetBlue" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                    <Label Grid.Column="3" Text="{Binding Retirement, StringFormat='{0:N2} €'}" FontSize="10" TextColor="CadetBlue" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  />
                                 </Grid>
 
                                 <BoxView HeightRequest="1" BackgroundColor="#DADADA" Margin="0,4,0,4" />
