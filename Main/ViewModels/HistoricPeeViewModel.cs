@@ -22,7 +22,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public ObservableCollection<MonthlyPeeViewModel> _balances;
+        public ObservableCollection<MonthlyPeeViewModel> _balances= new ObservableCollection<MonthlyPeeViewModel>();
 
         #endregion
 

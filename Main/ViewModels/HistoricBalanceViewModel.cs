@@ -18,7 +18,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public ObservableCollection<MonthlyBalanceViewModel> _balances;
+        public ObservableCollection<MonthlyBalanceViewModel> _balances = new ObservableCollection<MonthlyBalanceViewModel>();
 
         /// <summary>
         /// Initialisation des données

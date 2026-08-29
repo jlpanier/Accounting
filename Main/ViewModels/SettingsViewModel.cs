@@ -37,7 +37,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public ObservableCollection<SettingViewModel> _items;
+        public ObservableCollection<SettingViewModel> _items = new ObservableCollection<SettingViewModel>();
 
         /// <summary>
         /// Initialisation des données
