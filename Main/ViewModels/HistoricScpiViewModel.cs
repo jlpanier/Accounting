@@ -22,7 +22,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public ObservableCollection<MonthlyScpiViewModel> _balances;
+        public ObservableCollection<MonthlyScpiViewModel> _balances = new ObservableCollection<MonthlyScpiViewModel>();
 
         #endregion
 

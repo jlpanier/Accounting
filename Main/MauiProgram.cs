@@ -2,12 +2,9 @@
 using CommunityToolkit.Maui.Services;
 using FFImageLoading.Maui;
 using Main.Converter;
-using Main.Customs;
-using Main.Extensions;
 using Main.ViewModels;
 using Microsoft.Extensions.Logging;
 using Repository.Dbo;
-using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 
 namespace Main
@@ -21,14 +18,7 @@ namespace Main
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .ConfigureSyncfusionToolkit()
-                .ConfigureSyncfusionCore()
                 .UseFFImageLoading()
-                .ConfigureMauiHandlers(handlers =>
-                {
-#if ANDROID
-                    handlers.AddHandler(typeof(PressableView), typeof(Platforms.Android.Renderers.PressableViewRenderer));
-#endif
-                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -39,20 +29,24 @@ namespace Main
                     fonts.AddFont("MaterialSymbolsRounded.ttf", "MaterialSymbolsRounded");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-    		builder.Services.AddLogging(configure => configure.AddDebug());
-#endif
+
+            if (Application.Current!=null)
+            {
+                builder.Services.AddSingleton<IApplication>(Application.Current);
+            }
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<IPopupService, PopupService>();
             builder.Services.AddSingleton<IAssetService, AssetService>();
+            builder.Services.AddSingleton<IAlertService, AlertService>();
             builder.Services.AddSingleton<DatabaseAccess>();
             builder.Services.AddSingleton<BoolToOpacityConverter>();
             builder.Services.AddSingleton<BoolToFontAttributesConverter>();
             builder.Services.AddSingleton<AccountTypeToTextConverter>();
             builder.Services.AddSingleton<EqualsConverter>();
             builder.Services.AddSingleton<AccountTypeToTextConverter>();
+
+            builder.Services.AddTransient<MainViewModel>();
 
             return builder.Build();
         }

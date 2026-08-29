@@ -45,7 +45,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public ObservableCollection<MonthlyAppartmentViewModel> _balances;
+        public ObservableCollection<MonthlyAppartmentViewModel> _balances = new ObservableCollection<MonthlyAppartmentViewModel>();
 
         #endregion
 
