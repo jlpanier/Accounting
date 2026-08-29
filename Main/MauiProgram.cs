@@ -43,16 +43,23 @@ namespace Main
     		builder.Logging.AddDebug();
     		builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
+            if (Application.Current!=null)
+            {
+                builder.Services.AddSingleton<IApplication>(Application.Current);
+            }
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<IPopupService, PopupService>();
             builder.Services.AddSingleton<IAssetService, AssetService>();
+            builder.Services.AddSingleton<IAlertService, AlertService>();
             builder.Services.AddSingleton<DatabaseAccess>();
             builder.Services.AddSingleton<BoolToOpacityConverter>();
             builder.Services.AddSingleton<BoolToFontAttributesConverter>();
             builder.Services.AddSingleton<AccountTypeToTextConverter>();
             builder.Services.AddSingleton<EqualsConverter>();
             builder.Services.AddSingleton<AccountTypeToTextConverter>();
+
+            builder.Services.AddTransient<MainViewModel>();
 
             return builder.Build();
         }

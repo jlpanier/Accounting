@@ -1,7 +1,8 @@
 ﻿using Business;
+using FFImageLoading.Helpers;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
+
 
 namespace Main.ViewModels
 {
@@ -16,6 +17,12 @@ namespace Main.ViewModels
         /// Ajout d'un compte 
         /// </summary>
         public ICommand ClickSettingsCommand => new Command(OnSettings);
+
+        /// <summary>
+        /// Révélation de la base de données 
+        /// </summary>
+        public ICommand ClickSendCommand => new Command(OnReveal);
+        
 
         /// <summary>
         /// Affichage de la période précédente
@@ -211,6 +218,32 @@ namespace Main.ViewModels
             await Shell.Current.GoToAsync(nameof(SettingsPage));
         }
 
+        /// <summary>
+        /// Révélation de la base de données   
+        /// </summary>
+        private async void OnReveal()
+        {
+            try
+            { 
+                if (App.Current is App application)
+                {
+                    var destPath = Path.Combine(new DownloadFolderService().GetDownloadFolder(), Path.GetFileName(application.DbFilePath));
+
+                    using (var source = File.OpenRead(application.DbFilePath))
+                    {
+                        using (var dest = File.OpenWrite(destPath))
+                        {
+                            await source.CopyToAsync(dest);
+                        }
+                    }
+                }
+                await ServiceHelper.GetService<IAlertService>()!.ShowAlertAsync(Settings.Instance.DlgDownloads);
+            }
+            catch (Exception ex)
+            {
+                await ServiceHelper.GetService<IAlertService>()!.ShowAlertAsync(ex);
+            }
+        }
 
         /// <summary>
         /// Chargement des comptes

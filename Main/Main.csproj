@@ -39,6 +39,30 @@
 		<AssemblyTitle>Accounting</AssemblyTitle>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
+	  <NoWarn>1701;1702;1416</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-maccatalyst|AnyCPU'">
+	  <NoWarn>1701;1702;1416</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-windows10.0.19041.0|AnyCPU'">
+	  <NoWarn>1701;1702;1416</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">
+	  <NoWarn>1701;1702;1416</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-maccatalyst|AnyCPU'">
+	  <NoWarn>1701;1702;1416</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-windows10.0.19041.0|AnyCPU'">
+	  <NoWarn>1701;1702;1416</NoWarn>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<AndroidResource Include="Platforms\Android\mipmap\appicon.png">
@@ -69,6 +93,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.9" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="SharpZipLib" Version="1.4.2" />
 		<PackageReference Include="Syncfusion.Maui.ListView" Version="34.1.30" />
 		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.10" />
 	</ItemGroup>

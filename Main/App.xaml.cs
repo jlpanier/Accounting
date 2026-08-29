@@ -21,6 +21,7 @@ namespace Main
                 FilePath = Path.Combine(AppPath, "file");
                 TmpPath = Path.Combine(AppPath, "tmp");
                 MapPath = Path.Combine(AppPath, "maps");
+                DbFilePath = Path.Combine(DbPath, BaseDbo.DatabaseName);
 
                 Directory.CreateDirectory(AppPath);
                 Directory.CreateDirectory(DbPath);
@@ -29,7 +30,7 @@ namespace Main
                 Directory.CreateDirectory(ImagePath);
                 Directory.CreateDirectory(MapPath);
 
-                DatabaseAccess.Instance.Init(Path.Combine(DbPath, BaseDbo.DatabaseName));
+                DatabaseAccess.Instance.Init(DbFilePath);
 
                 //if(!BankAccount.Accounts.Any())
                 //{

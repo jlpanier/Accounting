@@ -129,5 +129,25 @@ namespace Business
         /// Nom du locataire de l'appartement par defaut lors d'une nouvelle saisie
         /// </summary>
         public string Renter => GetString("appartement.renter.default", "Angelina Ducarteron");
+
+        /// <summary>
+        /// Liste des destinataires pour l'envoi de la base de données
+        /// </summary>
+        public string ToDbSendByEmail => GetString("mail.sendto.db", "jean-luc.panier@outlook.com");
+
+        /// <summary>
+        /// Corps du message
+        /// </summary>
+        public string SubjectDbSendByEmail => GetString("mail.subject.db", "Base de données de l'application \"Accounting\"");
+
+        /// <summary>
+        /// Corps du message
+        /// </summary>
+        public string BodyDbSendByEmail => GetString("mail.body.db", "Base de données de l'application \"Accounting\"");
+
+        /// <summary>
+        /// Message boite de dialog
+        /// </summary>
+        public string DlgDownloads => GetString("dialog.download.sqlite", "Base de données envoyée copiée dans \"téléchargement\".");
     }
 }
