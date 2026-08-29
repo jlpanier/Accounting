@@ -29,10 +29,7 @@ namespace Main
                     fonts.AddFont("MaterialSymbolsRounded.ttf", "MaterialSymbolsRounded");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-    		builder.Services.AddLogging(configure => configure.AddDebug());
-#endif
+
             if (Application.Current!=null)
             {
                 builder.Services.AddSingleton<IApplication>(Application.Current);
