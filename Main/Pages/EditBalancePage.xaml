@@ -9,11 +9,6 @@
     <ContentPage.BindingContext>
         <viewmodel:EditBalanceViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converter:DoubleConverter x:Key="DoubleConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="22">
 
@@ -41,7 +36,8 @@
 
                     <Entry 
                        Placeholder="Disponible"
-                       Text="{Binding Balance, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
+                       Text="{Binding Balance, Mode=TwoWay}"
+                       TextColor="{Binding BalanceColor}"
                        Keyboard="Numeric"
                        VerticalOptions="Center" />
                 </VerticalStackLayout>

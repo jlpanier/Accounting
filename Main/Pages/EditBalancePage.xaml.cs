@@ -30,7 +30,7 @@ public partial class EditBalancePage : ContentPage, IQueryAttributable
         BindingContext = new EditBalanceViewModel()
         {
             EffectiveOn = DateTime.Now,
-            Balance = 0,
+            Balance = "0",
         };
     }
 }

@@ -9,11 +9,6 @@
     <ContentPage.BindingContext>
         <vm:EditRentViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converter:DoubleConverter x:Key="DoubleConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="22">
 
@@ -54,7 +49,7 @@
 
                     <Entry 
                     Placeholder="Loyer"
-                    Text="{Binding Rent, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
+                    Text="{Binding Rent, Mode=TwoWay}"
                     Keyboard="Numeric"
                     VerticalOptions="Center" />
                 </VerticalStackLayout>

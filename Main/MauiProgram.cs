@@ -6,6 +6,7 @@ using Main.ViewModels;
 using Microsoft.Extensions.Logging;
 using Repository.Dbo;
 using Syncfusion.Maui.Toolkit.Hosting;
+using System.Globalization;
 
 namespace Main
 {
@@ -47,6 +48,9 @@ namespace Main
             builder.Services.AddSingleton<AccountTypeToTextConverter>();
 
             builder.Services.AddTransient<MainViewModel>();
+
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("fr-FR");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("fr-FR");
 
             return builder.Build();
         }
