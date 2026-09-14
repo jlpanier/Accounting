@@ -41,7 +41,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Montant en cours
         /// </summary>
-        public double Quantity
+        public string Quantity
         {
             get => _quantity;
             set
@@ -53,12 +53,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _quantity = 0;
+        private string _quantity = string.Empty;
 
         /// <summary>
         /// Prix unitaire de l'action
         /// </summary>
-        public double UnitPrice
+        public string UnitPrice
         {
             get => _unitPrice;
             set
@@ -70,12 +70,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _unitPrice = 0;
+        private string _unitPrice = string.Empty;
 
         /// <summary>
         /// Commission sur cette transaction
         /// </summary>
-        public double Fees
+        public string Fees
         {
             get => _fees;
             set
@@ -87,12 +87,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _fees = 0;
+        private string _fees = string.Empty;
 
         /// <summary>
         /// TVA sur cette transaction
         /// </summary>
-        public double Tax
+        public string Tax
         {
             get => _tax;
             set
@@ -104,7 +104,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _tax = 0;
+        private string _tax = string.Empty;
 
         /// <summary>
         /// Vrai si on peut supprimer cette transaction
@@ -186,10 +186,10 @@ namespace Main.ViewModels
                 if (transaction is Order transfer)
                 {
                     EffectiveOn = transfer.EffectiveOn;
-                    Fees = transfer.Fees;
-                    Tax = transfer.Tax;
-                    Quantity = transfer.Quantity;
-                    UnitPrice = transfer.UnitPrice;
+                    Fees = transfer.Fees.ToString("N2");
+                    Tax = transfer.Tax.ToString("N2");
+                    Quantity = transfer.Quantity.ToString("N2");
+                    UnitPrice = transfer.UnitPrice.ToString("N2");
                 }
             }
         }
@@ -202,14 +202,21 @@ namespace Main.ViewModels
             var bankAccount = BankAccount.GetById(BankAccountId);
             if (bankAccount is PEA account)
             {
-                var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key);
-                if (transaction is null)
+                if(double.TryParse(Quantity.Replace(".", ","), out double quantity) 
+                    && double.TryParse(UnitPrice.Replace(".", ","), out double unitPrice) 
+                    && double.TryParse(Fees.Replace(".", ","), out double fees) 
+                    && double.TryParse(Tax.Replace(".", ","), out double tax))
                 {
-                    account.Sell(SelectedShare.Id, EffectiveOn, -Quantity, UnitPrice, Fees, Tax);
-                }
-                else if (transaction is Order transfer)
-                {
-                    transfer.Save(EffectiveOn, -Quantity, UnitPrice, Fees, Tax);
+                    var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key);
+                    if (transaction is null)
+                    {
+                        account.Sell(SelectedShare.Id, EffectiveOn, -quantity, unitPrice, fees, tax);
+                    }
+                    else if (transaction is Order transfer)
+                    {
+                        transfer.Save(EffectiveOn, -quantity, unitPrice, fees, tax);
+                    }
+
                 }
             }
             await Shell.Current.GoToAsync("..");

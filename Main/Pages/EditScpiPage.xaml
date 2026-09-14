@@ -10,11 +10,6 @@
     <ContentPage.BindingContext>
         <viewmodel:EditScpiViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converter:DoubleConverter x:Key="DoubleConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="22">
 
@@ -50,6 +45,7 @@
 
                     <Entry 
                        Placeholder="Disponible"
+                       TextColor="{Binding NumberOfSharesColor}"
                        Text="{Binding NumberOfShares, Mode=TwoWay}"
                        Keyboard="Numeric"
                        VerticalOptions="Center" />
@@ -66,7 +62,8 @@
 
                     <Entry Placeholder="0,00 €"
                            Keyboard="Numeric"
-                           Text="{Binding UnitPrice, Mode=TwoWay, Converter={StaticResource DoubleConverter}}" />
+                           TextColor="{Binding UnitPriceColor}"
+                           Text="{Binding UnitPrice, Mode=TwoWay}" />
                 </VerticalStackLayout>
             </Border>
 
@@ -81,7 +78,7 @@
                     <Entry Placeholder="Calcul automatique"
                            Keyboard="Numeric"
                            IsReadOnly="True"
-                           Text="{Binding TotalPrice, Mode=TwoWay, Converter={StaticResource DoubleConverter}}" />
+                           Text="{Binding TotalPrice, Mode=TwoWay}" />
                 </VerticalStackLayout>
             </Border>
 
@@ -95,7 +92,8 @@
 
                     <Entry Placeholder="loyer"
                            Keyboard="Numeric"
-                           Text="{Binding Rent, Mode=TwoWay, Converter={StaticResource DoubleConverter}}" />
+                           TextColor="{Binding RentColor}"
+                           Text="{Binding Rent, Mode=TwoWay}" />
                 </VerticalStackLayout>
             </Border>
 

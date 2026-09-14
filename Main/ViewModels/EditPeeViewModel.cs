@@ -94,7 +94,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Somme disponible sur ce plan épargne entreprise (PEE)
         /// </summary>
-        public double Disponible
+        public string Disponible
         {
             get => _disponible;
             set
@@ -106,12 +106,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _disponible = 0.0;
+        private string _disponible = "";
 
         /// <summary>
         /// Somme disponible à la retraite sur ce plan épargne entreprise (PEE)
         /// </summary>
-        public double Retirement
+        public string Retirement
         {
             get => _retirement;
             set
@@ -123,12 +123,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _retirement = 0.0;
+        private string _retirement = "";
 
         /// <summary>
         /// Somme bloquée sur ce plan épargne entreprise (PEE)
         /// </summary>
-        public double Blocked
+        public string Blocked
         {
             get => _blocked;
             set
@@ -140,7 +140,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _blocked = 0.0;
+        private string _blocked = "";
 
         #endregion
 
@@ -163,9 +163,9 @@ namespace Main.ViewModels
                 var balance = account.GetBalance(effectiveOn);
                 if (balance != null)
                 {
-                    Disponible = balance.Disponible;
-                    Blocked = balance.Blocked;
-                    Retirement = balance.Retirement;
+                    Disponible = balance.Disponible.ToString();
+                    Blocked = balance.Blocked.ToString();
+                    Retirement = balance.Retirement.ToString();
                 }
             }
         }
@@ -180,13 +180,18 @@ namespace Main.ViewModels
             if (bankAccount is PEE account)
             {
                 var balance = account.GetBalance(effectiveOn);
-                if (balance != null)
+                if (double.TryParse(Disponible.Replace('.', ','), out double disponible)
+                    && double.TryParse(Retirement.Replace('.', ','), out double retirement)
+                    && double.TryParse(Blocked.Replace('.', ','), out double blocked))
                 {
-                    balance.Save(Disponible, Retirement, Blocked);
-                }
-                else
-                {
-                    account.AddBalance(effectiveOn, Disponible, Retirement, Blocked);
+                    if (balance != null)
+                    {
+                        balance.Save(disponible, retirement, blocked);
+                    }
+                    else
+                    {
+                        account.AddBalance(effectiveOn, disponible, retirement, blocked);
+                    }
                 }
             }
             await Shell.Current.GoToAsync(".."); // Retour à la page précédente

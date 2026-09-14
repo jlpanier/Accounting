@@ -57,7 +57,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Prix unitaire de l'action
         /// </summary>
-        public double UnitPrice
+        public string UnitPrice
         {
             get => _unitPrice;
             set
@@ -69,7 +69,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _unitPrice = 0;
+        private string _unitPrice = "";
 
         /// <summary>
         /// Vrai si on peut supprimer cette transaction
@@ -127,7 +127,7 @@ namespace Main.ViewModels
                     if (price!=null)
                     {
                         PriceShareId = price.Id;
-                        UnitPrice = price.UnitPrice;
+                        UnitPrice = price.UnitPrice.ToString("F2");
                     }
                 }
             }
@@ -141,14 +141,17 @@ namespace Main.ViewModels
         {
             if (Share!=null)
             {
-                var price = Share.GetPriceOn(EffectiveOn);
-                if (price != null)
+                if (double.TryParse(UnitPrice.Replace(".", ","), out double unitPrice))
                 {
-                    price.Save(EffectiveOn, UnitPrice);
-                }
-                else
-                {
-                    Share.AddAmount(EffectiveOn, UnitPrice);
+                    var price = Share.GetPriceOn(EffectiveOn);
+                    if (price != null)
+                    {
+                        price.Save(EffectiveOn, unitPrice);
+                    }
+                    else
+                    {
+                        Share.AddAmount(EffectiveOn, unitPrice);
+                    }
                 }
             }
             await Shell.Current.GoToAsync("..");

@@ -41,7 +41,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Prix unitaire 
         /// </summary>
-        public double UnitPrice
+        public string UnitPrice
         {
             get => _unitPrice;
             set
@@ -54,7 +54,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _unitPrice = 0.0;
+        private string _unitPrice = "";
 
         /// <summary>
         /// Somme totale investie
@@ -76,7 +76,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Loyer mensuelle
         /// </summary>
-        public double Rent
+        public string Rent
         {
             get => _rent;
             set
@@ -88,7 +88,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _rent = 0.0;
+        private string _rent = "";
 
         public EditScpiViewModel()
         {
@@ -111,8 +111,8 @@ namespace Main.ViewModels
                 if (balance != null)
                 {
                     NumberOfShares = balance.NumberOfShares;
-                    UnitPrice = balance.UnitPrice;
-                    Rent = balance.Rent;
+                    UnitPrice = balance.UnitPrice.ToString();
+                    Rent = balance.Rent.ToString();
                 }
 
             }
@@ -120,7 +120,10 @@ namespace Main.ViewModels
 
         private void UpdateTotalPrice()
         {
-            TotalPrice = NumberOfShares * UnitPrice;
+            if (double.TryParse(UnitPrice, out double unitprice))
+            {
+                TotalPrice = NumberOfShares * unitprice;
+            }
         }
 
         /// <summary>
@@ -133,13 +136,16 @@ namespace Main.ViewModels
             if (item is SCPI account)
             {
                 var balance = account.GetBalance(effectiveOn);
-                if (balance != null)
+                if (double.TryParse(UnitPrice.Replace(".", ","), out double unitprice) && double.TryParse(Rent.Replace(".", ","), out double rent))
                 {
-                    balance.Save(effectiveOn, NumberOfShares, UnitPrice, Rent);
-                }
-                else
-                {
-                    account.AddBalance(effectiveOn, NumberOfShares, UnitPrice, Rent);
+                    if (balance != null)
+                    {
+                        balance.Save(effectiveOn, NumberOfShares, unitprice, rent);
+                    }
+                    else
+                    {
+                        account.AddBalance(effectiveOn, NumberOfShares, unitprice, rent);
+                    }
                 }
             }
             // TODO: sauvegarde dans ton repository

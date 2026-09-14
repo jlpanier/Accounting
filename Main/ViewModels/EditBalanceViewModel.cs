@@ -107,9 +107,9 @@ namespace Main.ViewModels
         private DateTime _effectiveOn = DateTime.Today;
 
         /// <summary>
-        /// CanDelete mensuelle du compte
+        /// Balance mensuelle du compte
         /// </summary>
-        public double Balance
+        public string Balance
         {
             get => _balance;
             set
@@ -117,12 +117,30 @@ namespace Main.ViewModels
                 if (_balance != value)
                 {
                     _balance = value;
+                    BalanceColor = double.TryParse(_balance.Replace('.', ','), out double tmp) ? Colors.Blue : Colors.Red;
                     NotifyPropertyChanged(nameof(Balance));
                 }
             }
         }
-        private double _balance;
+        private string _balance = "";
 
+
+        /// <summary>
+        /// Couleur de la balance rouge si erreur
+        /// </summary>
+        public Color BalanceColor
+        {
+            get => _balanceColor;
+            set
+            {
+                if (_balanceColor != value)
+                {
+                    _balanceColor = value;
+                    NotifyPropertyChanged(nameof(BalanceColor));
+                }
+            }
+        }
+        private Color _balanceColor = Colors.Blue;
 
         public EditBalanceViewModel()
         {
@@ -141,7 +159,7 @@ namespace Main.ViewModels
                 var monthlyamount = bankaccount.Balances.FirstOrDefault(b => b.EffectiveOn == effectiveOn);
                 if (monthlyamount != null)
                 {
-                    Balance = monthlyamount.Balance;
+                    Balance = monthlyamount.Balance.ToString();
                 }
             }
         }
@@ -156,13 +174,17 @@ namespace Main.ViewModels
             if (bankAccount is BalanceAccount account)
             {
                 var balance = account.GetBalance(effectiveOn);
-                if (balance != null)
+                if (double.TryParse(Balance.Replace('.', ','), out double amount))
                 {
-                    balance.Save(effectiveOn, Balance);
-                }
-                else
-                {
-                    account.AddBalance(effectiveOn, Balance);
+                    if (balance != null)
+                    {
+                        balance.Save(effectiveOn, amount);
+                    }
+                    else
+                    {
+                        account.AddBalance(effectiveOn, amount);
+                    }
+
                 }
             }
 

@@ -10,11 +10,6 @@
     <ContentPage.BindingContext>
         <viewmodel:EditPeeViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converter:DoubleConverter x:Key="DoubleConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="22">
 
@@ -42,7 +37,7 @@
 
                     <Entry 
                        Placeholder="Disponible"
-                       Text="{Binding Disponible, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
+                       Text="{Binding Disponible, Mode=TwoWay}"
                        Keyboard="Numeric"
                        VerticalOptions="Center" />
                 </VerticalStackLayout>

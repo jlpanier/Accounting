@@ -1,9 +1,6 @@
-﻿using Business;
-using Common;
-using System.Collections.ObjectModel;
+﻿using Common;
 using System.Windows.Input;
 using static Business.Share;
-using static Main.ViewModels.EditPeaViewModel;
 
 namespace Main.ViewModels
 {

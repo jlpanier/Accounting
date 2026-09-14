@@ -10,11 +10,6 @@
     <ContentPage.BindingContext>
         <viewmodel:EditAccountViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converter:DoubleConverter x:Key="DoubleConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="22">
 

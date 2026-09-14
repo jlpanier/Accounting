@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Main.Pages.EditPurchasePeaPage"
-             xmlns:vm="clr-namespace:Main.ViewModels"
-             Title="Achat">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Main.ViewModels"
+    xmlns:converter="clr-namespace:Main.Converter"
+    x:Class="Main.Pages.EditPurchasePeaPage"
+    Title="Achat">
 
     <ContentPage.BindingContext>
         <vm:EditPurchasePeaViewModel />
     </ContentPage.BindingContext>
-    
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="18">
 
             <Grid ColumnDefinitions="Auto, *,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
                 <Label Grid.Column="0" Grid.Row="0" Text="Date" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
-                <DatePicker Grid.Column="1" Grid.Row="0"  Date="{Binding EffectiveOn}"/>
+                <DatePicker Grid.Column="1" Grid.Row="0"  Date="{Binding EffectiveOn, Mode=TwoWay}"/>
                 <Label Grid.Column="0" Grid.Row="1" Text="Quantité" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
-                <Entry Grid.Column="1" Grid.Row="1" Placeholder="Quantité" Keyboard="Numeric" Text="{Binding Quantity}" />
+                <Entry Grid.Column="1" Grid.Row="1" Placeholder="Quantité" Keyboard="Numeric" Text="{Binding Quantity, Mode=TwoWay}" />
                 <Label Grid.Column="0" Grid.Row="2" Text="Prix unitaire" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
-                <Entry Grid.Column="1" Grid.Row="2" Placeholder="Prix unitaire" Keyboard="Numeric" Text="{Binding UnitPrice}" />
+                <Entry Grid.Column="1" Grid.Row="2" Placeholder="Prix unitaire" Keyboard="Numeric" Text="{Binding UnitPrice, Mode=TwoWay}" />
                 <Label Grid.Column="0" Grid.Row="3" Text="Commission" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
-                <Entry Grid.Column="1" Grid.Row="3" Placeholder="Commission" Keyboard="Numeric" Text="{Binding Fees}" />
+                <Entry Grid.Column="1" Grid.Row="3" Placeholder="Commission" Keyboard="Numeric" Text="{Binding Fees, Mode=TwoWay}" />
                 <Label Grid.Column="0" Grid.Row="4" Text="TVA" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
-                <Entry Grid.Column="1" Grid.Row="4" Placeholder="TVA" Keyboard="Numeric" Text="{Binding Tax}" />
+                <Entry Grid.Column="1" Grid.Row="4" Placeholder="TVA" Keyboard="Numeric" Text="{Binding Tax, Mode=TwoWay}" />
                 <Label Grid.Column="0" Grid.Row="5" Text="Action" FontSize="12" Padding="12" HorizontalOptions="Center" VerticalOptions="Center" />
                 <Picker Grid.Column="1" Grid.Row="5" ItemsSource="{Binding Shares}" SelectedItem="{Binding SelectedShare}" FontSize="14" ItemDisplayBinding="{Binding Name}"/>
                 <ImageButton Grid.Column="2" Grid.Row="5"

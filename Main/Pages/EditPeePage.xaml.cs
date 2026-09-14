@@ -26,7 +26,7 @@ public partial class EditPeePage : ContentPage, IQueryAttributable
         BindingContext = new EditPeeViewModel()
         {
             EffectiveOn = DateTime.Now,
-            Disponible = 0,
+            Disponible = "",
         };
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Business;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace Main.ViewModels
@@ -44,7 +41,7 @@ namespace Main.ViewModels
         /// <summary>
         /// Montant en cours
         /// </summary>
-        public double Amount
+        public string Amount
         {
             get => _amount;
             set
@@ -56,7 +53,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        private double _amount = 0;
+        private string _amount = "";
 
         /// <summary>
         /// Vrai si on peut supprimer cette transaction
@@ -138,7 +135,7 @@ namespace Main.ViewModels
                 if (transaction is Dividende dividende)
                 {
                     EffectiveOn = dividende.EffectiveOn;
-                    Amount = dividende.Amount;
+                    Amount = dividende.Amount.ToString();
                     var share = Shares.FirstOrDefault(_ => _.Id == dividende.ShareId);
                     if (share != null) SelectedShare = share;
                 }
@@ -154,14 +151,18 @@ namespace Main.ViewModels
             if (bankAccount is PEA account)
             {
                 var transaction = account.Transactions.FirstOrDefault(_ => _.Id == Key);
-                if (transaction is null)
+                if (double.TryParse(Amount.Replace('.', ','), out double amount))
                 {
-                    account.Dividende(SelectedShare.Id, EffectiveOn, Amount);
+                    if (transaction is null)
+                    {
+                        account.Dividende(SelectedShare.Id, EffectiveOn, amount);
+                    }
+                    else if (transaction is Dividende dividende)
+                    {
+                        dividende.Save(SelectedShare.Id, EffectiveOn, amount);
+                    }
                 }
-                else if (transaction is Dividende dividende)
-                {
-                    dividende.Save(SelectedShare.Id, EffectiveOn, Amount);
-                }
+
             }
             await Shell.Current.GoToAsync("..");
         }

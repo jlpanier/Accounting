@@ -40,7 +40,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public string _accountno = "";
+        public string _accountno = string.Empty;
 
 
         /// <summary>
@@ -58,12 +58,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public string _renter = "";
+        public string _renter = string.Empty;
 
         /// <summary>
         /// Loyer perçu sur la période
         /// </summary>
-        public double Rent
+        public string Rent
         {
             get => _rent;
             set
@@ -75,12 +75,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _rent = 0.0;
+        public string _rent = string.Empty;
 
         /// <summary>
         /// Charge de l'appartement sur la période
         /// </summary>
-        public double Provision
+        public string Provision
         {
             get => _provision;
             set
@@ -92,12 +92,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _provision = 0;
+        public string _provision = string.Empty;
 
         /// <summary>
         /// Frais entrée/sortie sur la période (loyer - charges)
         /// </summary>
-        public double InOut
+        public string InOut
         {
             get => _inout;
             set
@@ -109,12 +109,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _inout = 0.0;
+        public string _inout = string.Empty;
 
         /// <summary>
         /// Travaux réalisés sur la période
         /// </summary>
-        public double Work
+        public string Work
         {
             get => _work;
             set
@@ -126,12 +126,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _work = 0.0;
+        public string _work = string.Empty;
 
         /// <summary>
         /// Frais de garantee sur la période
         /// </summary>
-        public double Garantee
+        public string Garantee
         {
             get => _garantee;
             set
@@ -143,12 +143,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _garantee = 0.0;
+        public string _garantee = string.Empty;
 
         /// <summary>
         /// Frais de gestion sur la période
         /// </summary>
-        public double Gestion
+        public string Gestion
         {
             get => _gestion;
             set
@@ -160,12 +160,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _gestion = 0.0;
+        public string _gestion = string.Empty;
 
         /// <summary>
         /// Fraisdu syndic sur la période
         /// </summary>
-        public double Syndic
+        public string Syndic
         {
             get => _syndic;
             set
@@ -177,12 +177,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _syndic = 0.0;
+        public string _syndic = string.Empty;
 
         /// <summary>
         /// Frais exceptionnels sur la période (travaux + charges + frais de gestion)
         /// </summary>
-        public double Exceptionel
+        public string Exceptionel
         {
             get => _exceptionel;
             set
@@ -194,12 +194,12 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _exceptionel = 0.0;
+        public string _exceptionel = string.Empty;
 
         /// <summary>
         /// Date courante
         /// </summary>
-        public double Transfer
+        public string Transfer
         {
             get => _transfer;
             set
@@ -211,7 +211,7 @@ namespace Main.ViewModels
                 }
             }
         }
-        public double _transfer;
+        public string _transfer = string.Empty;
 
         /// <summary>
         /// Date courante
@@ -251,29 +251,29 @@ namespace Main.ViewModels
                 var balance = account.GetBalance(effectiveOn);
                 if (balance == null)
                 {
-                    Rent = Settings.Instance.Rent;
-                    Provision = Settings.Instance.Provision;
-                    Work = 0;
-                    InOut = 0;
-                    Garantee = Settings.Instance.Garanty;
-                    Gestion = Settings.Instance.Gestion;
-                    Syndic = 0;
-                    Transfer = 0;
-                    Exceptionel = 0;
+                    Rent = Settings.Instance.Rent.ToString("N2");
+                    Provision = Settings.Instance.Provision.ToString("N2");
+                    Work = "0.0";
+                    InOut = "0.0";
+                    Garantee = Settings.Instance.Garanty.ToString("N2");
+                    Gestion = Settings.Instance.Gestion.ToString("N2");
+                    Syndic = "0.0";
+                    Transfer = "0.0";
+                    Exceptionel = "0.0";
                     Renter = Settings.Instance.Renter;
                 }
                 else
                 {
                     Renter = balance.Renter;
-                    Rent = balance.Rent;
-                    Provision = balance.Provision;
-                    Work = balance.Work;
-                    InOut = balance.InOut;
-                    Garantee = balance.Garantee;
-                    Gestion = balance.Gestion;
-                    Syndic = balance.Syndic;
-                    Transfer = balance.Transfer;
-                    Exceptionel = balance.Exceptionel;
+                    Rent = balance.Rent.ToString("N2");
+                    Provision = balance.Provision.ToString("N2");
+                    Work = balance.Work.ToString("N2");
+                    InOut = balance.InOut.ToString("N2");
+                    Garantee = balance.Garantee.ToString("N2");
+                    Gestion = balance.Gestion.ToString("N2");
+                    Syndic = balance.Syndic.ToString("N2");
+                    Transfer = balance.Transfer.ToString("N2");
+                    Exceptionel = balance.Exceptionel.ToString("N2");
                 }
             }
         }
@@ -288,14 +288,27 @@ namespace Main.ViewModels
                 var account = BankAccount.GetById(BankAccountId);
                 if (account is Appartement item)
                 {
-                    var balance = item.GetBalance(EffectiveOn);
-                    if (balance == null)
+                    if (double.TryParse(Rent.Replace(".", ","), out double rent)
+                            && double.TryParse(Provision.Replace(".", ","), out double provision)
+                            && double.TryParse(InOut.Replace(".", ","), out double inout)
+                            && double.TryParse(Work.Replace(".", ","), out double work)
+                            && double.TryParse(Exceptionel.Replace(".", ","), out double exceptionel)
+                            && double.TryParse(Garantee.Replace(".", ","), out double garantee)
+                            && double.TryParse(Gestion.Replace(".", ","), out double gestion)
+                            && double.TryParse(Syndic.Replace(".", ","), out double syndic)
+                            && double.TryParse(Transfer.Replace(".", ","), out double transfer)
+                            )
                     {
-                        item.AddBalance( EffectiveOn, Renter, Rent, Provision, InOut, Work, Exceptionel, Garantee, Gestion, Syndic, Transfer);
-                    }
-                    else
-                    {
-                        balance.Save(EffectiveOn, Renter, Rent, Provision, InOut, Work, Exceptionel, Garantee, Gestion, Syndic, Transfer);
+
+                        var balance = item.GetBalance(EffectiveOn);
+                        if (balance == null)
+                        {
+                            item.AddBalance(EffectiveOn, Renter, rent, provision, inout, work, exceptionel, garantee, gestion, syndic, transfer);
+                        }
+                        else
+                        {
+                            balance.Save(EffectiveOn, Renter, rent, provision, inout, work, exceptionel, garantee, gestion, syndic, transfer);
+                        }
                     }
                 }
                 await Shell.Current.GoToAsync(".."); // Retour à la page précédente
